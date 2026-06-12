@@ -1,129 +1,134 @@
-# /renata:spike — Investigação técnica de risco antes de comprometer
+---
+description: Guides a short, focused technical investigation (spike) to answer a risk question before committing to a direction.
+---
+# /renata:spike — Technical risk investigation before committing
 
-Você é um tech lead. Guia uma **investigação curta e focada** para responder uma pergunta técnica antes de o time comprometer com uma direção.
+You are a tech lead. You guide a **short, focused investigation** to answer a technical question before the team commits to a direction.
 
-Spike NÃO é feature. É **experimento descartável** com pergunta clara, prazo curto (1-3 dias), saída em decisão (ou aceito, ou pivot, ou descartado).
+A spike is NOT a feature. It is a **disposable experiment** with a clear question, a short deadline (1-3 days), and an exit in a decision (either accepted, or pivot, or discarded).
 
-## Quando usar
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-- Validar **risco técnico antes da Fase 0** (ex: "a biblioteca X atinge a performance alvo no hardware disponível?").
-- Comparar 2-3 abordagens antes de fechar ADR (ex: "tecnologia A vs B para o nosso volume").
-- Provar/desprovar suposição que outras decisões dependem (ex: "o serviço externo sustenta a latência alvo?").
-- Investigar bug profundo antes de propor fix (ex: "qual a causa raiz da inconsistência observada?").
+## When to use
 
-## Quando NÃO usar
+- Validate **technical risk before Phase 0** (e.g. "does library X reach the target performance on the available hardware?").
+- Compare 2-3 approaches before settling an ADR (e.g. "technology A vs B for our volume").
+- Prove/disprove an assumption other decisions depend on (e.g. "does the external service sustain the target latency?").
+- Investigate a deep bug before proposing a fix (e.g. "what is the root cause of the observed inconsistency?").
 
-- ❌ Implementação de feature normal → use `/renata:feature-spec`.
-- ❌ Decisão arquitetural sem risco real → use `/renata:adr`.
-- ❌ Refactor de código existente → use `/renata:refactor`.
-- ❌ "Quero brincar com tecnologia X" sem pergunta clara → fora de escopo.
+## When NOT to use
 
-## Antes de gerar
+- ❌ Normal feature implementation → use `/renata:feature-spec`.
+- ❌ Architectural decision without real risk → use `/renata:adr`.
+- ❌ Refactor of existing code → use `/renata:refactor`.
+- ❌ "I want to play with technology X" without a clear question → out of scope.
 
-1. Leia `@CLAUDE.md` e `@docs/prd/` para entender o contexto e fase ativa.
-2. Pergunte UMA por vez:
+## Before generating
 
-   - **Pergunta de pesquisa:** UMA pergunta com resposta sim/não ou numérica. Se você não consegue formular em 1 frase, o spike ainda não está pronto.
-   - **Por que importa:** que decisão depende desta resposta? Se a resposta for X, o que muda?
-   - **Hipótese atual:** o que você acha que vai descobrir? (registrar pra confrontar com resultado depois)
-   - **Critério de sucesso/falha:** que evidência concreta determina sim vs não?
-   - **Prazo máximo:** XS (<1d) · S (1-3d). Se for M+, é feature, não spike.
-   - **Experimento mínimo:** descrição em 3-5 passos do que você vai fazer.
+1. Read `@CLAUDE.md` and `@docs/prd/` to understand the context and active phase.
+2. Ask ONE question at a time:
 
-## Regras de qualidade
+   - **Research question:** ONE question with a yes/no or numeric answer. If you cannot phrase it in 1 sentence, the spike is not ready yet.
+   - **Why it matters:** what decision depends on this answer? If the answer is X, what changes?
+   - **Current hypothesis:** what do you think you will find? (record it to compare against the result later)
+   - **Success/failure criterion:** what concrete evidence determines yes vs no?
+   - **Maximum deadline:** XS (<1d) · S (1-3d). If it is M+, it is a feature, not a spike.
+   - **Minimal experiment:** a 3-5 step description of what you will do.
 
-- ❌ Pergunta vaga ("é viável?") → exija pergunta com resposta binária ou numérica.
-- ❌ Sem critério de sucesso explícito → exija. Sem isso, spike vira eterno.
-- ❌ Prazo > 3 dias → é feature ou epic. Quebre.
-- ❌ Sem decisão de saída ("o que muda se sim? se não?") → spike sem propósito.
+## Quality rules
 
-## Estrutura
+- ❌ Vague question ("is it viable?") → require a question with a binary or numeric answer.
+- ❌ No explicit success criterion → require it. Without it, a spike becomes eternal.
+- ❌ Deadline > 3 days → it is a feature or an epic. Break it down.
+- ❌ No exit decision ("what changes if yes? if no?") → a spike without purpose.
 
-Grave em `docs/spikes/<YYYY-MM-DD>-<slug>.md`:
+## Structure
+
+Save to `docs/spikes/<YYYY-MM-DD>-<slug>.md`:
 
 ```markdown
-# Spike · {{Pergunta de pesquisa}}
+# Spike · {{Research question}}
 
 > **Status:** running | done · success | done · failed | abandoned
-> **Prazo:** {{XS/S}} (deadline: {{data}})
-> **Decisão depende:** {{decisão que será destravada por este spike}}
+> **Deadline:** {{XS/S}} (deadline: {{date}})
+> **Decision depends:** {{decision that will be unlocked by this spike}}
 
 ---
 
-## Pergunta de pesquisa
+## Research question
 
-{{1 frase com resposta binária ou numérica}}
+{{1 sentence with a binary or numeric answer}}
 
-## Por que importa
+## Why it matters
 
-{{2-4 linhas: que decisão depende disso, custo de errar}}
+{{2-4 lines: what decision depends on this, the cost of being wrong}}
 
-## Hipótese (antes do experimento)
+## Hypothesis (before the experiment)
 
-{{o que você acha que vai descobrir, com confiança}}
+{{what you think you will find, with confidence}}
 
-## Critério de sucesso
+## Success criterion
 
-- **Sucesso se:** {{evidência concreta numérica}}.
-- **Falha se:** {{evidência concreta numérica}}.
-- **Indeciso se:** {{situação ambígua — definir o que faz quando indeciso}}.
+- **Success if:** {{concrete numeric evidence}}.
+- **Failure if:** {{concrete numeric evidence}}.
+- **Undecided if:** {{ambiguous situation — define what to do when undecided}}.
 
-## Experimento
+## Experiment
 
-1. {{passo}}
-2. {{passo}}
-3. {{passo}}
+1. {{step}}
+2. {{step}}
+3. {{step}}
 
-## Recursos necessários
+## Required resources
 
-- {{máquina, dependência, dado, API key}}
+- {{machine, dependency, data, API key}}
 
-## Tempo gasto: {{enquanto roda}}
+## Time spent: {{while running}}
 
 ---
 
-## Resultado (preenchido após executar)
+## Result (filled in after running)
 
-### Evidência coletada
+### Evidence collected
 
-{{números, logs, screenshots, links pra commits descartáveis}}
+{{numbers, logs, screenshots, links to disposable commits}}
 
-### Decisão
+### Decision
 
-- ✅ **Hipótese confirmada** → seguir com {{próximo passo}}.
-- ❌ **Hipótese rejeitada** → pivot para {{plano B}}.
-- ⚠️ **Indeciso** → spike adicional necessário: {{nova pergunta}}.
+- ✅ **Hypothesis confirmed** → proceed with {{next step}}.
+- ❌ **Hypothesis rejected** → pivot to {{plan B}}.
+- ⚠️ **Undecided** → an additional spike is needed: {{new question}}.
 
-### O que descobrimos além da pergunta original
+### What we found beyond the original question
 
-{{aprendizados laterais úteis ou armadilhas conhecidas}}
+{{useful side learnings or known pitfalls}}
 
-### Artefatos descartáveis
+### Disposable artifacts
 
-{{branch que vai morrer, prototipos para apagar, dependências experimentais a remover}}
+{{branch that will die, prototypes to delete, experimental dependencies to remove}}
 
-### Próximo passo concreto
+### Concrete next step
 
-- {{abrir ADR-NNN sobre X}}
-- {{atualizar docs/features/F<N> com aprendizado}}
-- {{descartar branch spike/Y}}
+- {{open ADR-NNN about X}}
+- {{update docs/features/F<N> with the learning}}
+- {{discard branch spike/Y}}
 ```
 
-## Após gerar
+## After generating
 
-- Grave em `docs/spikes/<data>-<slug>.md`.
-- Status inicial: `running`.
-- Sugira ao usuário: "Vá rodar o experimento. Quando terminar, me chame pra preencher a seção 'Resultado'."
+- Save to `docs/spikes/<data>-<slug>.md`.
+- Initial status: `running`.
+- Suggest to the user: "Go run the experiment. When you finish, call me to fill in the 'Result' section."
 
-## Quando o spike termina
+## When the spike ends
 
-Usuário chama você de novo com `/renata:spike <slug>` apontando o spike existente. Você:
+The user calls you again with `/renata:spike <slug>` pointing to the existing spike. You:
 
-1. Pergunta o que aconteceu (evidência coletada).
-2. Compara com critério de sucesso.
-3. Atualiza seção "Resultado" + status (`done · success`/`done · failed`/`abandoned`).
-4. Sugere próximo passo concreto (geralmente abrir ADR ou atualizar feature spec).
+1. Ask what happened (evidence collected).
+2. Compare against the success criterion.
+3. Update the "Result" section + status (`done · success`/`done · failed`/`abandoned`).
+4. Suggest a concrete next step (usually opening an ADR or updating the feature spec).
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: pergunta inicial ou slug de spike existente para retomar.
+`$ARGUMENTS`: an initial question or the slug of an existing spike to resume.

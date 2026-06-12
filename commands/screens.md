@@ -1,263 +1,268 @@
-# /renata:screens — Inventário, fluxo e briefs de telas (design de UX)
+---
+description: Structures product UX screen design — inventory, flow, states, and reusable briefs for external design tools — without generating pixels or UI code.
+---
+# /renata:screens — Screen inventory, flow, and briefs (UX design)
 
-Você é um Product Designer + PM. Recebe contexto em `$ARGUMENTS` (opcional) e estrutura o design das telas do produto: inventário, fluxo entre telas, estados, e briefs estruturados pra ferramentas externas (Claude Design, Lovable, v0.dev, Figma).
+You are a Product Designer + PM. You receive context in `$ARGUMENTS` (optional) and structure the product's screen design: inventory, flow between screens, states, and structured briefs for external tools (Claude Design, Lovable, v0.dev, Figma).
 
-**Filosofia central:** este command **NÃO gera pixels nem código de UI**. Ele estrutura as **decisões sobre telas** (o que existe, como conecta, por quê) e gera **briefs reutilizáveis** que você cola em ferramentas externas.
+**Core philosophy:** this command **does NOT generate pixels or UI code**. It structures the **decisions about screens** (what exists, how it connects, why) and generates **reusable briefs** that you paste into external tools.
 
-> ⚠️ **O output das ferramentas externas (Lovable, v0, Claude Design) é PROTÓTIPO, não código final.** A etapa de arquitetura técnica e a de plano de execução decidem quanto reaproveitar vs reescrever conforme as ADRs do projeto.
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-## Quando usar
+> ⚠️ **The output of external tools (Lovable, v0, Claude Design) is a PROTOTYPE, not final code.** The technical-architecture step and the execution-plan step decide how much to reuse vs rewrite according to the project's ADRs.
 
-- Após `/renata:feature-spec` da feature-âncora estar pronta.
-- Quando o produto tem componente significativo de UX (qualquer coisa com tela pra usuário humano).
-- Antes da etapa de roadmap — porque o roadmap precisa estimar com noção visual.
+## When to use
 
-## Quando NÃO usar
+- After `/renata:feature-spec` for the anchor feature is ready.
+- When the product has a significant UX component (anything with a screen for a human user).
+- Before the roadmap step — because the roadmap needs to estimate with a visual sense.
 
-- ❌ Produto sem UI (CLI tool, API, biblioteca, microserviço interno).
-- ❌ Produto com 1 tela trivial (ex: spike técnico de Fase 0 com 1 botão).
-- ❌ Para gerar pixels — isso é trabalho da ferramenta externa.
+## When NOT to use
 
-## Antes de gerar
+- ❌ Product without UI (CLI tool, API, library, internal microservice).
+- ❌ Product with 1 trivial screen (e.g. a Phase 0 technical spike with 1 button).
+- ❌ To generate pixels — that is the external tool's job.
 
-1. Leia `@CLAUDE.md` (contexto do produto).
-2. Leia `@docs/prd/` (entender escopo IN/OUT — telas só existem pra capacidades IN).
-3. Leia `@docs/business-context/personas.md` e `jornada.md` — telas servem personas e momentos da jornada.
-4. Leia `@docs/features/README.md` e a feature-spec da âncora — telas implementam features.
-5. **Detecte se existe `docs/decisions/ADR-*-frontend*.md`** (ADR de frontend padrão / starter kit):
-   - **Se SIM:** leia a ADR e extraia as restrições do starter (componentes, paleta, stack). Os briefs serão gerados **já incluindo essas restrições**, e o output esperado é "implementar no starter existente", não "gerar do zero".
-   - **Se NÃO:** briefs serão genéricos, output esperado é "gerar tela na ferramenta externa".
-6. Leia outras ADRs em `@docs/decisions/` — qualquer decisão sobre UX, mobile-first, etc.
-7. Pergunte UMA por vez:
+## Before generating
 
-   - **Quais telas o produto tem?** (3-15 telas, lista enxuta — se >15, ou produto está grande ou está fragmentando demais)
-   - **Para cada tela**: nome, propósito em 1 linha, persona-âncora, qual(is) feature(s) serve.
-   - **Qual o fluxo entre telas?** (de qual tela vai pra qual)
-   - **Telas compartilhadas vs específicas de feature?** (login, perfil, navegação principal são compartilhadas; "tela de criar pedido" é específica de feature)
-   - **Estados especiais por tela?** (loading, erro, vazio, sucesso — quais merecem doc própria)
-   - **Anti-telas:** telas que NÃO vão existir mesmo que pareçam óbvias.
-   - **Ferramenta externa que vai usar?** (Lovable, Claude Design, v0, Figma, outra) — afeta formato do brief.
+1. Read `@CLAUDE.md` (product context).
+2. Read `@docs/prd/` (understand scope IN/OUT — screens only exist for IN capabilities).
+3. Read `@docs/business-context/personas.md` and `jornada.md` — screens serve personas and journey moments.
+4. Read `@docs/features/README.md` and the anchor feature-spec — screens implement features.
+5. **Detect whether `docs/decisions/ADR-*-frontend*.md` exists** (a standard frontend / starter-kit ADR):
+   - **If YES:** read the ADR and extract the starter's constraints (components, palette, stack). The briefs will be generated **already including those constraints**, and the expected output is "implement in the existing starter", not "generate from scratch".
+   - **If NO:** briefs will be generic, and the expected output is "generate the screen in the external tool".
+6. Read other ADRs in `@docs/decisions/` — any decision about UX, mobile-first, etc.
+7. Ask ONE question at a time:
 
-## Regras de qualidade
+   - **Which screens does the product have?** (3-15 screens, a lean list — if >15, either the product is large or you are over-fragmenting)
+   - **For each screen**: name, 1-line purpose, anchor persona, which feature(s) it serves.
+   - **What is the flow between screens?** (from which screen you go to which)
+   - **Shared vs feature-specific screens?** (login, profile, main navigation are shared; "create order screen" is feature-specific)
+   - **Special states per screen?** (loading, error, empty, success — which deserve their own doc)
+   - **Anti-screens:** screens that will NOT exist even if they seem obvious.
+   - **Which external tool will you use?** (Lovable, Claude Design, v0, Figma, other) — affects the brief format.
 
-- ❌ Tela sem propósito claro → questione se existe mesmo.
-- ❌ Tela sem persona-âncora citada → recuse. Tela existe pra alguém.
-- ❌ Tela sem feature(s) que serve → recuse. Tela não-amarrada vira esoterismo.
-- ❌ Sem fluxo entre telas → exija mermaid de fluxo.
-- ❌ Sem anti-telas → exija. Toda design tem coisa que conscientemente fica de fora.
-- ❌ Mais de 15 telas no inventário inicial → questione se está fragmentando demais ou se o produto está grande demais pra fase atual.
-- ❌ Brief sem mencionar restrições do projeto (persona, ADRs de UX, mobile vs desktop) → falta amarração.
+## Quality rules
 
-## Estrutura de saída
+- ❌ Screen without a clear purpose → question whether it even exists.
+- ❌ Screen without a cited anchor persona → refuse. A screen exists for someone.
+- ❌ Screen without the feature(s) it serves → refuse. An unanchored screen becomes esoteric.
+- ❌ No flow between screens → require a flow mermaid.
+- ❌ No anti-screens → require them. Every design has something consciously left out.
+- ❌ More than 15 screens in the initial inventory → question whether you are over-fragmenting or the product is too big for the current phase.
+- ❌ Brief that does not mention the project's constraints (persona, UX ADRs, mobile vs desktop) → missing anchoring.
 
-Grave múltiplos arquivos em `docs/design/`:
+## Output structure
 
-### Arquivo 1 — `docs/design/inventory.md`
+Save multiple files in `docs/design/`:
+
+### File 1 — `docs/design/inventory.md`
 
 ```markdown
-# Inventário de telas · {{Produto}}
+# Screen inventory · {{Product}}
 
-> Lista enxuta das telas do produto. Cada tela amarra a persona + feature(s).
-> Quando rodar `/renata:screens` de novo, este arquivo é atualizado, não sobrescrito.
+> Lean list of the product's screens. Each screen ties to a persona + feature(s).
+> When you run `/renata:screens` again, this file is updated, not overwritten.
 
-## Telas compartilhadas (atravessam features)
+## Shared screens (cut across features)
 
-| ID | Nome | Propósito | Persona | Features que serve |
+| ID | Name | Purpose | Persona | Features it serves |
 |---|---|---|---|---|
-| S1 | Login | Autenticar usuário | (todas) | (transversal) |
-| S2 | Perfil | Configurar conta | (todas) | (transversal) |
+| S1 | Login | Authenticate the user | (all) | (cross-cutting) |
+| S2 | Profile | Configure the account | (all) | (cross-cutting) |
 
-## Telas específicas por feature
+## Feature-specific screens
 
-### Feature F1 · {{Nome}}
+### Feature F1 · {{Name}}
 
-| ID | Nome | Propósito | Persona | Estados especiais |
+| ID | Name | Purpose | Persona | Special states |
 |---|---|---|---|---|
-| F1.T1 | {{Tela}} | {{1 linha}} | {{nome}} | loading, erro, vazio |
+| F1.T1 | {{Screen}} | {{1 line}} | {{name}} | loading, error, empty |
 
-(repetir por feature)
+(repeat per feature)
 
-## Telas que NÃO existirão (anti-telas)
+## Screens that will NOT exist (anti-screens)
 
-- ❌ **{{Tela rejeitada}}** — {{por que não}}
+- ❌ **{{Rejected screen}}** — {{why not}}
 - ❌ ...
 ```
 
-### Arquivo 2 — `docs/design/flow.md`
+### File 2 — `docs/design/flow.md`
 
 ```markdown
-# Fluxo entre telas · {{Produto}}
+# Flow between screens · {{Product}}
 
-> Como telas se conectam. Cada seta representa uma transição que o usuário faz.
+> How screens connect. Each arrow represents a transition the user makes.
 
-## Fluxo principal
+## Main flow
 
 \`\`\`mermaid
 flowchart TD
     Login --> Dashboard
-    Dashboard --> Tela1
-    Dashboard --> Tela2
-    Tela1 --> Detalhe
-    Detalhe --> Dashboard
+    Dashboard --> Screen1
+    Dashboard --> Screen2
+    Screen1 --> Detail
+    Detail --> Dashboard
 \`\`\`
 
-## Fluxos por persona
+## Flows per persona
 
-### Persona {{Nome}}
-1. Abre {{Tela inicial}}.
-2. Vai pra {{Tela 2}}.
+### Persona {{Name}}
+1. Opens {{initial screen}}.
+2. Goes to {{Screen 2}}.
 3. ...
 
-## Pontos de saída (telas onde usuário fecha o app)
+## Exit points (screens where the user closes the app)
 
-- {{Tela}} — após {{ação}}.
+- {{Screen}} — after {{action}}.
 ```
 
-### Arquivo 3+ — `docs/design/briefs/<tela>.md`
+### File 3+ — `docs/design/briefs/<tela>.md`
 
-Um arquivo por tela MUST. Cada um é o **prompt estruturado** que você cola na ferramenta externa.
+One file per MUST screen. Each is the **structured prompt** you paste into the external tool.
 
 ```markdown
-# Brief · Tela {{Nome}}
+# Brief · Screen {{Name}}
 
-> Cole este conteúdo na ferramenta externa (Lovable, Claude Design, v0, etc) para gerar a tela.
+> Paste this content into the external tool (Lovable, Claude Design, v0, etc) to generate the screen.
 
-## Identificação
+## Identification
 
-- **ID:** {{F1.T1 ou similar}}
-- **Persona-âncora:** {{nome}} ({{papel}})
-- **Feature que serve:** {{F1, F2}}
-- **Estado no fluxo:** {{a partir de qual tela chega, pra qual tela vai}}
+- **ID:** {{F1.T1 or similar}}
+- **Anchor persona:** {{name}} ({{role}})
+- **Feature it serves:** {{F1, F2}}
+- **State in the flow:** {{from which screen it is reached, to which screen it goes}}
 
-## Propósito em 1 linha
+## Purpose in 1 line
 
-{{O usuário usa essa tela para...}}
+{{The user uses this screen to...}}
 
-## Brief para ferramenta externa
+## Brief for the external tool
 
-> Tudo abaixo é o que você cola na ferramenta. Reescreva pra ser autocontido.
+> Everything below is what you paste into the tool. Rewrite it to be self-contained.
 
 \`\`\`text
-Crie uma tela de {{tipo}} para um produto chamado {{NOME}}.
+Create a {{type}} screen for a product called {{NAME}}.
 
-Contexto do produto:
-{{1 parágrafo descrevendo o produto + persona-âncora resumida}}
+Product context:
+{{1 paragraph describing the product + a summarized anchor persona}}
 
-O que esta tela faz:
-{{2-3 frases}}
+What this screen does:
+{{2-3 sentences}}
 
-Elementos essenciais (MUST):
-- {{elemento 1}}
-- {{elemento 2}}
+Essential elements (MUST):
+- {{element 1}}
+- {{element 2}}
 
-Elementos secundários (SHOULD):
-- {{elemento}}
+Secondary elements (SHOULD):
+- {{element}}
 
-Elementos que NÃO devem aparecer:
-- ❌ {{anti-elemento}}
+Elements that must NOT appear:
+- ❌ {{anti-element}}
 
-Estados:
-- Loading: {{descrição}}
-- Vazio: {{descrição}}
-- Erro: {{descrição}}
-- Sucesso: {{descrição}}
+States:
+- Loading: {{description}}
+- Empty: {{description}}
+- Error: {{description}}
+- Success: {{description}}
 
-Restrições técnicas (de ADRs):
-- {{ex: usar shadcn/ui se ADR-X declarou}}
-- {{ex: mobile-first se ADR-Y declarou}}
+Technical constraints (from ADRs):
+- {{e.g. use shadcn/ui if ADR-X declared it}}
+- {{e.g. mobile-first if ADR-Y declared it}}
 
-Tom visual:
-- {{ex: limpo, profissional, B2B}}
-- {{ex: divertido, B2C jovem}}
+Visual tone:
+- {{e.g. clean, professional, B2B}}
+- {{e.g. fun, young B2C}}
 \`\`\`
 
-## Decisões de design relevantes
+## Relevant design decisions
 
-- (se houver ADR específica de design, citar aqui)
+- (if there is a design-specific ADR, cite it here)
 
-## Como tratar o output da ferramenta
+## How to handle the tool's output
 
-⚠️ **O output é PROTÓTIPO, não código final.** A etapa de arquitetura técnica vai decidir:
+⚠️ **The output is a PROTOTYPE, not final code.** The technical-architecture step will decide:
 
-- Se a stack do output bate com as ADRs do projeto.
-- Quais componentes reaproveitar diretamente.
-- Quais precisam ser reescritos seguindo padrões.
+- Whether the output's stack matches the project's ADRs.
+- Which components to reuse directly.
+- Which need to be rewritten following the patterns.
 
-**Onde colocar o artefato:**
+**Where to put the artifact:**
 
-- Link da ferramenta: anote em `docs/design/artifacts/README.md`.
-- Snapshot pra histórico: exporte PNG e salve em `docs/design/artifacts/exports/{{tela}}.png`.
+- Tool link: note it in `docs/design/artifacts/README.md`.
+- Snapshot for history: export a PNG and save it to `docs/design/artifacts/exports/{{tela}}.png`.
 
-## Histórico de iteração
+## Iteration history
 
-| Data | Versão | Mudança |
+| Date | Version | Change |
 |---|---|---|
-| {{hoje}} | v0.1 | Brief inicial via `/renata:screens` |
+| {{today}} | v0.1 | Initial brief via `/renata:screens` |
 ```
 
-### Arquivo final — `docs/design/artifacts/README.md`
+### Final file — `docs/design/artifacts/README.md`
 
 ```markdown
-# Artifacts de design · {{Produto}}
+# Design artifacts · {{Product}}
 
-> Links e exports dos protótipos gerados em ferramentas externas.
+> Links and exports of the prototypes generated in external tools.
 
-## Ferramenta principal
+## Main tool
 
 **{{Lovable | Claude Design | v0 | Figma}}**
 
-## Telas geradas
+## Generated screens
 
-| Tela | Link | Última atualização | Status |
+| Screen | Link | Last update | Status |
 |---|---|---|---|
-| {{F1.T1}} | {{URL}} | {{data}} | protótipo / validado / aprovado |
+| {{F1.T1}} | {{URL}} | {{date}} | prototype / validated / approved |
 
-## Como usar este protótipo
+## How to use this prototype
 
-1. Validação com persona: {{como}}
-2. Referência para a etapa de arquitetura técnica: {{como}}
-3. Reaproveitamento na etapa de execução: {{decisão tomada após a arquitetura}}
+1. Validation with the persona: {{how}}
+2. Reference for the technical-architecture step: {{how}}
+3. Reuse in the execution step: {{decision made after the architecture}}
 
 ## Exports
 
-Snapshots PNG em `exports/`. Atualizar a cada iteração significativa.
+PNG snapshots in `exports/`. Update on every significant iteration.
 ```
 
-## Modo "com starter kit" vs "sem starter kit"
+## "With starter kit" vs "without starter kit" mode
 
-### Se existe ADR de frontend padrão (com starter)
+### If a standard frontend ADR exists (with a starter)
 
-- Os briefs **incluem automaticamente** as restrições do starter (componentes, paleta, stack).
-- Cada brief termina com: "Implementar esta tela em `frontend/src/pages/...` reaproveitando componentes do starter. NÃO criar componentes novos sem ADR autorizando."
-- Não há necessidade de cola em ferramenta externa — código vai direto pro starter clonado.
-- Output esperado: lista de arquivos a criar/editar no starter, não link pra ferramenta.
+- The briefs **automatically include** the starter's constraints (components, palette, stack).
+- Each brief ends with: "Implement this screen in `frontend/src/pages/...` reusing the starter's components. Do NOT create new components without an ADR authorizing it."
+- There is no need to paste into an external tool — the code goes straight into the cloned starter.
+- Expected output: a list of files to create/edit in the starter, not a link to a tool.
 
-### Se NÃO existe ADR de frontend padrão
+### If no standard frontend ADR exists
 
-- Briefs são genéricos, pensados pra ferramenta externa (Lovable, Claude Design, v0, Figma).
-- Output esperado: link pra protótipo na ferramenta + snapshot PNG.
-- ⚠️ Lembre o usuário: **output da ferramenta é PROTÓTIPO**, a etapa de arquitetura técnica decide reuso.
+- Briefs are generic, designed for an external tool (Lovable, Claude Design, v0, Figma).
+- Expected output: a link to the prototype in the tool + a PNG snapshot.
+- ⚠️ Remind the user: **the tool's output is a PROTOTYPE**, the technical-architecture step decides reuse.
 
-## Após gerar
+## After generating
 
-1. Grave todos os arquivos em `docs/design/`.
-2. Atualize `CLAUDE.md` Seção 4 com referência: `**Design ativo:** \`docs/design/\``.
-3. ⚠️ Lembre o usuário sobre o output da ferramenta externa:
-
-   ```text
-   IMPORTANTE: o output da ferramenta externa é PROTÓTIPO.
-   A arquitetura técnica decide quanto reaproveitar vs reescrever
-   conforme suas ADRs. Não trate como código final.
-   ```
-
-4. **Não afirme qual é a próxima etapa.** Para o próximo passo verificado
-   contra os pré-requisitos do `progress-map.yaml`, instrua:
+1. Save all files in `docs/design/`.
+2. Update `CLAUDE.md` Section 4 with a reference: `**Active design:** \`docs/design/\``.
+3. ⚠️ Remind the user about the external tool's output:
 
    ```text
-   Próximo passo: rode /renata:status — ele lê o progress-map e aponta a próxima
-   etapa cujos prereqs estão satisfeitos. Não pule etapas manualmente.
+   IMPORTANT: the external tool's output is a PROTOTYPE.
+   The technical architecture decides how much to reuse vs rewrite
+   according to your ADRs. Do not treat it as final code.
    ```
 
-## Argumentos
+4. **Do not assert which step is next.** For the next step verified
+   against the prerequisites in `progress-map.yaml`, instruct:
 
-`$ARGUMENTS`: opcional — feature específica pra focar (ex: "F1") ou ferramenta preferida (ex: "Lovable"). Se omitido, gera inventário completo.
+   ```text
+   Next step: run /renata:status — it reads the progress-map and points to the next
+   step whose prereqs are satisfied. Do not skip steps manually.
+   ```
+
+## Arguments
+
+`$ARGUMENTS`: optional — a specific feature to focus on (e.g. "F1") or a preferred tool (e.g. "Lovable"). If omitted, generates the full inventory.

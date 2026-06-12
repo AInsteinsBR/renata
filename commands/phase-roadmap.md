@@ -1,104 +1,110 @@
-# /renata:phase-roadmap — Distribui TODAS as features do sistema em fases por tempo
+---
+description: Distributes all system features into sequential, time-boxed phases, with Phase 0 as the end-to-end anchor set.
+---
 
-Você é um tech lead de planejamento macro. Recebe a lista completa de features (do
-`/renata:feature-breakdown`) e as distribui em **fases sequenciais** (Fase 0, 1, 2...) com
-**tempo aproximado** por fase. **Nenhuma feature fica de fora** — o que muda é em que
-fase cada uma entra. A **Fase 0 é o conjunto-âncora**: o slice vertical mínimo que já
-entrega valor de ponta a ponta.
+# /renata:phase-roadmap — Distribute ALL system features into time-based phases
 
-## Diferença pra /renata:phase-scope (não confundir)
+You are a macro-planning tech lead. You receive the complete list of features (from
+`/renata:feature-breakdown`) and distribute them into **sequential phases** (Phase 0, 1, 2...) with an
+**approximate time** per phase. **No feature is left out** — what changes is which
+phase each one enters. **Phase 0 is the anchor set**: the minimal vertical slice that already
+delivers end-to-end value.
 
-- `/renata:phase-roadmap` (este): visão **macro** — distribui o sistema TODO em fases. Roda UMA vez,
-  logo após o breakdown. Gera `docs/roadmap/fases-overview.md`.
-- `/renata:phase-scope <N>`: visão **micro** — desce numa fase específica e aplica MoSCoW +
-  orçamento. Roda por fase, quando você vai executá-la.
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-Pipeline: `/renata:feature-breakdown` → **`/renata:phase-roadmap`** → `/renata:phase-scope 0` → `/renata:feature-spec` (por feature da Fase 0).
+## Difference from /renata:phase-scope (do not confuse)
 
-## Quando usar
+- `/renata:phase-roadmap` (this one): **macro** view — distributes the WHOLE system into phases. Runs ONCE,
+  right after the breakdown. Generates `docs/roadmap/fases-overview.md`.
+- `/renata:phase-scope <N>`: **micro** view — goes down into a specific phase and applies MoSCoW +
+  budget. Runs per phase, when you are about to execute it.
 
-- Logo após `/renata:feature-breakdown` (Etapa 7.5), antes de specar qualquer feature.
-- Quando o conjunto de features mudou e o faseamento precisa ser refeito.
+Pipeline: `/renata:feature-breakdown` → **`/renata:phase-roadmap`** → `/renata:phase-scope 0` → `/renata:feature-spec` (per Phase 0 feature).
 
-## Antes de gerar
+## When to use
 
-1. Leia `@CLAUDE.md` e `@docs/prd/` (hipótese + métrica decisiva).
-2. Leia `@docs/features/README.md` (TODAS as features e suas dependências).
-3. Leia `@docs/business-context/jornada.md` (a Fase 0 deve fechar ≥1 jornada-âncora de ponta a ponta).
-4. Pergunte UMA por vez:
-   - **Quantas fases o sistema terá?** (sugira 2-5; mais que isso, provavelmente é roadmap longo demais pra esta rodada)
-   - **Tempo total disponível / horizonte?** (ex: "3 meses", "1 sprint por fase")
-   - **Qual jornada a Fase 0 precisa fechar de ponta a ponta?** (define o conjunto-âncora)
-   - **Restrições externas?** (demo marcada, dependência de cliente, prazo)
+- Right after `/renata:feature-breakdown` (Step 7.5), before speccing any feature.
+- When the set of features changed and the phasing needs to be redone.
 
-## Regras de qualidade
+## Before generating
 
-- ❌ Feature do breakdown que não aparece em NENHUMA fase → recuse. Nenhuma órfã.
-- ❌ Fase 0 que não fecha uma jornada de ponta a ponta → não é âncora, é fragmento. Refaça.
-- ❌ Fase que depende de feature de fase posterior → ordem inválida. Reordene por dependência.
-- ❌ Fase sem tempo aproximado → exija t-shirt (XS/S/M/L/XL) ou semanas.
-- ❌ Fase 0 maior que o resto somado → âncora inchada. Enxugue pro slice mínimo.
+1. Read `@CLAUDE.md` and `@docs/prd/` (hypothesis + decisive metric).
+2. Read `@docs/features/README.md` (ALL features and their dependencies).
+3. Read `@docs/business-context/jornada.md` (Phase 0 must close ≥1 anchor journey end-to-end).
+4. Ask ONE at a time:
+   - **How many phases will the system have?** (suggest 2-5; more than that is probably a roadmap too long for this round)
+   - **Total available time / horizon?** (e.g., "3 months", "1 sprint per phase")
+   - **Which journey must Phase 0 close end-to-end?** (defines the anchor set)
+   - **External constraints?** (a scheduled demo, a customer dependency, a deadline)
 
-## Estrutura de saída
+## Quality rules
 
-Grave em `docs/roadmap/fases-overview.md` um documento com esta estrutura (apresentada
-abaixo como template; substitua os `{{placeholders}}`):
+- ❌ A breakdown feature that appears in NO phase → refuse. No orphans.
+- ❌ A Phase 0 that does not close a journey end-to-end → it is not an anchor, it is a fragment. Redo it.
+- ❌ A phase that depends on a feature from a later phase → invalid order. Reorder by dependency.
+- ❌ A phase without an approximate time → require a t-shirt size (XS/S/M/L/XL) or weeks.
+- ❌ A Phase 0 bigger than the rest combined → a bloated anchor. Trim it to the minimal slice.
 
-> `# Fases do sistema · {{Produto}}`
+## Output structure
+
+Write to `docs/roadmap/fases-overview.md` a document with this structure (presented
+below as a template; replace the `{{placeholders}}`):
+
+> `# System phases · {{Product}}`
 >
-> > Todas as features distribuídas em fases por tempo. Fase 0 = conjunto-âncora
-> > (slice vertical mínimo que entrega valor). Nenhuma feature fica de fora.
+> > All features distributed into time-based phases. Phase 0 = anchor set
+> > (minimal vertical slice that delivers value). No feature is left out.
 >
-> `## Visão geral` — um diagrama Gantt mermaid com o roadmap macro:
+> `## Overview` — a mermaid Gantt diagram with the macro roadmap:
 
 ```mermaid
 gantt
-    title Roadmap macro
+    title Macro roadmap
     dateFormat  X
-    section Fase 0 (âncora)
+    section Phase 0 (anchor)
     {{Feature}}      :0, {{dur}}
-    section Fase 1
+    section Phase 1
     {{Feature}}      :after, {{dur}}
 ```
 
-> `## Fase 0 — Conjunto-âncora · {{tempo aprox}}`
+> `## Phase 0 — Anchor set · {{approx time}}`
 >
-> > Jornada que fecha de ponta a ponta: {{jornada-âncora}}
+> > Journey it closes end-to-end: {{anchor journey}}
 >
-> | Feature | Por que na Fase 0 | Esforço | Depende |
+> | Feature | Why in Phase 0 | Effort | Depends |
 > |---|---|---|---|
-> | F1 {{nome}} | {{fecha a jornada X}} | L | — |
-> | F2 {{nome}} | {{idem}} | M | F1 |
+> | F1 {{name}} | {{closes journey X}} | L | — |
+> | F2 {{name}} | {{ditto}} | M | F1 |
 >
-> `## Fase 1 — {{nome}} · {{tempo aprox}}`
+> `## Phase 1 — {{name}} · {{approx time}}`
 >
-> | Feature | Por que nesta fase | Esforço | Depende |
+> | Feature | Why in this phase | Effort | Depends |
 > |---|---|---|---|
 > | ... | ... | ... | ... |
 >
-> (repetir por fase)
+> (repeat per phase)
 >
-> `## Conferência de cobertura`
+> `## Coverage check`
 >
-> > Toda feature do breakdown aparece acima. Lista de verificação:
+> > Every breakdown feature appears above. Checklist:
 >
-> | Feature (do README) | Fase atribuída |
+> | Feature (from the README) | Assigned phase |
 > |---|---|
 > | F1 | 0 |
 > | F2 | 0 |
 > | F3 | 1 |
 > | ... | ... |
 >
-> `## Anti-faseamento`
+> `## Anti-phasing`
 >
-> - ❌ {{O que conscientemente NÃO entra em nenhuma fase desta rodada}}
+> - ❌ {{What consciously does NOT enter any phase this round}}
 
-## Após gerar
+## After generating
 
-1. Grave `docs/roadmap/fases-overview.md`.
-2. Atualize `CLAUDE.md` Seção 4: `**Fase ativa:** Fase 0 (conjunto-âncora)`.
-3. Para o próximo passo verificado contra os pré-requisitos, rode `/renata:status`.
+1. Save `docs/roadmap/fases-overview.md`.
+2. Update `CLAUDE.md` Section 4: `**Active phase:** Phase 0 (anchor set)`.
+3. For the next step verified against the prerequisites, run `/renata:status`.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: opcional — horizonte de tempo (ex: "3 meses") ou número de fases desejado.
+`$ARGUMENTS`: optional — time horizon (e.g., "3 months") or desired number of phases.

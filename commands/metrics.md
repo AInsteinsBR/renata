@@ -1,130 +1,136 @@
-# /renata:metrics — Define ou refina métricas do produto
+---
+description: Defines or refines product metrics across 4 layers, each with baseline, formula, source, and a kill criteria tripwire.
+---
 
-Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcional) e estrutura métricas em 4 camadas em `docs/business-context/metricas.md`.
+# /renata:metrics — Define or refine product metrics
 
-## Antes de gerar
+You are a Product Manager + Data Lead. You receive context in `$ARGUMENTS` (optional) and structure metrics in 4 layers in `docs/business-context/metricas.md`.
 
-1. **Se `docs/business-context/metricas.md` já existe**, refine em vez de sobrescrever — leia o conteúdo atual e use as perguntas abaixo para identificar lacunas/inconsistências antes de reescrever.
-2. Leia `@docs/prd/` — métrica decisiva precisa amarrar com hipótese do PRD.
-3. Leia `@docs/business-context/personas.md` — métricas servem personas específicas.
-4. Leia `@docs/business-context/jornada.md` se existir — pontos críticos da jornada geram métricas.
-5. Se faltar PRD ou persona, instrua a rodar `/renata:prd` ou `/renata:persona` primeiro.
-6. Pergunte UMA por vez:
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-   **Camada 1 — Adoção (alguém usa?):**
-   - Qual é o sinal mínimo de uso? Como medir? Meta inicial e meta de prod?
+## Before generating
 
-   **Camada 2 — Engajamento (usa direito?):**
-   - O que significa "usar bem"? (sessões longas, retornos, etc) — métrica + meta.
+1. **If `docs/business-context/metricas.md` already exists**, refine instead of overwriting — read the current content and use the questions below to identify gaps/inconsistencies before rewriting.
+2. Read `@docs/prd/` — the decisive metric must tie to a PRD hypothesis.
+3. Read `@docs/business-context/personas.md` — metrics serve specific personas.
+4. Read `@docs/business-context/jornada.md` if it exists — critical points in the journey generate metrics.
+5. If a PRD or persona is missing, instruct to run `/renata:prd` or `/renata:persona` first.
+6. Ask ONE at a time:
 
-   **Camada 3 — Valor (entrega resultado?):**
-   - Qual é a métrica que prova ROI pra stakeholder? Baseline e meta?
-   - **Esta é a métrica decisiva** — deve bater com **uma hipótese do PRD**. Se o PRD tem N hipóteses, há **N métricas decisivas** (uma por hipótese); deixe explícito qual métrica decide qual hipótese.
+   **Layer 1 — Adoption (does anyone use it?):**
+   - What is the minimum signal of use? How to measure it? Initial goal and prod goal?
 
-   **Camada 4 — Qualidade percebida (específica do produto):**
-   - Tem alguma dimensão de qualidade que outras camadas não capturam? (Ex: "parece humano", "responde bem", etc) — opcional, mas valioso pra produtos que dependem de experiência.
+   **Layer 2 — Engagement (do they use it properly?):**
+   - What does "use it well" mean? (long sessions, returns, etc.) — metric + goal.
 
-   **Métricas técnicas que destravam negócio:**
-   - Quais limites técnicos (latência, FPS, custo unitário, uptime) são pré-requisito pra métricas de negócio?
+   **Layer 3 — Value (does it deliver a result?):**
+   - What is the metric that proves ROI to a stakeholder? Baseline and goal?
+   - **This is the decisive metric** — it must match **a PRD hypothesis**. If the PRD has N hypotheses, there are **N decisive metrics** (one per hypothesis); make explicit which metric decides which hypothesis.
 
-   **Kill criteria / tripwire (obrigatório por métrica):**
-   - Qual é o número que, se atingido, **dispara uma decisão** (não só um alerta)? Ex: "se adoção < 10% do alvo em 30 dias → para e repensa a feature". Alvo sem tripwire é dashboard, não instrumento de gestão.
-   - Qual é a **ação** disparada? (repensar feature · reabrir PRD · rodar `/renata:hypothesis-check` · candidata a sunset).
+   **Layer 4 — Perceived quality (product-specific):**
+   - Is there a quality dimension that the other layers do not capture? (E.g., "sounds human", "responds well", etc.) — optional, but valuable for products that depend on experience.
 
-   **Estado do baseline (estimado vs medido):**
-   - O baseline atual é **chute** ou **medido de verdade**? Se chute: a métrica está **instrumentada** (evento/telemetria existe)? Se não, isso é dívida — marque com TODO 🟡 (`/renata:todo`) "instrumentar antes de declarar pronto".
+   **Technical metrics that unlock the business ones:**
+   - Which technical limits (latency, FPS, unit cost, uptime) are a prerequisite for the business metrics?
 
-   **Cadência de revisão:**
-   - Quem revê qual métrica e com que frequência?
+   **Kill criteria / tripwire (mandatory per metric):**
+   - What is the number that, if reached, **triggers a decision** (not just an alert)? E.g., "if adoption < 10% of the target in 30 days → stop and rethink the feature". A target without a tripwire is a dashboard, not a management instrument.
+   - What is the **action** triggered? (rethink the feature · reopen the PRD · run `/renata:hypothesis-check` · sunset candidate).
 
-## Regras de qualidade
+   **Baseline state (estimated vs measured):**
+   - Is the current baseline a **guess** or **truly measured**? If a guess: is the metric **instrumented** (does the event/telemetry exist)? If not, this is debt — mark it with a TODO 🟡 (`/renata:todo`) "instrument before declaring done".
 
-- ❌ Métrica sem **baseline** → fantasia. Estimar mesmo que aproximado.
-- ❌ Métrica sem **fórmula explícita** → não dá pra medir.
-- ❌ Métrica sem **fonte** (de onde vem o dado?) → impossível auditar.
-- ❌ Métrica decisiva (Camada 3) sem amarração à hipótese do PRD → recusar.
-- ❌ "NPS" sozinho na Camada 3 → vago demais. NPS é Camada 4 ou métrica secundária.
-- ❌ Mais de 1 métrica decisiva → escolher uma. Outras viram secundárias.
-- ❌ Falta de **anti-métricas** explícitas → exigir.
-- ❌ Métrica sem **kill criteria / tripwire** → recusar. Todo alvo precisa de um número que dispara decisão. "Subir é bom" não é gestão.
-- ❌ Kill criteria que dispara **alerta** mas não **ação** → insuficiente. "Hipótese em risco" não é ação; "rodar `/renata:hypothesis-check` e decidir sunset" é.
-- ❌ Baseline marcado como medido sem **fonte instrumentada** → é chute disfarçado. Estimativa honesta vira dívida (`/renata:todo` 🟡 "instrumentar"), não baseline final.
+   **Review cadence:**
+   - Who reviews which metric and how often?
 
-## Estrutura
+## Quality rules
+
+- ❌ A metric without a **baseline** → fantasy. Estimate it even if approximate.
+- ❌ A metric without an **explicit formula** → you can't measure it.
+- ❌ A metric without a **source** (where does the data come from?) → impossible to audit.
+- ❌ A decisive metric (Layer 3) without a tie to a PRD hypothesis → refuse.
+- ❌ "NPS" alone in Layer 3 → too vague. NPS is Layer 4 or a secondary metric.
+- ❌ More than 1 decisive metric → choose one. The others become secondary.
+- ❌ Lack of explicit **anti-metrics** → require them.
+- ❌ A metric without **kill criteria / tripwire** → refuse. Every target needs a number that triggers a decision. "Going up is good" is not management.
+- ❌ A kill criterion that triggers an **alert** but not an **action** → insufficient. "Hypothesis at risk" is not an action; "run `/renata:hypothesis-check` and decide on sunset" is.
+- ❌ A baseline marked as measured without an **instrumented source** → it is a disguised guess. An honest estimate becomes debt (`/renata:todo` 🟡 "instrument"), not a final baseline.
+
+## Structure
 
 ```markdown
-# Métricas · {{Produto}}
+# Metrics · {{Product}}
 
-> 3 camadas canônicas: **adoção** · **engajamento** · **valor**.
-> Adicione a 4ª (**qualidade percebida**) se o produto exige.
-
----
-
-## 1 · Adoção
-
-**Métrica:** {{nome}}.
-**Como medir:** {{fórmula}}.
-**Baseline:** {{valor}} · **estado:** {{🟡 estimado (chute) | ✅ medido — fonte instrumentada}}.
-**Meta inicial:** {{valor}}.
-**Meta prod:** {{valor}}.
-**Por que essa métrica:** {{justificativa}}.
-**🔫 Kill criteria:** se {{métrica}} {{< X}} em {{período}} → **{{ação: repensar feature | reabrir PRD | rodar /renata:hypothesis-check | candidata a sunset}}**.
-
-## 2 · Engajamento
-
-(mesma estrutura — incluindo **estado do baseline** e **kill criteria**)
-
-**Métrica secundária:** {{nome opcional}}.
-
-## 3 · Valor
-
-**Métrica decisiva:** {{nome}}.
-**Como medir:** {{fórmula}}.
-**Baseline:** {{valor estimado, fonte}} · **estado:** {{🟡 estimado | ✅ medido}}.
-**Meta {{fase}}:** {{valor}}.
-**🔫 Kill criteria:** se {{métrica}} {{< X}} em {{período}} → **{{ação}}**. _(É o tripwire da hipótese que esta métrica decide — quando dispara, `/renata:hypothesis-check` é obrigatório.)_
-**Por que essa métrica:** {{esta é a métrica do CFO/stakeholder. Amarra com qual hipótese do PRD (H1, H2…)}}.
-
-## 4 · Qualidade percebida (opcional)
-
-(use se o produto depende de experiência subjetiva)
-
-**Métrica:** {{nome}}.
-**Como medir:** {{pesquisa, sampling}}.
-**Meta {{fase}}:** {{valor}}.
-**Por que essa métrica:** {{esta é a métrica de falsificabilidade da diferenciação do produto}}.
+> 3 canonical layers: **adoption** · **engagement** · **value**.
+> Add the 4th (**perceived quality**) if the product requires it.
 
 ---
 
-## Métricas técnicas que destravam as de negócio
+## 1 · Adoption
 
-| Métrica técnica | Alvo | Por que importa |
+**Metric:** {{name}}.
+**How to measure:** {{formula}}.
+**Baseline:** {{value}} · **state:** {{🟡 estimated (guess) | ✅ measured — instrumented source}}.
+**Initial goal:** {{value}}.
+**Prod goal:** {{value}}.
+**Why this metric:** {{rationale}}.
+**🔫 Kill criteria:** if {{metric}} {{< X}} in {{period}} → **{{action: rethink the feature | reopen the PRD | run /renata:hypothesis-check | sunset candidate}}**.
+
+## 2 · Engagement
+
+(same structure — including **baseline state** and **kill criteria**)
+
+**Secondary metric:** {{optional name}}.
+
+## 3 · Value
+
+**Decisive metric:** {{name}}.
+**How to measure:** {{formula}}.
+**Baseline:** {{estimated value, source}} · **state:** {{🟡 estimated | ✅ measured}}.
+**Goal {{phase}}:** {{value}}.
+**🔫 Kill criteria:** if {{metric}} {{< X}} in {{period}} → **{{action}}**. _(It is the tripwire of the hypothesis this metric decides — when it fires, `/renata:hypothesis-check` is mandatory.)_
+**Why this metric:** {{this is the CFO/stakeholder metric. Ties to which PRD hypothesis (H1, H2…)}}.
+
+## 4 · Perceived quality (optional)
+
+(use if the product depends on subjective experience)
+
+**Metric:** {{name}}.
+**How to measure:** {{survey, sampling}}.
+**Goal {{phase}}:** {{value}}.
+**Why this metric:** {{this is the falsifiability metric for the product's differentiation}}.
+
+---
+
+## Technical metrics that unlock the business ones
+
+| Technical metric | Target | Why it matters |
 |---|---|---|
 | ... | ... | ... |
 
 ---
 
-## O que **NÃO** é métrica deste produto
+## What is **NOT** a metric of this product
 
-- ❌ {{exemplo de métrica de vaidade}} — {{por que não}}.
-- ❌ {{exemplo de métrica de input vs output}} — {{por que não}}.
+- ❌ {{example of a vanity metric}} — {{why not}}.
+- ❌ {{example of an input vs output metric}} — {{why not}}.
 
 ---
 
-## Cadência de revisão
+## Review cadence
 
-- **Métricas técnicas:** {{quem, frequência}}.
-- **Métricas de produto:** {{quem, frequência}}.
-- **Métrica decisiva:** {{quem, frequência — geralmente mensal com stakeholder executivo}}.
-- **Métrica de qualidade percebida:** {{frequência maior, ex: trimestral}}.
+- **Technical metrics:** {{who, frequency}}.
+- **Product metrics:** {{who, frequency}}.
+- **Decisive metric:** {{who, frequency — usually monthly with an executive stakeholder}}.
+- **Perceived quality metric:** {{lower frequency, e.g.: quarterly}}.
 ```
 
-## Após gerar
+## After generating
 
-- Grave em `docs/business-context/metricas.md`.
-- Atualize `CLAUDE.md` seção 2 referenciando o arquivo (se ainda não estava).
-- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- Save to `docs/business-context/metricas.md`.
+- Update `CLAUDE.md` section 2 referencing the file (if it wasn't already).
+- For the next step verified against the prerequisites, run /renata:status.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: opcional — contexto extra ou métricas já em mente.
+`$ARGUMENTS`: optional — extra context or metrics already in mind.

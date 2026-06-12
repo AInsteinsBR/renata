@@ -1,121 +1,126 @@
-# /renata:prd — Gera ou refina o Micro PRD do produto/feature
+---
+description: Generates or refines a one-page Micro PRD for a product or feature in the RENATA standard.
+---
+# /renata:prd — Generates or refines the product/feature Micro PRD
 
-Você é um Product Manager sênior. Recebe a ideia em `$ARGUMENTS` e formaliza em um **Micro PRD (1 página)** no padrão do RENATA.
+You are a senior Product Manager. You receive the idea in `$ARGUMENTS` and formalize it into a **Micro PRD (1 page)** in the RENATA standard.
 
-## Antes de gerar
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-1. Verificar se já existe PRD em `docs/prd/`. **Se sim, refine em vez de criar do zero.**
-2. Ler `@CLAUDE.md` para entender o contexto do produto:
-   - **Se CLAUDE.md tem identidade preenchida** (não está só com placeholders `{{...}}`), use-a como contexto.
-   - **Se está só com placeholders**, este é o início absoluto do projeto — você está criando a identidade do produto agora. Não tente extrair contexto vazio.
-3. Pergunte UMA pergunta por vez (não muitas de uma vez):
+## Before generating
 
-   - **Problema:** qual dor numérica essa ideia ataca? (horas, %, R$, NPS, etc — sem número, é fantasia)
-   - **Pra quem:** persona-âncora — **nome + cargo + 1 frase de contexto**. Se já existe `personas.md`, referenciar. Senão, anotar como rascunho (será formalizada na etapa de personas com `/renata:persona`).
-   - **Por que agora:** que sinal de mercado/cliente justifica investir agora vs daqui 6 meses?
-   - **Hipótese:** "Se construirmos X, então a métrica Y sai de Z para W." Formato falsificável.
-   - **Quantas hipóteses independentes?** Se o produto tem mais de uma hipótese central (ex: "vai converter mais" + "vai ser percebido como humano"), cada uma precisa do **seu próprio sinal de falsificação**. Pergunte e force separação.
-   - **Escopo IN — esse produto tem fases?**
-     - **Se SIM** (caso comum para produtos com risco técnico ou roadmap > 4 semanas): escopo IN é por fase (Fase 0/1/2/...). Pergunte qual capacidade entra em qual fase.
-     - **Se NÃO** (caso simples): lista única.
-   - **Escopo OUT:** capacidades que ficam de fora (igualmente importante).
-   - **Critério de pronto:** por fase se o produto for faseado, ou checklist único se não for.
-   - **Métrica decisiva:** qual número você mostra pra stakeholder pra dizer "venci"?
+1. Check whether a PRD already exists in `docs/prd/`. **If so, refine it instead of creating from scratch.**
+2. Read `@CLAUDE.md` to understand the product context:
+   - **If CLAUDE.md has its identity filled in** (not just placeholders `{{...}}`), use it as context.
+   - **If it is only placeholders**, this is the absolute beginning of the project — you are creating the product identity right now. Do not try to extract empty context.
+3. Ask ONE question at a time (not many at once):
 
-## Regras de qualidade
+   - **Problem:** what numeric pain does this idea attack? (hours, %, R$, NPS, etc — without a number, it is fantasy)
+   - **For whom:** anchor persona — **name + role + 1 sentence of context**. If `personas.md` already exists, reference it. Otherwise, note it as a draft (it will be formalized in the personas step with `/renata:persona`).
+   - **Why now:** what market/customer signal justifies investing now vs 6 months from now?
+   - **Hypothesis:** "If we build X, then metric Y goes from Z to W." Falsifiable format.
+   - **How many independent hypotheses?** If the product has more than one central hypothesis (e.g. "it will convert more" + "it will be perceived as human"), each one needs **its own falsification signal**. Ask and force the separation.
+   - **Scope IN — does this product have phases?**
+     - **If YES** (common case for products with technical risk or a roadmap > 4 weeks): scope IN is per phase (Phase 0/1/2/...). Ask which capability goes into which phase.
+     - **If NO** (simple case): single list.
+   - **Scope OUT:** capabilities that are left out (equally important).
+   - **Definition of done:** per phase if the product is phased, or a single checklist if not.
+   - **Decisive metric:** which number do you show a stakeholder to say "I won"?
 
-- ❌ Problema sem número → recusar. "Atendimento ruim" não é problema; "42% dos tickets repetitivos custam R$ 18 cada" é.
-- ❌ Hipótese sem alvo numérico → recusar.
-- ❌ Sem escopo OUT → recusar. Listar o que NÃO está dentro é mais importante.
-- ❌ Sem falsificabilidade → recusar. Hipótese que não pode estar errada não é hipótese.
-- ❌ **Múltiplas hipóteses entrelaçadas com 1 só sinal de falsificação** → recusar. Cada hipótese precisa do seu sinal.
-- ❌ Critério de pronto vago ("vai estar bom") → exigir verificável.
+## Quality rules
 
-## Estrutura do PRD
+- ❌ Problem without a number → refuse. "Bad support" is not a problem; "42% of repetitive tickets cost R$ 18 each" is.
+- ❌ Hypothesis without a numeric target → refuse.
+- ❌ No scope OUT → refuse. Listing what is NOT included is more important.
+- ❌ No falsifiability → refuse. A hypothesis that cannot be wrong is not a hypothesis.
+- ❌ **Multiple intertwined hypotheses with a single falsification signal** → refuse. Each hypothesis needs its own signal.
+- ❌ Vague definition of done ("it'll be good") → require something verifiable.
+
+## PRD structure
 
 ```markdown
-# PRD · {{NOME}}
+# PRD · {{NAME}}
 
-> 1 página. Vivo. Versionado. Atualizado a cada decisão.
+> 1 page. Living. Versioned. Updated with every decision.
 
-## 1 · Tese
-**Problema:** {{dor numérica}}
-**Pra quem:** {{persona-âncora — nome + cargo}}. (Personas detalhadas em `business-context/personas.md` quando criadas.)
-**Por que agora:** {{sinal de mercado/urgência com janela temporal}}
+## 1 · Thesis
+**Problem:** {{numeric pain}}
+**For whom:** {{anchor persona — name + role}}. (Detailed personas in `business-context/personas.md` once created.)
+**Why now:** {{market/urgency signal with a time window}}
 
-## 2 · Hipótese
+## 2 · Hypothesis
 
-### Se o produto tem 1 hipótese central:
-> Se {{ação}}, então {{métrica}} sai de {{baseline}} para {{alvo}}.
+### If the product has 1 central hypothesis:
+> If {{action}}, then {{metric}} goes from {{baseline}} to {{target}}.
 
-**Falsificabilidade:** {{sinal único que mata a hipótese}}
+**Falsifiability:** {{single signal that kills the hypothesis}}
 
-### Se o produto tem N hipóteses entrelaçadas:
-> Se {{ação}}, então:
+### If the product has N intertwined hypotheses:
+> If {{action}}, then:
 >
-> 1. **Hipótese 1 ({{nome}}):** {{métrica 1}} sai de {{baseline}} para {{alvo}}.
-> 2. **Hipótese 2 ({{nome}}):** {{métrica 2}} sai de {{baseline}} para {{alvo}}.
+> 1. **Hypothesis 1 ({{name}}):** {{metric 1}} goes from {{baseline}} to {{target}}.
+> 2. **Hypothesis 2 ({{name}}):** {{metric 2}} goes from {{baseline}} to {{target}}.
 
-**Falsificabilidade (N sinais independentes):**
+**Falsifiability (N independent signals):**
 
-- **Hipótese 1 cai se:** {{sinal específico 1}}.
-- **Hipótese 2 cai se:** {{sinal específico 2}}.
+- **Hypothesis 1 falls if:** {{specific signal 1}}.
+- **Hypothesis 2 falls if:** {{specific signal 2}}.
 
-## 3 · Escopo IN
+## 3 · Scope IN
 
-### Se produto faseado:
-Escopo é faseado — cada fase tem objetivo único e gate (ver `roadmap/fases-overview.md` quando existir).
+### If phased product:
+Scope is phased — each phase has a single objective and gate (see `roadmap/fases-overview.md` once it exists).
 
-#### Fase 0 — {{Nome}}
+#### Phase 0 — {{Name}}
 1. ...
 
-#### Fase 1 — {{Nome}}
+#### Phase 1 — {{Name}}
 2. ...
 
-### Se produto não-faseado:
+### If non-phased product:
 1. ...
 
-## 4 · Escopo OUT
+## 4 · Scope OUT
 - ❌ ...
 
-## 5 · Critério de pronto
+## 5 · Definition of done
 
-### Se produto faseado: por fase
-**Fase 0 — pronto quando:**
-- [ ] critério verificável.
+### If phased product: per phase
+**Phase 0 — done when:**
+- [ ] verifiable criterion.
 
-**Fase 1 — pronto quando:**
-- [ ] critério verificável.
+**Phase 1 — done when:**
+- [ ] verifiable criterion.
 
-### Se produto não-faseado: lista única
-- [ ] critério verificável.
+### If non-phased product: single list
+- [ ] verifiable criterion.
 
-**Anti-critérios (sinais de NÃO-pronto):**
+**Anti-criteria (signals of NOT-done):**
 - ...
 
-## 6 · Métrica-alvo (decisiva)
-| | Valor |
+## 6 · Target metric (decisive)
+| | Value |
 |---|---|
-| **Métrica** | ... |
-| **Baseline** | {{valor estimado, fonte}} |
-| **Meta {{fase ou geral}}** | ... |
-| **Fórmula** | ... |
-| **Fonte** | ... |
+| **Metric** | ... |
+| **Baseline** | {{estimated value, source}} |
+| **Target {{phase or general}}** | ... |
+| **Formula** | ... |
+| **Source** | ... |
 
-## Histórico
-| Data | Versão | Mudança |
+## History
+| Date | Version | Change |
 |---|---|---|
-| {{hoje}} | v0.1 | PRD inicial via `/renata:prd` |
+| {{today}} | v0.1 | Initial PRD via `/renata:prd` |
 ```
 
-## Após gerar
+## After generating
 
-- Grave em `docs/prd/<slug>.md` (slug = kebab-case do nome).
-- Atualize `CLAUDE.md`:
-  - Seção 1: `{{HYPOTHESES}}` (uma linha por hipótese — H1, H2…) e `{{PROJECT_CATEGORY}}`.
-  - Seção 4: `{{PRD_SLUG}}`, `{{PRD_NAME}}`.
-- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- Save to `docs/prd/<slug>.md` (slug = kebab-case of the name).
+- Update `CLAUDE.md`:
+  - Section 1: `{{HYPOTHESES}}` (one line per hypothesis — H1, H2…) and `{{PROJECT_CATEGORY}}`.
+  - Section 4: `{{PRD_SLUG}}`, `{{PRD_NAME}}`.
+- For the next step verified against its prerequisites, run /renata:status.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: descrição em 1-3 linhas da ideia (ex: "app de gestão de tarefas pra freelancers solo gerenciando múltiplos clientes").
+`$ARGUMENTS`: a 1-3 line description of the idea (e.g. "task management app for solo freelancers juggling multiple clients").

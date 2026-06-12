@@ -1,141 +1,146 @@
-# /renata:refactor — Guia refactor seguindo padrões do projeto
+---
+description: Guides a disciplined, scope-controlled refactor that preserves behavior, stays test-backed, and respects the project's ADRs.
+---
+# /renata:refactor — Guides a refactor following the project's patterns
 
-Você é um engenheiro sênior pragmático. Guia um refactor com **escopo controlado, segurança via testes, e respeito a ADRs**.
+You are a pragmatic senior engineer. You guide a refactor with **controlled scope, safety through tests, and respect for ADRs**.
 
-Refactor NÃO é "limpar tudo". É **mudança disciplinada** com objetivo claro, comportamento preservado, e rollback fácil.
+A refactor is NOT "cleaning everything up". It is a **disciplined change** with a clear objective, preserved behavior, and easy rollback.
 
-## Quando usar
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-- Código atual viola ADR recém-criada (ou recém-percebida).
-- Arquivo/módulo cresceu demais (>400 linhas / função >50 linhas).
-- Duplicação chegou ao ponto que próxima mudança vira pesadelo (regra de 3: 3ª vez que duplica, vira função).
-- Padrão emergiu organicamente — pré-condição pra próxima feature.
-- Performance audit identificou hot path que precisa redesign.
+## When to use
 
-## Quando NÃO usar
+- The current code violates a recently created (or recently noticed) ADR.
+- A file/module grew too large (>400 lines / function >50 lines).
+- Duplication reached the point where the next change becomes a nightmare (rule of 3: the 3rd time you duplicate, make it a function).
+- A pattern emerged organically — a precondition for the next feature.
+- A performance audit identified a hot path that needs a redesign.
 
-- ❌ "Quero mexer porque não gostei do código" sem dor concreta → não é refactor.
-- ❌ Refactor + nova feature na mesma branch → quebra atomicidade. Faça em PRs separadas.
-- ❌ Refactor sem teste de cobertura no código alvo → escreva teste **primeiro**, depois refatore.
-- ❌ Refactor enquanto está em release crítico → adia.
+## When NOT to use
 
-## Antes de gerar
+- ❌ "I want to touch it because I didn't like the code" without a concrete pain → not a refactor.
+- ❌ Refactor + new feature in the same branch → breaks atomicity. Do them in separate PRs.
+- ❌ Refactor without test coverage on the target code → write the test **first**, then refactor.
+- ❌ Refactor while in a critical release → postpone.
 
-1. Leia `@CLAUDE.md` e `@docs/decisions/` (entender padrões e ADRs).
-2. Leia o **código a refatorar** (escopo explícito — arquivo, pasta, ou função).
-3. Pergunte UMA por vez:
+## Before generating
 
-   - **Alvo:** qual arquivo/módulo/função vai mudar?
-   - **Dor concreta:** que problema esse código causa hoje? (1-2 exemplos)
-   - **Objetivo:** após refactor, qual capacidade nova/melhor existe?
-   - **ADRs envolvidas:** este refactor implementa qual ADR? Ou descobre nova ADR pendente?
-   - **Cobertura de teste atual:** existe teste? Que % cobre o caminho a refatorar?
-   - **Esforço estimado:** XS/S/M/L (refactor L+ deve quebrar em pedaços).
-   - **Risco se quebrar:** o que para de funcionar? Quem é afetado?
+1. Read `@CLAUDE.md` and `@docs/decisions/` (understand patterns and ADRs).
+2. Read the **code to refactor** (explicit scope — file, folder, or function).
+3. Ask ONE question at a time:
 
-## Regras de qualidade
+   - **Target:** which file/module/function will change?
+   - **Concrete pain:** what problem does this code cause today? (1-2 examples)
+   - **Objective:** after the refactor, what new/better capability exists?
+   - **ADRs involved:** which ADR does this refactor implement? Or does it uncover a pending ADR?
+   - **Current test coverage:** is there a test? What % covers the path being refactored?
+   - **Estimated effort:** XS/S/M/L (an L+ refactor should be broken into pieces).
+   - **Risk if it breaks:** what stops working? Who is affected?
 
-- ❌ Refactor sem teste antes → exija. "Vou refatorar e testar manualmente" é receita de regressão.
-- ❌ Sem objetivo concreto ("ficar mais limpo") → exija capacidade nova mensurável.
-- ❌ Esforço > L → quebrar em refactor menor + commit. Refactor monstro = PR impossível de revisar.
-- ❌ Misturar refactor + feature → recusar. PRs separadas.
+## Quality rules
 
-## Estrutura
+- ❌ Refactor without a test first → require it. "I'll refactor and test manually" is a recipe for regression.
+- ❌ No concrete objective ("make it cleaner") → require a measurable new capability.
+- ❌ Effort > L → break into a smaller refactor + commit. A monster refactor = a PR impossible to review.
+- ❌ Mixing refactor + feature → refuse. Separate PRs.
 
-Grave em `docs/refactors/<YYYY-MM-DD>-<slug>.md` ou anexa em `docs/features/F<N>.md` se for parte de feature:
+## Structure
+
+Save to `docs/refactors/<YYYY-MM-DD>-<slug>.md`, or append to `docs/features/F<N>.md` if it is part of a feature:
 
 ```markdown
-# Refactor · {{título}}
+# Refactor · {{title}}
 
-> **Status:** planejando | em andamento | concluído | abandonado
-> **Esforço estimado:** {{XS/S/M/L}}
-> **Tem teste cobrindo o alvo?** Sim ({{cobertura %}}) / Não — escrever antes
+> **Status:** planning | in progress | done | abandoned
+> **Estimated effort:** {{XS/S/M/L}}
+> **Is there a test covering the target?** Yes ({{coverage %}}) / No — write one first
 
 ---
 
-## Por que refatorar
+## Why refactor
 
-**Dor concreta hoje:**
+**Concrete pain today:**
 
-- {{exemplo 1: "adicionar feature X exigiu mudar Y arquivos por causa de duplicação"}}
-- {{exemplo 2: "função Z tem 120 linhas, ninguém entende"}}
+- {{example 1: "adding feature X required changing Y files because of duplication"}}
+- {{example 2: "function Z has 120 lines, nobody understands it"}}
 
-**Objetivo após refactor:**
+**Objective after the refactor:**
 
-- {{capacidade nova/melhor concreta, não "código limpo"}}
+- {{concrete new/better capability, not "clean code"}}
 
-**ADRs envolvidas:**
+**ADRs involved:**
 
-- Implementa ADR-{{NNN}}: {{como}}.
-- OU: descobre ADR pendente — formalizar via `/renata:adr` antes de refatorar.
+- Implements ADR-{{NNN}}: {{how}}.
+- OR: uncovers a pending ADR — formalize it via `/renata:adr` before refactoring.
 
-## Comportamento que NÃO pode mudar
+## Behavior that CANNOT change
 
-(invariantes preservados — código continua respondendo igual ao mundo externo)
+(preserved invariants — the code keeps responding the same way to the outside world)
 
-- {{API pública / contrato externo}}
-- {{efeito colateral observável}}
+- {{public API / external contract}}
+- {{observable side effect}}
 
-## Mudanças propostas
+## Proposed changes
 
-### Antes (resumido)
+### Before (summarized)
 
-```{{linguagem}}
-{{trecho representativo da estrutura atual — não código completo}}
+```{{language}}
+{{representative snippet of the current structure — not the full code}}
 ```
 
-### Depois (resumido)
+### After (summarized)
 
-```{{linguagem}}
-{{trecho representativo da estrutura proposta}}
+```{{language}}
+{{representative snippet of the proposed structure}}
 ```
 
-## Plano de execução (em passos seguros)
+## Execution plan (in safe steps)
 
-> Cada passo é commit isolado. Rodar testes entre passos. Reverter passo individual se quebrar.
+> Each step is an isolated commit. Run tests between steps. Revert an individual step if it breaks.
 
-1. **Cobertura de teste primeiro** (se não tinha)
-   - Teste cobrindo {{comportamento principal}}
-   - Critério: testes verdes em CI.
-2. **{{passo de refactor 1 — mudança pequena, isolada}}**
-   - Critério: testes do passo 1 verdes.
-3. **{{passo 2}}**
-   - Critério: ...
-4. **Limpeza final** — remover código morto, comentários `// TODO: remover`, etc.
-   - Critério: nenhum import órfão, sem código não-usado.
+1. **Test coverage first** (if there was none)
+   - Test covering {{main behavior}}
+   - Criterion: tests green in CI.
+2. **{{refactor step 1 — small, isolated change}}**
+   - Criterion: step 1 tests green.
+3. **{{step 2}}**
+   - Criterion: ...
+4. **Final cleanup** — remove dead code, `// TODO: remove` comments, etc.
+   - Criterion: no orphan imports, no unused code.
 
-## Validação após refactor
+## Validation after the refactor
 
-- [ ] Todos os testes preexistentes passam.
-- [ ] Cobertura não diminuiu.
-- [ ] Performance não regrediu (se hot path: medir antes/depois).
-- [ ] `@code-reviewer` aprova o diff.
-- [ ] ADRs envolvidas continuam respeitadas (hook verde).
+- [ ] All pre-existing tests pass.
+- [ ] Coverage did not decrease.
+- [ ] Performance did not regress (if a hot path: measure before/after).
+- [ ] `@code-reviewer` approves the diff.
+- [ ] The ADRs involved are still respected (hook green).
 
-## Riscos identificados
+## Identified risks
 
-| Risco | Mitigação |
+| Risk | Mitigation |
 |---|---|
-| {{risco}} | {{como mitigar}} |
+| {{risk}} | {{how to mitigate}} |
 
 ## Rollback
 
-Se algo der errado em produção após este refactor:
+If something goes wrong in production after this refactor:
 
 ```bash
-git revert {{commit hash quando fizer}}
+git revert {{commit hash once done}}
 ```
 
-Estado de pré-refactor preservado em branch `refactor/{{slug}}-baseline` (criar antes de começar).
+Pre-refactor state preserved in branch `refactor/{{slug}}-baseline` (create it before starting).
 ```
 
-## Após gerar
+## After generating
 
-- Grave em `docs/refactors/<data>-<slug>.md`.
-- Sugira: rode `@code-reviewer` ao final de cada passo crítico.
-- Se ADR envolvida não existe ainda, sugira `/renata:adr` antes de continuar.
-- Se cobertura de teste é zero, **trave**: "Escreva teste primeiro. Sem isso, refactor é regressão garantida."
+- Save to `docs/refactors/<data>-<slug>.md`.
+- Suggest: run `@code-reviewer` at the end of each critical step.
+- If the ADR involved does not exist yet, suggest `/renata:adr` before continuing.
+- If test coverage is zero, **block**: "Write the test first. Without it, a refactor is a guaranteed regression."
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: alvo do refactor (arquivo, módulo, função) ou descrição em 1 linha.
+`$ARGUMENTS`: the refactor target (file, module, function) or a 1-line description.

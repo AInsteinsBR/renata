@@ -1,172 +1,177 @@
-# /renata:triage — Triagem de backlog usando MoSCoW (bugs, débitos, tarefas)
+---
+description: Triages an unprioritized list of bugs, debt, and tasks into a full MoSCoW breakdown with justification and an attack order.
+---
+# /renata:triage — Backlog triage using MoSCoW (bugs, debt, tasks)
 
-Você é um tech lead pragmático. Recebe uma **lista de itens não-priorizados** (bugs, débitos técnicos, tarefas de polimento, requests do cliente) e organiza em **MoSCoW completo** com justificativa.
+You are a pragmatic tech lead. You receive an **unprioritized list of items** (bugs, technical debt, polish tasks, customer requests) and organize them into a **full MoSCoW** breakdown with justification.
 
-## Quando usar
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-- Acumulou fila de bugs durante uma fase e precisa decidir o que fixar antes do release.
-- Cliente mandou lista de pedidos — precisa separar o que entra de imediato.
-- Acumulou débito técnico — precisa priorizar o que pagar primeiro.
-- Antes de planning de sprint ou ciclo.
+## When to use
 
-**Use `/renata:triage` (este) para priorizar trabalho contínuo (gradação MoSCoW).**
-**Use `/renata:feature-breakdown` para definir o produto (binário MUST vs OUT-OF-SCOPE).**
-**Use `/renata:phase-scope` para decidir o que cabe na fase atual com orçamento fixo.**
+- A queue of bugs piled up during a phase and you need to decide what to fix before the release.
+- The customer sent a list of requests — you need to separate what goes in immediately.
+- Technical debt piled up — you need to prioritize what to pay first.
+- Before sprint or cycle planning.
 
-## Passo 0 — Resolver integração (antes de gravar a triagem)
+**Use `/renata:triage` (this one) to prioritize ongoing work (MoSCoW gradation).**
+**Use `/renata:feature-breakdown` to define the product (binary MUST vs OUT-OF-SCOPE).**
+**Use `/renata:phase-scope` to decide what fits in the current phase with a fixed budget.**
 
-A capacidade é **`tarefas`**. Antes de gravar o resultado da triagem:
+## Step 0 — Resolve integration (before saving the triage)
 
-1. Ler `integrations:` em `.claude/rules.yaml`. A capacidade `tarefas` tem entrada?
-2. **Sem entrada** → grave a triagem só local (comportamento padrão).
-3. **Com entrada mas tools do MCP indisponíveis** → avise e grave só local.
-4. **Com entrada e tools disponíveis:** grave local primeiro; se `espelho: true`, **pergunte** antes de espelhar os itens priorizados no `<MCP>` (ex: criar cards Jira pros MUST). Confirmou → push + anota ids. Recusou → só local.
+The capability is **`tarefas`**. Before saving the triage result:
 
-> Degradação idêntica ao `etapa-gate.sh`: sem MCP, opera 100% local.
+1. Read `integrations:` in `.claude/rules.yaml`. Does the `tarefas` capability have an entry?
+2. **No entry** → save the triage locally only (default behavior).
+3. **Has an entry but the MCP tools are unavailable** → warn and save locally only.
+4. **Has an entry and the tools are available:** save locally first; if `espelho: true`, **ask** before mirroring the prioritized items to `<MCP>` (e.g. create Jira cards for the MUSTs). If confirmed → push + note the ids. If declined → local only.
 
-## Antes de gerar
+> Degradation identical to `etapa-gate.sh`: without an MCP, it operates 100% locally.
 
-1. Leia `@CLAUDE.md` (fase ativa, princípios).
-2. Leia `@docs/prd/` (entender o que importa pro produto).
-3. Leia `@docs/roadmap/fase-<atual>.md` (gate da fase atual — items que ameaçam o gate são MUST).
-4. Pergunte UMA por vez:
+## Before generating
 
-   - **A lista:** quais itens triar? (cole texto, links de issues, ou caminho de arquivo)
-   - **Contexto:** o que está acontecendo agora? (release próximo, beta com cliente, fase de spike, etc)
-   - **Restrição:** prazo ou orçamento de tempo? (afeta corte do MoSCoW)
+1. Read `@CLAUDE.md` (active phase, principles).
+2. Read `@docs/prd/` (understand what matters for the product).
+3. Read `@docs/roadmap/fase-<atual>.md` (the current phase gate — items that threaten the gate are MUST).
+4. Ask ONE question at a time:
 
-## Como classificar (regras claras)
+   - **The list:** which items to triage? (paste text, issue links, or a file path)
+   - **Context:** what is happening right now? (release coming up, beta with a customer, spike phase, etc)
+   - **Constraint:** deadline or time budget? (affects the MoSCoW cut)
+
+## How to classify (clear rules)
 
 ### 🔴 MUST
 
-**Sem isso, o gate da fase atual cai OU produto causa dano em prod.**
+**Without this, the current phase gate fails OR the product causes harm in prod.**
 
-Sinais:
-- Bloqueia critério de pronto da fase.
-- Bug com perda/corrupção de dado.
-- Vulnerabilidade de segurança ativa.
-- Crash que afeta > 5% das sessões.
-- Promessa pública / SLA / contrato.
+Signals:
+- Blocks the phase's definition of done.
+- Bug with data loss/corruption.
+- Active security vulnerability.
+- Crash affecting > 5% of sessions.
+- Public promise / SLA / contract.
 
 ### 🟠 SHOULD
 
-**Desejável; se faltar tempo, fase ainda passa mas com asterisco.**
+**Desirable; if time runs short, the phase still passes but with an asterisk.**
 
-Sinais:
-- Bug que afeta UX mas não dado.
-- Performance subótima mas dentro de alvo.
-- Documentação importante mas time consegue operar sem.
-- Refactor que destrava velocidade da próxima fase.
+Signals:
+- Bug that affects UX but not data.
+- Suboptimal performance but within target.
+- Important documentation but the team can operate without it.
+- Refactor that unlocks the next phase's velocity.
 
 ### 🟡 COULD
 
-**Bom de ter; se sobrar tempo entre MUST e SHOULD.**
+**Nice to have; if there is time left over between MUST and SHOULD.**
 
-Sinais:
-- Polimento de UI.
-- Edge case raro (<1% das sessões).
-- Métrica nice-to-have.
-- Pequeno refactor de qualidade.
+Signals:
+- UI polish.
+- Rare edge case (<1% of sessions).
+- Nice-to-have metric.
+- Small quality refactor.
 
-### ⚫ WON'T (nesta rodada — explícito)
+### ⚫ WON'T (this round — explicit)
 
-**Decidido conscientemente que NÃO entra agora. Vai pro backlog formal.**
+**Consciously decided that it does NOT go in now. Goes to the formal backlog.**
 
-Sinais:
-- Fora do escopo da fase atual.
-- Esforço desproporcional ao ganho.
-- Requer decisão de ADR antes.
-- "Eu sei que existe, mas não agora."
+Signals:
+- Out of scope for the current phase.
+- Effort disproportionate to the gain.
+- Requires an ADR decision first.
+- "I know it exists, but not now."
 
-## Regras de qualidade
+## Quality rules
 
-- ❌ Tudo MUST → impossível. Force gradação. Se honestamente tudo é crítico, problema é de escopo da fase, não de triagem.
-- ❌ Sem WON'T → suspeito. Toda triagem real tem coisa que conscientemente fica de fora.
-- ❌ Classificação sem **justificativa de 1 linha** → recusar. "MUST porque sim" não vale.
-- ❌ Item ambíguo entre SHOULD e MUST → puxa pra SHOULD por default. MUST tem que ser indiscutível.
+- ❌ Everything MUST → impossible. Force a gradation. If honestly everything is critical, the problem is the phase scope, not the triage.
+- ❌ No WON'T → suspicious. Every real triage has something consciously left out.
+- ❌ Classification without a **1-line justification** → refuse. "MUST because" does not count.
+- ❌ Item ambiguous between SHOULD and MUST → pull it to SHOULD by default. A MUST has to be indisputable.
 
-## Estrutura de saída
+## Output structure
 
-Grave em `docs/triage/<YYYY-MM-DD>-<contexto>.md` (cria pasta se não existe):
+Save to `docs/triage/<YYYY-MM-DD>-<contexto>.md` (create the folder if it does not exist):
 
 ```markdown
-# Triage · {{contexto}}
+# Triage · {{context}}
 
-> **Data:** {{YYYY-MM-DD}}
-> **Contexto:** {{ex: bugs acumulados Fase 0 / pedidos do cliente beta / refactor pré-release}}
-> **Restrição de tempo/orçamento:** {{ex: 3 dias / 1 sprint / antes do release X}}
-> **Fase ativa:** {{Fase N}}
-
----
-
-## 🔴 MUST ({{quantidade}})
-
-> Sem isso, gate da fase cai ou produto causa dano. **Atacar primeiro.**
-
-| # | Item | Por quê MUST | Esforço |
-|---|------|--------------|---------|
-| 1 | {{descrição}} | {{1 linha}} | XS/S/M |
+> **Date:** {{YYYY-MM-DD}}
+> **Context:** {{e.g. accumulated Phase 0 bugs / beta customer requests / pre-release refactor}}
+> **Time/budget constraint:** {{e.g. 3 days / 1 sprint / before release X}}
+> **Active phase:** {{Phase N}}
 
 ---
 
-## 🟠 SHOULD ({{quantidade}})
+## 🔴 MUST ({{count}})
 
-> Desejável; fazer após MUST se tempo permitir.
+> Without this, the phase gate fails or the product causes harm. **Attack first.**
 
-| # | Item | Por quê SHOULD | Esforço |
-|---|------|----------------|---------|
+| # | Item | Why MUST | Effort |
+|---|------|----------|--------|
+| 1 | {{description}} | {{1 line}} | XS/S/M |
+
+---
+
+## 🟠 SHOULD ({{count}})
+
+> Desirable; do it after MUST if time permits.
+
+| # | Item | Why SHOULD | Effort |
+|---|------|------------|--------|
 | ... | ... | ... | ... |
 
 ---
 
-## 🟡 COULD ({{quantidade}})
+## 🟡 COULD ({{count}})
 
-> Bom de ter; sobra entre MUST e SHOULD.
+> Nice to have; left over between MUST and SHOULD.
 
-| # | Item | Por quê COULD | Esforço |
-|---|------|---------------|---------|
+| # | Item | Why COULD | Effort |
+|---|------|-----------|--------|
 | ... | ... | ... | ... |
 
 ---
 
-## ⚫ WON'T (nesta rodada) ({{quantidade}})
+## ⚫ WON'T (this round) ({{count}})
 
-> Conscientemente fora. Vai pro backlog formal pra próxima triagem.
+> Consciously out. Goes to the formal backlog for the next triage.
 
-| # | Item | Por quê WON'T agora | Quando reconsiderar |
-|---|------|---------------------|---------------------|
+| # | Item | Why WON'T now | When to reconsider |
+|---|------|---------------|--------------------|
 | ... | ... | ... | ... |
 
 ---
 
-## Recomendação de ordem de ataque
+## Recommended attack order
 
-1. **Hoje/amanhã:** MUST #1, MUST #2 (esforço total: ...).
-2. **Depois:** MUST restantes.
-3. **Se sobrar tempo:** SHOULD #1, SHOULD #2.
-4. **Não atacar:** COULD nesta rodada (próxima triagem).
-5. **Formalizar:** mover os WON'T relevantes pro backlog persistente com `/renata:todo add <item>` (vão pra `docs/backlog/todos.md`, classificados por impacto) — assim não se perdem entre rodadas de triagem.
+1. **Today/tomorrow:** MUST #1, MUST #2 (total effort: ...).
+2. **Then:** remaining MUSTs.
+3. **If there is time left:** SHOULD #1, SHOULD #2.
+4. **Do not attack:** COULD this round (next triage).
+5. **Formalize:** move the relevant WON'Ts to the persistent backlog with `/renata:todo add <item>` (they go to `docs/backlog/todos.md`, classified by impact) — so they do not get lost between triage rounds.
 
-## Estimativa total
+## Total estimate
 
-- MUST: {{soma}}
-- SHOULD: {{soma}}
-- COULD: {{soma}}
-- Orçamento disponível: {{tempo}}
-- Realista entregar: {{MUST/SHOULD/COULD até onde caber}}
+- MUST: {{sum}}
+- SHOULD: {{sum}}
+- COULD: {{sum}}
+- Available budget: {{time}}
+- Realistic to deliver: {{MUST/SHOULD/COULD as far as it fits}}
 
-## Riscos identificados nesta triagem
+## Risks identified in this triage
 
-- {{risco que apareceu ao triar — ex: "2 MUSTs dependem do mesmo arquivo, paralelizar é difícil"}}
+- {{risk that came up while triaging — e.g. "2 MUSTs depend on the same file, parallelizing is hard"}}
 ```
 
-## Após gerar
+## After generating
 
-- Grave em `docs/triage/<data>-<contexto>.md`.
-- Se MUST > orçamento, alerte: "Mais MUSTs do que cabe. Você precisa cortar escopo da fase ou mover MUSTs pra próxima."
-- Se WON'T tem coisas que afetam ADRs, sugira: "Item X provavelmente vira ADR. Roda `/renata:adr` antes de re-triar."
-- Sugira próximo passo: começar pelo MUST #1.
+- Save to `docs/triage/<data>-<contexto>.md`.
+- If MUST > budget, warn: "More MUSTs than fit. You need to cut the phase scope or move MUSTs to the next phase."
+- If WON'T has things that affect ADRs, suggest: "Item X probably becomes an ADR. Run `/renata:adr` before re-triaging."
+- Suggest the next step: start with MUST #1.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: contexto da triagem (ex: "bugs Fase 0 antes do gate", "pedidos do cliente XPTO").
+`$ARGUMENTS`: the triage context (e.g. "Phase 0 bugs before the gate", "requests from customer XPTO").

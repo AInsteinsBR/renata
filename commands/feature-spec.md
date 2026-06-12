@@ -1,121 +1,127 @@
-# /renata:feature-spec — Gera spec detalhada de uma feature
+---
+description: Generates a detailed spec for a single feature, including scope, value, dependencies, done criteria, and a phased plan.
+---
 
-Você é um tech lead. Recebe nome/ID da feature em `$ARGUMENTS` e gera spec em `docs/features/F<N>-<slug>.md`.
+# /renata:feature-spec — Generate a detailed spec for a feature
 
-## Antes de gerar
+You are a tech lead. You receive the name/ID of the feature in `$ARGUMENTS` and generate a spec in `docs/features/F<N>-<slug>.md`.
 
-1. Leia `@CLAUDE.md`, `@docs/prd/`, `@docs/business-context/`.
-2. Leia ADRs relevantes em `@docs/decisions/`.
-3. Se a feature ainda não foi quebrada/priorizada (não consta em `docs/features/README.md`), instrua a rodar `/renata:feature-breakdown` antes.
-4. Pergunte UMA por vez:
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-   - **Problema:** que dor essa feature ataca? Qual persona?
-   - **Categoria:** `MUST` (sem ela hipótese cai) ou `OUT-OF-SCOPE` (não entra). Use só esses dois — categorias intermediárias (SHOULD/COULD) geram debate sem ganho. Se a feature não é MUST hoje, está fora; quando virar MUST, abre spec.
-   - **Esforço:** XS · S · M · L · XL.
-   - **Entra em qual fase:** Fase 0, 1, 2, ...
-   - **Depende de quais features?**
-   - **Escopo IN:** capacidades que entram.
-   - **Escopo OUT:** o que fica fora (refinamento de fase posterior).
-   - **Critério de pronto:** verificável para a fase atual.
+## Before generating
 
-## Estrutura
+1. Read `@CLAUDE.md`, `@docs/prd/`, `@docs/business-context/`.
+2. Read relevant ADRs in `@docs/decisions/`.
+3. If the feature has not yet been broken down/prioritized (it does not appear in `docs/features/README.md`), instruct to run `/renata:feature-breakdown` first.
+4. Ask ONE at a time:
+
+   - **Problem:** what pain does this feature attack? Which persona?
+   - **Category:** `MUST` (without it a hypothesis falls) or `OUT-OF-SCOPE` (does not enter). Use only these two — intermediate categories (SHOULD/COULD) generate debate without gain. If the feature is not a MUST today, it is out; when it becomes a MUST, open a spec.
+   - **Effort:** XS · S · M · L · XL.
+   - **Enters in which phase:** Phase 0, 1, 2, ...
+   - **Depends on which features?**
+   - **IN scope:** capabilities that are included.
+   - **OUT scope:** what stays out (refinement for a later phase).
+   - **Done criterion:** verifiable for the current phase.
+
+## Structure
 
 ```markdown
-# F<N> · {{Nome da feature}}
+# F<N> · {{Feature name}}
 
-> **Categoria:** {{MUST|OUT-OF-SCOPE}} · **Esforço:** {{tamanho}} · **Entra em:** {{fase}}.
-> **Depende de:** {{features}}.
-
----
-
-## Problema
-
-{{2-3 parágrafos: dor da persona, restrição que impõe a feature, por que outras alternativas não resolvem}}
+> **Category:** {{MUST|OUT-OF-SCOPE}} · **Effort:** {{size}} · **Enters in:** {{phase}}.
+> **Depends on:** {{features}}.
 
 ---
 
-## Escopo
+## Problem
 
-### Capacidades
-
-(Lista IN. Diagramas mermaid se ajudar.)
-
-### Como funciona (alto nível)
-
-(Sequência, state machine, fluxo — em mermaid se possível.)
+{{2-3 paragraphs: the persona's pain, the constraint that imposes the feature, why other alternatives do not solve it}}
 
 ---
 
-## Valor
+## Scope
 
-(Por que essa feature importa. Amarrar a métrica decisiva do PRD se possível.)
+### Capabilities
 
----
+(IN list. Mermaid diagrams if they help.)
 
-## Dependências
+### How it works (high level)
 
-- {{outras features}}
-- {{infraestrutura, ex: PostgreSQL}}
-
----
-
-## Vínculos
-
-- PRD: `@docs/prd/<slug>.md` § {{seção}}
-- ADRs: `ADR-{{N}}` ({{tema}})
-- Persona-âncora: {{Nome}}
-- Métrica que impacta: {{métrica}}
+(Sequence, state machine, flow — in mermaid if possible.)
 
 ---
 
-## Critério de pronto ({{fase}})
+## Value
 
-- [ ] {{critério verificável 1}}
-- [ ] {{critério verificável 2}}
+(Why this feature matters. Tie it to the PRD's decisive metric if possible.)
 
 ---
 
-## Refinamentos por fase posterior
+## Dependencies
 
-| Fase | O que muda |
+- {{other features}}
+- {{infrastructure, e.g.: PostgreSQL}}
+
+---
+
+## Links
+
+- PRD: `@docs/prd/<slug>.md` § {{section}}
+- ADRs: `ADR-{{N}}` ({{theme}})
+- Anchor persona: {{Name}}
+- Metric it impacts: {{metric}}
+
+---
+
+## Done criterion ({{phase}})
+
+- [ ] {{verifiable criterion 1}}
+- [ ] {{verifiable criterion 2}}
+
+---
+
+## Refinements for a later phase
+
+| Phase | What changes |
 |---|---|
 
 ---
 
-## Plano em fases — F<N> ({{fase ativa}})
+## Phased plan — F<N> ({{active phase}})
 
-Fases granulares e retomáveis (XS-M preferencial; L com justificativa; XL deve quebrar). Cada fase com critério de pronto claro.
+Granular and resumable phases (XS-M preferred; L with justification; XL must be broken down). Each phase with a clear done criterion.
 
-### F<N>.1 · {{Nome}} · {{tamanho}}
+### F<N>.1 · {{Name}} · {{size}}
 
-**Objetivo:** ...
+**Objective:** ...
 
-**Tarefas:**
+**Tasks:**
 
 - [ ] ...
 
-**Critério:** ...
+**Criterion:** ...
 
-**Depende de:** ...
+**Depends on:** ...
 
 ### F<N>.2 · ...
 ```
 
-## Regras de qualidade
+## Quality rules
 
-- ❌ Feature sem persona-âncora citada → exija.
-- ❌ Feature sem ADRs relevantes citadas → questione.
-- ❌ Critério de pronto vago → exigir verificável.
-- ❌ Sem "Refinamentos por fase posterior" → exigir; senão vira tudo na fase atual.
-- ⚠️ Fase do plano com tamanho > **M** → questione se deve quebrar (não regra rígida — fases granulares e retomáveis preferenciais, mas L é aceitável com justificativa; XL deve quebrar).
+- ❌ A feature without a cited anchor persona → require it.
+- ❌ A feature without relevant cited ADRs → question it.
+- ❌ A vague done criterion → require it to be verifiable.
+- ❌ No "Refinements for a later phase" → require it; otherwise everything ends up in the current phase.
+- ⚠️ A plan phase with size > **M** → question whether it should be broken down (not a hard rule — granular, resumable phases are preferred, but L is acceptable with justification; XL must be broken down).
 
-## Após gerar
+## After generating
 
-- Grave em `docs/features/F<N>-<slug>.md`.
-- Atualize `docs/features/README.md` com linha no índice.
-- Se for a feature-âncora, marque ⚓ no índice.
-- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- Save to `docs/features/F<N>-<slug>.md`.
+- Update `docs/features/README.md` with a line in the index.
+- If it is the anchor feature, mark it ⚓ in the index.
+- For the next step verified against the prerequisites, run /renata:status.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: nome da feature (ex: "RAG knowledge base") ou ID (ex: "F3").
+`$ARGUMENTS`: the feature name (e.g., "RAG knowledge base") or ID (e.g., "F3").

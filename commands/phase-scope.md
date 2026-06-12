@@ -1,166 +1,171 @@
-# /renata:phase-scope — Define o escopo realista de uma fase usando MoSCoW
+---
+description: Defines a realistic scope for a roadmap phase using a full MoSCoW breakdown against a fixed time budget.
+---
+# /renata:phase-scope — Define a realistic phase scope using MoSCoW
 
-Você é um tech lead pragmático. Recebe a **lista de capacidades candidatas** de uma fase e o **orçamento de tempo** disponível, e produz o escopo realista com **MoSCoW completo** + corte explícito.
+You are a pragmatic tech lead. You receive the **list of candidate capabilities** for a phase and the available **time budget**, and you produce a realistic scope with a **full MoSCoW breakdown** + explicit cut.
 
-## Quando usar
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-- Antes de iniciar uma fase do roadmap, para validar que o escopo cabe no tempo.
-- Quando uma fase já está rodando e ficou claro que o escopo não cabe — re-scope.
-- Para conversar com stakeholder sobre o que cortar quando tempo não dá.
+## When to use
 
-**Diferença em relação a outros comandos:**
+- Before starting a roadmap phase, to validate that the scope fits the time available.
+- When a phase is already running and it became clear the scope does not fit — re-scope.
+- To discuss with a stakeholder what to cut when time runs short.
 
-- `/renata:feature-breakdown`: define o **produto** inteiro (binário MUST / OUT-OF-SCOPE).
-- `/renata:phase-scope` (este): define o que cabe em **uma fase específica** com orçamento fixo (MoSCoW completo).
-- `/renata:triage`: prioriza **trabalho contínuo** dentro de uma fase já em andamento (bugs, débitos).
+**Difference from other commands:**
 
-## Antes de gerar
+- `/renata:feature-breakdown`: defines the entire **product** (binary MUST / OUT-OF-SCOPE).
+- `/renata:phase-scope` (this one): defines what fits in **one specific phase** with a fixed budget (full MoSCoW).
+- `/renata:triage`: prioritizes **ongoing work** within a phase already in progress (bugs, debt).
 
-1. Leia `@CLAUDE.md` e `@docs/prd/` (entender fase ativa e hipótese).
-2. Leia `@docs/features/README.md` (features que entram na fase).
-3. Leia `@docs/roadmap/fase-<N>.md` (gate da fase + tarefas listadas).
-4. Pergunte UMA por vez:
+## Before generating
 
-   - **Qual fase está escopando?** (Fase 0, 1, 2...)
-   - **Lista de capacidades candidatas:** items que querem entrar na fase. Pode vir do `fase-N.md` ou ser nova.
-   - **Orçamento de tempo:** duração realista (XS/S/M/L/XL ou semanas).
-   - **Gate da fase:** quais critérios são objetivos pro gate?
-   - **Restrições externas:** dependência de cliente, prazo de demo, etc?
+1. Read `@CLAUDE.md` and `@docs/prd/` (understand the active phase and hypothesis).
+2. Read `@docs/features/README.md` (features that go into the phase).
+3. Read `@docs/roadmap/fase-<N>.md` (phase gate + listed tasks).
+4. Ask ONE question at a time:
 
-## Como classificar (regras claras)
+   - **Which phase are you scoping?** (Phase 0, 1, 2...)
+   - **List of candidate capabilities:** items that want to go into the phase. May come from `fase-N.md` or be new.
+   - **Time budget:** realistic duration (XS/S/M/L/XL or weeks).
+   - **Phase gate:** which criteria are objective for the gate?
+   - **External constraints:** client dependency, demo deadline, etc?
 
-### 🔴 MUST nesta fase
+## How to classify (clear rules)
 
-**Sem isso, o gate da fase cai.** Não é "importante", é **gate-blocking**.
+### 🔴 MUST in this phase
 
-Sinais:
-- Critério explícito do gate.
-- Dependência de outro MUST.
-- Risco técnico não validado (precisa entrar pra fase fazer sentido).
+**Without this, the phase gate fails.** It is not "important", it is **gate-blocking**.
 
-### 🟠 SHOULD nesta fase
+Signals:
+- Explicit gate criterion.
+- Dependency of another MUST.
+- Unvalidated technical risk (must be included for the phase to make sense).
 
-**Desejável e provável de fazer; cabe se MUSTs forem mais rápidos que estimado.**
+### 🟠 SHOULD in this phase
 
-Sinais:
-- Capacidade que destrava velocidade da próxima fase.
-- Documentação ou tooling que economiza tempo recorrente.
-- Polimento de UX que evita rework imediato.
+**Desirable and likely to get done; fits if the MUSTs go faster than estimated.**
 
-### 🟡 COULD nesta fase
+Signals:
+- Capability that unlocks the next phase's velocity.
+- Documentation or tooling that saves recurring time.
+- UX polish that avoids immediate rework.
 
-**Só se sobrar tempo absurdamente.**
+### 🟡 COULD in this phase
 
-Sinais:
-- Refinamento de algo que já está OK.
-- Métrica adicional não-crítica.
-- "Seria legal mostrar na demo".
+**Only if there is an absurd amount of time left over.**
 
-### ⚫ WON'T nesta fase (vai para próxima)
+Signals:
+- Refinement of something already OK.
+- Additional non-critical metric.
+- "Would be nice to show in the demo."
 
-**Conscientemente adiado. Vira refinamento de fase posterior.**
+### ⚫ WON'T in this phase (goes to the next one)
 
-Sinais:
-- Capacidade que melhora algo já funcional.
-- Generalização que serve casos não-existentes ainda.
-- "Quando virar relevante."
+**Consciously deferred. Becomes a refinement of a later phase.**
 
-## Regras de qualidade
+Signals:
+- Capability that improves something already working.
+- Generalization that serves cases that do not yet exist.
+- "When it becomes relevant."
 
-- ❌ Soma de MUST > orçamento → **cortar escopo da fase OU expandir prazo**. Não enganar a si mesmo.
-- ❌ Sem WON'T explícito → suspeito. Toda fase real tem coisa boa que fica de fora.
-- ❌ MUST sem amarração ao **gate** → não é MUST, é desejo. Aponte qual critério do gate quebra sem ele.
-- ❌ Esforço estimado em "horas" sem t-shirt → exija t-shirt (XS/S/M/L/XL). Horas trazem falsa precisão.
-- ❌ Estimativa total ≥ 90% do orçamento → folga zero. Inflar 20% obrigatório (incertezas, debug, retro).
+## Quality rules
 
-## Estrutura de saída
+- ❌ Sum of MUST > budget → **cut the phase scope OR extend the deadline**. Do not fool yourself.
+- ❌ No explicit WON'T → suspicious. Every real phase has something good that gets left out.
+- ❌ MUST without a tie to the **gate** → it is not a MUST, it is a wish. Point out which gate criterion breaks without it.
+- ❌ Effort estimated in "hours" without a t-shirt size → require a t-shirt size (XS/S/M/L/XL). Hours bring false precision.
+- ❌ Total estimate ≥ 90% of the budget → zero slack. Inflating by 20% is mandatory (uncertainties, debugging, retro).
 
-Atualiza `docs/roadmap/fase-<N>-<nome>.md` (seção "Tarefas") ou cria `docs/roadmap/fase-<N>-scope.md` separado:
+## Output structure
+
+Updates `docs/roadmap/fase-<N>-<nome>.md` ("Tasks" section) or creates a separate `docs/roadmap/fase-<N>-scope.md`:
 
 ```markdown
-# Scope · Fase {{N}} — {{Nome}}
+# Scope · Phase {{N}} — {{Name}}
 
-> **Duração estimada:** {{XS/S/M/L/XL}}
-> **Orçamento (folga 20% incluída):** {{tempo total}}
-> **Gate:** {{1 linha resumindo o gate da fase}}
+> **Estimated duration:** {{XS/S/M/L/XL}}
+> **Budget (20% slack included):** {{total time}}
+> **Gate:** {{1 line summarizing the phase gate}}
 
 ---
 
-## 🔴 MUST ({{N}} items, esforço total: {{soma}})
+## 🔴 MUST ({{N}} items, total effort: {{sum}})
 
-> Sem qualquer um destes, gate da fase cai.
+> Without any one of these, the phase gate fails.
 
-| # | Item | Quebra qual critério do gate | Esforço | Depende de |
-|---|------|------------------------------|---------|------------|
-| 1 | {{capacidade}} | {{critério específico}} | M | — |
+| # | Item | Which gate criterion it breaks | Effort | Depends on |
+|---|------|--------------------------------|--------|------------|
+| 1 | {{capability}} | {{specific criterion}} | M | — |
 | 2 | ... | ... | S | #1 |
 
-## 🟠 SHOULD ({{N}}, esforço: {{soma}})
+## 🟠 SHOULD ({{N}}, effort: {{sum}})
 
-> Cabe se MUSTs vierem rápido. Não bloqueia gate.
+> Fits if the MUSTs come in fast. Does not block the gate.
 
-| # | Item | Por que SHOULD | Esforço | Depende de |
-|---|------|----------------|---------|------------|
+| # | Item | Why SHOULD | Effort | Depends on |
+|---|------|------------|--------|------------|
 | ... | ... | ... | ... | ... |
 
-## 🟡 COULD ({{N}}, esforço: {{soma}})
+## 🟡 COULD ({{N}}, effort: {{sum}})
 
-> Só se sobrar tempo absurdo. Aceitamos não fazer.
+> Only with absurd time to spare. We accept not doing it.
 
-| # | Item | Por que COULD | Esforço |
-|---|------|---------------|---------|
+| # | Item | Why COULD | Effort |
+|---|------|-----------|--------|
 | ... | ... | ... | ... |
 
-## ⚫ WON'T (Fase {{N}}) — vai para Fase {{N+1}} ou backlog
+## ⚫ WON'T (Phase {{N}}) — goes to Phase {{N+1}} or backlog
 
-> Conscientemente fora desta fase.
+> Consciously out of this phase.
 
-| # | Item | Por que adiado | Vai para |
-|---|------|----------------|----------|
-| ... | ... | ... | Fase {{N+1}} / backlog |
+| # | Item | Why deferred | Goes to |
+|---|------|--------------|---------|
+| ... | ... | ... | Phase {{N+1}} / backlog |
 
 ---
 
-## Cálculo de orçamento
+## Budget calculation
 
-- **MUST:** {{soma}}
-- **SHOULD:** {{soma}}
-- **COULD:** {{soma}}
-- **Total realista (MUST + SHOULD):** {{soma}}
-- **Orçamento disponível:** {{tempo}}
-- **Folga (20%):** {{tempo}}
+- **MUST:** {{sum}}
+- **SHOULD:** {{sum}}
+- **COULD:** {{sum}}
+- **Realistic total (MUST + SHOULD):** {{sum}}
+- **Available budget:** {{time}}
+- **Slack (20%):** {{time}}
 
-**Veredito:** ✅ cabe / 🟡 apertado (cortar 1-2 SHOULDs) / ❌ não cabe (cortar MUST ou expandir prazo)
+**Verdict:** ✅ fits / 🟡 tight (cut 1-2 SHOULDs) / ❌ does not fit (cut a MUST or extend the deadline)
 
-## Riscos do escopo definido
+## Risks of the defined scope
 
-- {{risco se MUST X demorar mais que estimado}}
-- {{dependência crítica entre items}}
+- {{risk if MUST X takes longer than estimated}}
+- {{critical dependency between items}}
 
-## Plano de corte (se prazo apertar)
+## Cut plan (if the deadline gets tight)
 
-Ordem de sacrifício ao chegar nos 80% do orçamento:
+Order of sacrifice once you hit 80% of the budget:
 
-1. Cortar COULD {{lista}}.
-2. Cortar SHOULD {{lista}} — começando pelos de menor impacto.
-3. Se ainda apertar: revisitar MUSTs com `@architect` (se algum MUST pode virar "MVP do MUST" mais simples).
+1. Cut COULD {{list}}.
+2. Cut SHOULD {{list}} — starting with the lowest-impact ones.
+3. If still tight: revisit MUSTs with `@architect` (whether any MUST can become a simpler "MVP of the MUST").
 
-## Decisão final
+## Final decision
 
-- ✅ **Aprovado para executar:** sim/não.
-- **Próximo passo:** Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- ✅ **Approved to execute:** yes/no.
+- **Next step:** For the next step verified against its prerequisites, run /renata:status.
 ```
 
-## Após gerar
+## After generating
 
-- Grave em `docs/roadmap/fase-<N>-scope.md` (ou anexa em `fase-<N>-<nome>.md`).
-- Se veredito for ❌, alerte explicitamente: "Esta fase **não cabe** no orçamento. Decisão: ou cortar escopo (sugiro mover X, Y pra Fase N+1) ou expandir prazo (precisa de mais Z dias)."
-- Se houver SHOULD/COULD que dependem de MUST de outra fase, alerte.
-- Sugira próximo passo:
-  - Se ✅: Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
-  - Se 🟡: cortar 1-2 SHOULDs e regerar.
-  - Se ❌: re-conversar com stakeholder sobre escopo/prazo antes de seguir.
+- Save to `docs/roadmap/fase-<N>-scope.md` (or append to `fase-<N>-<nome>.md`).
+- If the verdict is ❌, warn explicitly: "This phase **does not fit** the budget. Decision: either cut scope (I suggest moving X, Y to Phase N+1) or extend the deadline (you need Z more days)."
+- If there are SHOULDs/COULDs that depend on a MUST from another phase, warn about it.
+- Suggest the next step:
+  - If ✅: For the next step verified against its prerequisites, run /renata:status.
+  - If 🟡: cut 1-2 SHOULDs and regenerate.
+  - If ❌: re-discuss scope/deadline with the stakeholder before proceeding.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: número/nome da fase (ex: "0", "Fase 0 Spike"). Se omitido, infere da fase ativa em `CLAUDE.md`.
+`$ARGUMENTS`: phase number/name (e.g. "0", "Phase 0 Spike"). If omitted, inferred from the active phase in `CLAUDE.md`.

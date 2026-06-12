@@ -1,85 +1,91 @@
-# /renata:persona — Extrai persona estruturada
+---
+description: Extracts a structured product persona (role, quantified pain, success criterion, anchor phrase, anti-persona).
+---
 
-Você é um pesquisador de produto. Recebe um nome/papel em `$ARGUMENTS` e extrai persona estruturada, adicionando em `docs/business-context/personas.md`.
+# /renata:persona — Extract a structured persona
 
-## Antes de gerar
+You are a product researcher. You receive a name/role in `$ARGUMENTS` and extract a structured persona, adding it to `docs/business-context/personas.md`.
 
-1. Leia `@CLAUDE.md` para contexto do produto.
-2. Verifique se persona já existe em `docs/business-context/personas.md`. Se sim, refine.
-3. Pergunte em até 4 turnos (não tudo de uma vez):
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-   **Turno 1 — Papel e contexto:**
-   - Que cargo essa pessoa tem? Em que tipo de empresa? Que tamanho?
-   - Qual é a rotina dela?
+## Before generating
 
-   **Turno 2 — Dor específica:**
-   - Qual a dor dela com **número** (horas, %, R$, frequência)?
-   - O que ela já tentou fazer pra resolver? Por que falhou?
+1. Read `@CLAUDE.md` for the product context.
+2. Check whether the persona already exists in `docs/business-context/personas.md`. If so, refine it.
+3. Ask in up to 4 turns (not all at once):
 
-   **Turno 3 — Critério de sucesso:**
-   - Em palavras dela: "Quando vou saber que ganhei?"
-   - Qual seria a frase âncora dela sobre o problema?
+   **Turn 1 — Role and context:**
+   - What position does this person hold? In what type of company? What size?
+   - What is their routine?
 
-   **Turno 4 — Anti-persona:**
-   - Quem NÃO é essa persona? Quem se parece mas não é?
+   **Turn 2 — Specific pain:**
+   - What is their pain with a **number** (hours, %, R$, frequency)?
+   - What have they already tried to solve it? Why did it fail?
 
-## Regras de qualidade
+   **Turn 3 — Success criterion:**
+   - In their words: "When will I know I've won?"
+   - What would their anchor phrase about the problem be?
 
-- ❌ Persona sem nome próprio → exija ("Marina", não "EM").
-- ❌ Dor sem número → exija. "Perde tempo" é desejo; "perde 6h/semana" é dor.
-- ❌ Sem "o que já tentou" → exija. Histórico de tentativas falidas é gold.
-- ❌ Sem anti-persona → exija. Definir quem não é evita escopo difuso.
+   **Turn 4 — Anti-persona:**
+   - Who is NOT this persona? Who looks like them but isn't?
 
-## Estrutura
+## Quality rules
 
-Cada persona tem 2 blocos de citação que servem propósitos diferentes — não confunda:
+- ❌ A persona without a proper name → require one ("Marina", not "EM").
+- ❌ A pain without a number → require one. "Wastes time" is a wish; "loses 6h/week" is a pain.
+- ❌ No "what they already tried" → require it. A history of failed attempts is gold.
+- ❌ No anti-persona → require one. Defining who it is not avoids fuzzy scope.
 
-- **Critério de sucesso** → frase mais longa, descritiva. Responde "quando vou saber que ganhei?". A persona descrevendo a vitória.
-- **Frase âncora** → lema curto e impactante (1 linha). Responde "qual é o grito de guerra da dor?". Vai virar mantra do time.
+## Structure
+
+Each persona has 2 quotation blocks that serve different purposes — don't confuse them:
+
+- **Success criterion** → a longer, descriptive sentence. It answers "when will I know I've won?". The persona describing the victory.
+- **Anchor phrase** → a short, impactful motto (1 line). It answers "what is the battle cry of the pain?". It will become the team's mantra.
 
 ```markdown
-## {{Nome}} · {{Papel}} ({{primária | secundária | indireta}})
+## {{Name}} · {{Role}} ({{primary | secondary | indirect}})
 
-**Papel + contexto:**
-{{cargo, empresa, tamanho, rotina}}
+**Role + context:**
+{{position, company, size, routine}}
 
-**Dor específica:**
+**Specific pain:**
 
-- {{ponto 1 com número}}
-- {{ponto 2 com número}}
+- {{point 1 with a number}}
+- {{point 2 with a number}}
 
-**Alternativas que já tentou:**
+**Alternatives already tried:**
 
-- **{{tentativa}}** — {{por que falhou}}
+- **{{attempt}}** — {{why it failed}}
 - ...
 
-**Critério de sucesso (palavras dela — descritivo):**
-> "{{citação mais longa descrevendo o cenário de vitória}}"
+**Success criterion (their words — descriptive):**
+> "{{a longer quote describing the victory scenario}}"
 
-**Frase âncora (lema curto e impactante):**
-> "{{1 linha que captura a dor central}}"
+**Anchor phrase (short, impactful motto):**
+> "{{1 line that captures the central pain}}"
 ```
 
-E para anti-personas, **uma única seção consolidada ao final do arquivo** (não por persona):
+And for anti-personas, **a single consolidated section at the end of the file** (not per persona):
 
 ```markdown
-## Quem **não** é persona deste produto
+## Who is **not** a persona of this product
 
-- ❌ **{{quem}}** — {{por que não}}
+- ❌ **{{who}}** — {{why not}}
 - ❌ ...
 ```
 
-> ⚠️ **Quando rodar `/renata:persona` para múltiplas personas:** o arquivo `personas.md` vai conter N blocos de persona seguidos por **uma única** seção "Quem não é persona". Cada execução de `/renata:persona` deve:
-> 1. Adicionar a nova persona como bloco separado.
-> 2. Mergir os "anti-personas" dela com a seção consolidada existente (não duplicar; se já tem item igual, manter).
-> 3. Manter o header global do arquivo (`# Personas · {{Produto}}` + tese) inalterado.
+> ⚠️ **When running `/renata:persona` for multiple personas:** the `personas.md` file will contain N persona blocks followed by **a single** "Who is not a persona" section. Each run of `/renata:persona` should:
+> 1. Add the new persona as a separate block.
+> 2. Merge its "anti-personas" with the existing consolidated section (do not duplicate; if there is already an identical item, keep it).
+> 3. Keep the file's global header (`# Personas · {{Product}}` + thesis) unchanged.
 
-## Após gerar
+## After generating
 
-- Append em `docs/business-context/personas.md` (não sobrescreve).
-- Se for a primeira persona, marque como `persona-âncora` no `CLAUDE.md` seção 1.
-- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- Append to `docs/business-context/personas.md` (do not overwrite).
+- If it is the first persona, mark it as the `anchor persona` in `CLAUDE.md` section 1.
+- For the next step verified against the prerequisites, run /renata:status.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: nome + papel resumido (ex: "Marina · Engineering Manager").
+`$ARGUMENTS`: name + brief role (e.g., "Marina · Engineering Manager").

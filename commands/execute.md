@@ -1,78 +1,84 @@
-# /renata:execute — Orquestra a Etapa 12 (executar plano) respeitando o método
+---
+description: Orchestrates phase execution with RENATA guardrails, enforcing pre-flight checks and a per-task done gate.
+---
 
-Você é um tech lead conduzindo a execução de uma fase. Este command é o **espelho de saída** do `/renata:plan-phase`: assim como `/renata:plan-phase` não deixa *começar* sem os 10 pré-requisitos, o `/renata:execute` não deixa *fechar* uma task sem verificação.
+# /renata:execute — Orchestrate Step 12 (execute the plan) while respecting the method
 
-Ele orquestra `superpowers:executing-plans` com os guardrails do RENATA, amarrando as skills/agents no momento certo de cada task. Sozinho, o `executing-plans` não conhece nosso método nem nosso gate de pronto.
+You are a tech lead leading the execution of a phase. This command is the **output mirror** of `/renata:plan-phase`: just as `/renata:plan-phase` won't let you *start* without the 10 prerequisites, `/renata:execute` won't let you *close* a task without verification.
 
-## Quando usar
+Respond to the user in the user's language (the language they are writing in).
 
-- Para executar uma fase do roadmap que já tem plano aprovado pelo `@architect` (saída da Etapa 11 / `/renata:plan-phase`).
+It orchestrates `superpowers:executing-plans` with the RENATA guardrails, wiring the skills/agents at the right moment of each task. On its own, `executing-plans` does not know our method or our done gate.
 
-**NÃO use** para:
+## When to use
 
-- Gerar o plano → `/renata:plan-phase`.
-- Investigação técnica → `/renata:spike`.
-- Decisão estrutural → `/renata:adr`.
+- To execute a roadmap phase that already has a plan approved by `@architect` (output of Step 11 / `/renata:plan-phase`).
 
-## Passo 1 — Pré-flight (validação de pré-requisitos)
+**Do NOT use** for:
 
-Valide os 4 itens abaixo, listando o resultado de cada um. Se algum falhar, **aborte** e instrua a correção.
+- Generating the plan → `/renata:plan-phase`.
+- Technical investigation → `/renata:spike`.
+- Structural decision → `/renata:adr`.
 
-| # | Pré-requisito | Como validar | Falha → |
+## Step 1 — Pre-flight (prerequisite validation)
+
+Validate the 4 items below, listing the result of each. If any fails, **abort** and instruct the fix.
+
+| # | Prerequisite | How to validate | Failure → |
 |---|---|---|---|
-| 1 | Existe plano aprovado em `docs/superpowers/specs/` | `ls docs/superpowers/specs/*-plan.md` retorna ≥1 e CLAUDE.md Seção 5 aponta pra ele | "Rode `/renata:plan-phase <fase>` antes." |
-| 2 | Plano sem bloqueadores 🔴 abertos do `@architect` | `grep -c "🔴" docs/superpowers/specs/<plano>` — confirmar que os 🔴 estão marcados como resolvidos | "Resolva os bloqueadores do `@architect` antes." |
-| 3 | Não há outro plano `running` sobreposto da mesma fase | só 1 plano da fase com `Status: running` | "Termine ou abandone o plano anterior antes." |
-| 4 | `rules.yaml` válido | `bash .claude/hooks/rules-violation.sh` roda sem erro fatal | "Rode `/renata:adr` em modo refine pra popular `rules.yaml`." |
+| 1 | An approved plan exists in `docs/superpowers/specs/` | `ls docs/superpowers/specs/*-plan.md` returns ≥1 and CLAUDE.md Section 5 points to it | "Run `/renata:plan-phase <phase>` first." |
+| 2 | Plan with no open 🔴 blockers from `@architect` | `grep -c "🔴" docs/superpowers/specs/<plan>` — confirm the 🔴 are marked as resolved | "Resolve the `@architect` blockers first." |
+| 3 | No other overlapping `running` plan for the same phase | only 1 plan for the phase with `Status: running` | "Finish or abandon the previous plan first." |
+| 4 | `rules.yaml` valid | `bash .claude/hooks/rules-violation.sh` runs without a fatal error | "Run `/renata:adr` in refine mode to populate `rules.yaml`." |
 
-## Passo 2 — Carregar contexto de execução (antes do primeiro Edit/Write)
+## Step 2 — Load execution context (before the first Edit/Write)
 
-Antes de tocar em qualquer arquivo de código:
+Before touching any code file:
 
-1. Invoque a skill `respecting-adrs` (valida proposta contra ADRs aceitas).
-2. Leia: o plano ativo, `CLAUDE.md`, a feature-spec da fase em `docs/features/`.
+1. Invoke the `respecting-adrs` skill (validates the proposal against accepted ADRs).
+2. Read: the active plan, `CLAUDE.md`, the phase's feature-spec in `docs/features/`.
 
-> Este passo cobre na prática a candidata `retrieving-context-before-coding` (ver `_framework/SKILL-CANDIDATES.md`) SEM criar a skill — o command força a leitura. Se a fricção de "começou a codar sem ler contexto" aparecer mesmo assim em uso real, aí promova a candidata a skill.
+> This step covers in practice the candidate `retrieving-context-before-coding` (see `_framework/SKILL-CANDIDATES.md`) WITHOUT creating the skill — the command forces the reading. If the "started coding without reading context" friction still appears in real use, then promote the candidate to a skill.
 
-## Passo 3 — Loop de execução por task
+## Step 3 — Per-task execution loop
 
-Para CADA task do plano, nesta ordem:
+For EACH task in the plan, in this order:
 
-1. **TDD:** invoque `superpowers:test-driven-development` — escreva o teste que falha (red) ANTES do código.
-2. **Código:** implemente o mínimo pra passar (green).
-3. **Review:** invoque `@code-reviewer` no diff da task. Resolva bloqueadores 🔴 antes de seguir.
-4. **GATE DE PRONTO:** invoque `superpowers:verification-before-completion`. NÃO marque a task como `[x]` sem:
-   - teste em verde (rodar e confirmar output, não assumir);
-   - hook `rules-violation.sh` não-bloqueando.
-   - **Granularidade:** o gate por-task cobre os dois primeiros critérios do princípio 4 (teste passa + hook não bloqueia). O terceiro (métrica observável) é nível de fase, validado no Passo 4 — não exija métrica observável a cada `[x]`.
-5. **Scope-creep:** se a task revelou capacidade fora da feature-spec, a skill `detecting-scope-creep` deve ativar — pause e decida (ampliar spec via `/renata:feature-spec` ou cortar) antes de continuar.
+1. **TDD:** invoke `superpowers:test-driven-development` — write the failing test (red) BEFORE the code.
+2. **Code:** implement the minimum to pass (green).
+3. **Review:** invoke `@code-reviewer` on the task diff. Resolve 🔴 blockers before moving on.
+4. **DONE GATE:** invoke `superpowers:verification-before-completion`. Do NOT mark the task as `[x]` without:
+   - test green (run it and confirm the output, don't assume);
+   - the `rules-violation.sh` hook not blocking.
+   - **Granularity:** the per-task gate covers the first two criteria of principle 4 (test passes + hook does not block). The third (observable metric) is at the phase level, validated in Step 4 — don't require an observable metric at every `[x]`.
+5. **Scope-creep:** if the task revealed a capability outside the feature-spec, the `detecting-scope-creep` skill should activate — pause and decide (expand the spec via `/renata:feature-spec` or cut it) before continuing.
 
-### Quando aparecer bug
+### When a bug appears
 
-Invoque `superpowers:systematic-debugging` ANTES de propor fix (não chute).
+Invoke `superpowers:systematic-debugging` BEFORE proposing a fix (don't guess).
 
-<!-- TODO: quando a candidata `ai-pipeline-debugging` for promovida (ver SKILL-CANDIDATES.md), complementar este gancho para pipelines de IA (latência, GPU OOM, drift áudio-vídeo). -->
+<!-- TODO: when the candidate `ai-pipeline-debugging` is promoted (see SKILL-CANDIDATES.md), complement this hook for AI pipelines (latency, GPU OOM, audio-video drift). -->
 
-## Passo 4 — Fim de fase
+## Step 4 — End of phase
 
-Quando todas as tasks do plano estão `[x]`:
+When all tasks in the plan are `[x]`:
 
-1. Invoque `@qa-tester` — valida contra critério de aceite do PRD/feature-spec (validação independente, age como a persona-âncora). Resolva bloqueadores antes de declarar a fase pronta.
-2. Invoque a skill `keeping-docs-alive` — atualiza CLAUDE.md Seção 5, `.claude/sessions/` e os checkboxes do plano.
-3. Sugira `/renata:retro <fase>`. Se a fase entregou feature mensurável, sugira também `/renata:hypothesis-check`.
+1. Invoke `@qa-tester` — validates against the PRD/feature-spec acceptance criteria (independent validation, acting as the anchor persona). Resolve blockers before declaring the phase done.
+2. Invoke the `keeping-docs-alive` skill — updates CLAUDE.md Section 5, `.claude/sessions/`, and the plan checkboxes.
+3. Suggest `/renata:retro <phase>`. If the phase delivered a measurable feature, also suggest `/renata:hypothesis-check`.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: número/nome da fase a executar (ex: `0`, `Fase 0 Spike`). Se omitido, infere da fase ativa em `CLAUDE.md`.
+`$ARGUMENTS`: number/name of the phase to execute (e.g., `0`, `Phase 0 Spike`). If omitted, infer from the active phase in `CLAUDE.md`.
 
-## Regras de qualidade
+## Quality rules
 
-- ❌ Pré-flight falhou → recusar iniciar execução.
-- ❌ Marcar task `[x]` sem passar pelo gate de pronto (Passo 3.4) → recusar.
-- ❌ Declarar fase pronta sem `@qa-tester` (Passo 4.1) → recusar.
+- ❌ Pre-flight failed → refuse to start execution.
+- ❌ Marking a task `[x]` without passing the done gate (Step 3.4) → refuse.
+- ❌ Declaring a phase done without `@qa-tester` (Step 4.1) → refuse.
 
-## O que este command NÃO faz
+## What this command does NOT do
 
-- ❌ Não substitui `superpowers:executing-plans` — o invoca/complementa (igual `/renata:plan-phase` faz com `writing-plans`).
-- ❌ Não decide arquitetura (isso é `@architect` via `/renata:adr`).
-- ❌ Não roda testes via hook automático — o gate de pronto é a skill `verification-before-completion`, não um hook. Se a skill se mostrar fraca no uso real, promova a hook.
+- ❌ Does not replace `superpowers:executing-plans` — it invokes/complements it (just as `/renata:plan-phase` does with `writing-plans`).
+- ❌ Does not decide architecture (that is `@architect` via `/renata:adr`).
+- ❌ Does not run tests via an automated hook — the done gate is the `verification-before-completion` skill, not a hook. If the skill proves weak in real use, promote it to a hook.

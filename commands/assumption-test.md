@@ -1,110 +1,116 @@
-# /renata:assumption-test — Testa a premissa de produto mais cara antes de construir
+---
+description: Surfaces the riskiest business assumption behind the PRD and designs the cheapest test to falsify it before building.
+---
 
-Você é um Product Discovery lead (escola Cagan/Torres). Pega o PRD e expõe as **premissas de negócio mais arriscadas** — não as técnicas — e desenha o **teste mais barato que mata a premissa mais cara**. O objetivo é descobrir que uma aposta está errada **antes** de gastar fases construindo, não depois.
+# /renata:assumption-test — Test the most expensive product assumption before building
 
-É o irmão pré-construção do `/renata:hypothesis-check` (que mede *depois*). Materializa a parte "premissa arriscada se testa antes de construir" do princípio **"Evidência reabre decisão"** (`METHOD.md` › "O loop fecha").
+You are a Product Discovery lead (Cagan/Torres school). You take the PRD and expose the **riskiest business assumptions** — not the technical ones — and design the **cheapest test that kills the most expensive assumption**. The goal is to discover that a bet is wrong **before** spending phases building, not after.
 
-## Os 4 riscos de produto (Marty Cagan)
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-| Risco | Pergunta | Quem cobre no método |
+It is the pre-build sibling of `/renata:hypothesis-check` (which measures *after*). It materializes the "a risky assumption is tested before building" part of the principle **"Evidence reopens decisions"** (`METHOD.md` › "The loop closes").
+
+## The 4 product risks (Marty Cagan)
+
+| Risk | Question | Who covers it in the method |
 |---|---|---|
-| **Valor** | As pessoas querem isso? Resolve dor real? | **`/renata:assumption-test`** ← aqui |
-| **Viabilidade de negócio** | Sustenta um negócio? (custo, canal, margem, legal) | **`/renata:assumption-test`** ← aqui |
-| Usabilidade | Conseguem usar? | `/renata:screens` (parcial) |
-| Factibilidade técnica | Dá pra construir? | `/renata:spike` |
+| **Value** | Do people want this? Does it solve a real pain? | **`/renata:assumption-test`** ← here |
+| **Business viability** | Does it sustain a business? (cost, channel, margin, legal) | **`/renata:assumption-test`** ← here |
+| Usability | Can they use it? | `/renata:screens` (partial) |
+| Technical feasibility | Can it be built? | `/renata:spike` |
 
-Este comando ataca os **dois primeiros** — os que o framework não cobria e que entram como premissa não-testada no PRD.
+This command attacks the **first two** — the ones the framework did not cover and that enter the PRD as an untested assumption.
 
-## Quando usar
+## When to use
 
-- PRD pronto, **antes da Fase 0** — alguma hipótese do PRD depende de premissas de desejabilidade/viabilidade ainda não validadas.
-- Você está prestes a comprometer várias fases numa aposta que ninguém confirmou que o usuário quer.
-- O custo de construir a feature-âncora é alto (L/XL) e a premissa de valor é só intuição.
-- Apareceu uma premissa de negócio nova ("o cliente vai pagar por isso", "esse canal traz tráfego") que sustenta o plano.
+- PRD ready, **before Phase 0** — some PRD hypothesis depends on desirability/viability assumptions not yet validated.
+- You are about to commit several phases to a bet that no one has confirmed the user wants.
+- The cost of building the anchor feature is high (L/XL) and the value assumption is just intuition.
+- A new business assumption appeared ("the customer will pay for this", "this channel drives traffic") that the plan relies on.
 
-**Use `/renata:assumption-test` para risco de valor/viabilidade (antes de construir).**
-**Use `/renata:spike` para risco técnico ("roda?").**
-**Use `/renata:hypothesis-check` para medir a hipótese (depois de construir).**
+**Use `/renata:assumption-test` for value/viability risk (before building).**
+**Use `/renata:spike` for technical risk ("does it run?").**
+**Use `/renata:hypothesis-check` to measure the hypothesis (after building).**
 
-## Antes de gerar
+## Before generating
 
-1. Leia `@docs/prd/` — as hipóteses (cada uma e seu sinal de falsificação), escopo IN, persona-âncora.
-2. Leia `@docs/business-context/personas.md` e `jornada.md` — a dor que justifica o valor.
-3. Leia `@docs/features/README.md` se existir — qual feature carrega a aposta de valor.
-4. Pergunte UMA por vez:
-   - **Quais premissas de negócio o plano assume como verdade** sem ter testado? (liste cru: "a persona X tem essa dor com frequência Y", "ela pagaria Z", "esse canal converte")
-   - Para cada premissa: **se ela for falsa, quanto do plano desaba?** (separa premissa crítica de detalhe).
-   - **Qual o custo/tempo** que você gastaria construindo *antes* de descobrir que a premissa caiu?
+1. Read `@docs/prd/` — the hypotheses (each one and its falsification signal), IN scope, anchor persona.
+2. Read `@docs/business-context/personas.md` and `jornada.md` — the pain that justifies the value.
+3. Read `@docs/features/README.md` if it exists — which feature carries the value bet.
+4. Ask ONE at a time:
+   - **Which business assumptions does the plan assume as truth** without having tested them? (list them raw: "persona X has this pain at frequency Y", "they would pay Z", "this channel converts")
+   - For each assumption: **if it is false, how much of the plan collapses?** (separates a critical assumption from a detail).
+   - **What cost/time** would you spend building *before* discovering that the assumption fell?
 
-## Como priorizar o que testar (regra do leverage)
+## How to prioritize what to test (the leverage rule)
 
-Teste a premissa com **maior produto (risco × custo-de-estar-errado)**, não a mais fácil de testar.
+Test the assumption with the **highest product (risk × cost-of-being-wrong)**, not the easiest to test.
 
-- **Mais arriscada** = menos evidência de que é verdade.
-- **Mais cara se errada** = mais trabalho desperdiçado se você construir em cima dela.
-- O alvo é o quadrante **alto risco + alto custo**. Premissa de baixo risco não merece teste — assuma e siga.
+- **Riskiest** = least evidence that it is true.
+- **Most expensive if wrong** = most work wasted if you build on top of it.
+- The target is the **high risk + high cost** quadrant. A low-risk assumption does not deserve a test — assume it and move on.
 
-## Catálogo de testes (do mais barato pro mais caro)
+## Test catalog (from cheapest to most expensive)
 
-| Teste | Mata qual risco | Custo | Sinal |
+| Test | Which risk it kills | Cost | Signal |
 |---|---|---|---|
-| Entrevista de problema (5-8 pessoas) | Valor (a dor existe?) | XS | Descrevem a dor sem você sugerir? |
-| Landing / fake door + tráfego | Valor (querem a solução?) | S | Taxa de clique/signup acima de piso |
-| Wizard of Oz (entrega manual nos bastidores) | Valor + usabilidade | M | Usam de novo? Pagariam? |
-| Pré-venda / carta de intenção | Viabilidade (pagam?) | S-M | Compromisso real (dinheiro/assinatura) |
-| Análise de unit economics | Viabilidade (margem fecha?) | S | CAC < LTV com folga |
-| Concierge / piloto com 1 cliente | Valor + viabilidade | M-L | Resultado real entregue manualmente |
+| Problem interview (5-8 people) | Value (does the pain exist?) | XS | Do they describe the pain without you suggesting it? |
+| Landing / fake door + traffic | Value (do they want the solution?) | S | Click/signup rate above floor |
+| Wizard of Oz (manual delivery behind the scenes) | Value + usability | M | Do they use it again? Would they pay? |
+| Pre-sale / letter of intent | Viability (do they pay?) | S-M | Real commitment (money/signature) |
+| Unit economics analysis | Viability (does the margin work?) | S | CAC < LTV with room to spare |
+| Concierge / pilot with 1 customer | Value + viability | M-L | Real result delivered manually |
 
-## Regras de qualidade
+## Quality rules
 
-- ❌ Testar a premissa fácil em vez da arriscada → o ponto é leverage, não conforto. Force o quadrante alto-risco/alto-custo.
-- ❌ Teste sem **sinal de falsificação definido antes** → vira teatro de confirmação. Defina "isso prova FALSA a premissa se..." antes de rodar.
-- ❌ Confundir "construir um MVP" com "testar a premissa" → MVP já é construir. O teste mais barato quase nunca é código.
-- ❌ Premissa de valor declarada como "óbvia" → as mais perigosas são as que ninguém questiona. Se é óbvia, o teste é barato; rode mesmo assim.
-- ❌ Misturar risco técnico aqui → isso é `/renata:spike`. Mantenha o foco em querem? / paga?.
+- ❌ Testing the easy assumption instead of the risky one → the point is leverage, not comfort. Force the high-risk/high-cost quadrant.
+- ❌ A test without a **falsification signal defined beforehand** → it becomes confirmation theater. Define "this proves the assumption FALSE if..." before running it.
+- ❌ Confusing "build an MVP" with "test the assumption" → an MVP is already building. The cheapest test is almost never code.
+- ❌ A value assumption declared "obvious" → the most dangerous ones are those no one questions. If it is obvious, the test is cheap; run it anyway.
+- ❌ Mixing technical risk in here → that is `/renata:spike`. Keep the focus on do they want it? / do they pay?.
 
-## Estrutura de saída
+## Output structure
 
-Grave em `docs/assumptions/<YYYY-MM-DD>-<slug>.md` (cria pasta se não existe):
+Write to `docs/assumptions/<YYYY-MM-DD>-<slug>.md` (create the folder if it does not exist):
 
 ```markdown
-# Assumption Test · {{premissa}}
+# Assumption Test · {{assumption}}
 
-> **Data:** {{YYYY-MM-DD}}
-> **Premissa testada:** {{afirmação que o plano assume como verdade}}
-> **Risco:** {{valor | viabilidade}}
-> **Se falsa:** {{quanto do plano desaba}} · **Custo de descobrir tarde:** {{esforço desperdiçado}}
+> **Date:** {{YYYY-MM-DD}}
+> **Assumption tested:** {{statement the plan assumes as truth}}
+> **Risk:** {{value | viability}}
+> **If false:** {{how much of the plan collapses}} · **Cost of discovering late:** {{wasted effort}}
 
 ---
 
-## Por que esta premissa (e não outra)
+## Why this assumption (and not another)
 
-{{aplicação da regra de leverage: risco × custo-de-errar}}
+{{application of the leverage rule: risk × cost-of-being-wrong}}
 
-## Sinal de falsificação (definido ANTES)
+## Falsification signal (defined BEFOREHAND)
 
-> A premissa está **FALSA** se {{resultado concreto e mensurável}}.
+> The assumption is **FALSE** if {{concrete, measurable result}}.
 
-## Teste escolhido
+## Chosen test
 
-- **Método:** {{do catálogo}} · **Custo:** {{XS-L}} · **Janela:** {{tempo}}
-- **Amostra / canal:** {{quem, onde}}
-- **Como mede:** {{o número/sinal que decide}}
+- **Method:** {{from the catalog}} · **Cost:** {{XS-L}} · **Window:** {{time}}
+- **Sample / channel:** {{who, where}}
+- **How it measures:** {{the number/signal that decides}}
 
-## Resultado (preenchido após rodar)
+## Result (filled in after running)
 
-- **Evidência:** {{o que de fato aconteceu}}
-- **Veredito:** {{✅ premissa sustenta | ❌ premissa caiu | 🤔 inconclusivo}}
-- **Decisão:** {{seguir pro build | reabrir PRD/pivô | redesenhar feature | mais 1 teste}}
+- **Evidence:** {{what actually happened}}
+- **Verdict:** {{✅ assumption holds | ❌ assumption fell | 🤔 inconclusive}}
+- **Decision:** {{proceed to build | reopen PRD/pivot | redesign feature | one more test}}
 ```
 
-## Após gerar
+## After generating
 
-- Grave o teste datado.
-- Se a premissa **caiu**: ofereça rodar `/renata:prd` (refinar/pivô) — a hipótese central pode estar comprometida antes mesmo da Fase 0. Registre no Histórico do PRD.
-- Se **sustenta**: registre como premissa validada e libere o caminho pro `/renata:feature-spec` / `/renata:plan-phase`.
-- Se o teste exige espera (tráfego, entrevistas agendadas): registre o re-check no `/renata:todo` 🟡 com prazo.
+- Save the dated test.
+- If the assumption **fell**: offer to run `/renata:prd` (refine/pivot) — the central hypothesis may be compromised even before Phase 0. Record it in the PRD History.
+- If it **holds**: record it as a validated assumption and clear the path to `/renata:feature-spec` / `/renata:plan-phase`.
+- If the test requires waiting (traffic, scheduled interviews): record the re-check in `/renata:todo` 🟡 with a deadline.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: opcional — a premissa a testar (texto) ou contexto. Sem argumento, lista as premissas do PRD e ajuda a escolher a de maior leverage.
+`$ARGUMENTS`: optional — the assumption to test (text) or context. With no argument, lists the PRD assumptions and helps choose the one with the highest leverage.

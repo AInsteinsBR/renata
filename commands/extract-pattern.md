@@ -1,69 +1,75 @@
-# /renata:extract-pattern — Destila o padrão de um repo em ADRs + doc carregável
+---
+description: Distills a repo's pattern into structural ADRs plus a loadable code-pattern doc, after mapping and user confirmation.
+---
 
-Você é um arquiteto. Recebe um caminho de repo em `$ARGUMENTS`, mapeia o padrão em detalhe (via `@pattern-mapper`), confirma com o usuário, e gera **ADRs (a decisão) + `code-pattern-<scope>.md` (o detalhe operacional)**.
+# /renata:extract-pattern — Distill a repo's pattern into ADRs + a loadable doc
 
-Serve pra: destilar um starter clonado (`frontend/`), documentar um projeto legado, ou capturar o padrão de um repo de referência.
+You are an architect. You receive a repo path in `$ARGUMENTS`, map the pattern in detail (via `@pattern-mapper`), confirm with the user, and generate **ADRs (the decision) + `code-pattern-<scope>.md` (the operational detail)**.
 
-## A divisão ADR vs doc (não viole)
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-- **ADR** = "por que decidimos X + alternativas + trade-offs + gatilho de revisão". Curta, estável.
-- **`code-pattern-<scope>.md`** = "como o código faz X, em detalhe + exemplos". Longo, vivo.
-- A ADR **aponta** pro doc; o doc **cita** a ADR. **Zero conteúdo duplicado.** Se é "por que", vai na ADR; se é "como o código faz", vai no doc.
+It serves to: distill a cloned starter (`frontend/`), document a legacy project, or capture the pattern of a reference repo.
 
-## Passo 1 — Resolver alvo e escopo
+## The ADR vs doc split (do not violate)
 
-- `$ARGUMENTS` = caminho do repo. Sem argumento: assuma `frontend/` se existir; senão pergunte qual caminho.
-- Validar que o caminho existe e contém código (não está vazio).
-- **Inferir o escopo** do nome da pasta: `frontend/` → `frontend`, `backend/` → `backend`, `api/` → `api`. Mostre o escopo inferido e pergunte: "Escopo `<X>` — confirma ou corrige?". Sem path óbvio, pergunte o escopo.
-- O escopo nomeia os artefatos: `code-pattern-<scope>.md` e marca as ADRs (`[<scope>]` no título).
+- **ADR** = "why we decided X + alternatives + trade-offs + review trigger". Short, stable.
+- **`code-pattern-<scope>.md`** = "how the code does X, in detail + examples". Long, living.
+- The ADR **points** to the doc; the doc **cites** the ADR. **Zero duplicated content.** If it's "why", it goes in the ADR; if it's "how the code does it", it goes in the doc.
 
-## Passo 2 — Varredura profunda (dispara o agente)
+## Step 1 — Resolve target and scope
 
-Invoque o agente `@pattern-mapper` apontando pro caminho resolvido. Ele varre os 4 eixos (arquitetura, stack, design system, convenções) e devolve um **mapa estruturado** com força de evidência por item.
+- `$ARGUMENTS` = repo path. No argument: assume `frontend/` if it exists; otherwise ask which path.
+- Validate that the path exists and contains code (is not empty).
+- **Infer the scope** from the folder name: `frontend/` → `frontend`, `backend/` → `backend`, `api/` → `api`. Show the inferred scope and ask: "Scope `<X>` — confirm or correct?". With no obvious path, ask for the scope.
+- The scope names the artifacts: `code-pattern-<scope>.md` and tags the ADRs (`[<scope>]` in the title).
 
-Não leia o repo você mesmo — delegue ao agente (preserva seu contexto).
+## Step 2 — Deep scan (trigger the agent)
 
-## Passo 3 — Confirmação item a item
+Invoke the `@pattern-mapper` agent pointing to the resolved path. It scans the 4 axes (architecture, stack, design system, conventions) and returns a **structured map** with evidence strength per item.
 
-Apresente o mapa do agente agrupado por eixo. Para cada item:
-- Default = o que o código diz ("código é a verdade").
-- Itens marcados **evidência fraca** → destaque como "possível hack — vira regra?".
-- O usuário confirma, corrige, ou marca "não é regra" (fica fora das ADRs).
+Don't read the repo yourself — delegate to the agent (it preserves your context).
 
-Não prossiga sem a confirmação.
+## Step 3 — Item-by-item confirmation
 
-## Passo 4 — Gerar ADRs
+Present the agent's map grouped by axis. For each item:
+- Default = what the code says ("the code is the truth").
+- Items marked **weak evidence** → highlight them as "possible hack — does it become a rule?".
+- The user confirms, corrects, or marks "not a rule" (stays out of the ADRs).
 
-Para cada decisão **estrutural** confirmada (stack principal, arquitetura/camadas, design system, convenção central):
-- Crie `docs/decisions/ADR-NNN-<slug>.md` no formato Nygard (próximo número livre), status `accepted`.
-- Marque o escopo no título: `ADR-NNN — [<scope>] <decisão>`.
-- Preencha: Contexto, Decisão, Alternativas (as que o código NÃO usa), Trade-offs, Gatilho de revisão.
-- Adicione ao índice `docs/decisions/README.md`.
-- Se há enforcement automatizável (ex: "proibir import de Material quando o padrão é shadcn"), escreva o bloco em `.claude/rules.yaml` (gêmeo da ADR).
-- **NÃO** crie ADR pra item trivial/inventário (componente individual, token de cor) — isso vai só pro doc.
+Do not proceed without confirmation.
 
-## Passo 5 — Gerar o doc carregável
+## Step 4 — Generate ADRs
 
-- Crie/atualize `docs/technical-context/code-pattern-<scope>.md`:
-  - Abre com tese de 1 parágrafo + lista das ADRs que governam este padrão (links).
-  - Seções por eixo: **Estrutura** (árvore comentada), **Stack** (libs + versão + papel), **Design system** (tokens, componentes, exemplos de código reais do repo), **Convenções** (com trechos reais).
-  - Cada seção é "como o código faz" — **não** repita a justificativa (essa está na ADR linkada).
-  - Rodapé: "Gerado por `/renata:extract-pattern` em <data> a partir de `<path>`. Detalhe operacional vivo — atualize ao evoluir; decisões estruturais vão em ADR."
-- Atualize `CLAUDE.md` Seção 3 (`repo`) adicionando a referência: `@docs/technical-context/code-pattern-<scope>.md` → carregado automaticamente toda sessão.
+For each confirmed **structural** decision (main stack, architecture/layers, design system, central convention):
+- Create `docs/decisions/ADR-NNN-<slug>.md` in the Nygard format (next free number), status `accepted`.
+- Tag the scope in the title: `ADR-NNN — [<scope>] <decision>`.
+- Fill in: Context, Decision, Alternatives (the ones the code does NOT use), Trade-offs, Review trigger.
+- Add it to the `docs/decisions/README.md` index.
+- If there is automatable enforcement (e.g., "forbid importing Material when the pattern is shadcn"), write the block in `.claude/rules.yaml` (twin of the ADR).
+- Do **NOT** create an ADR for a trivial/inventory item (an individual component, a color token) — that goes only in the doc.
 
-## Argumentos
+## Step 5 — Generate the loadable doc
 
-`$ARGUMENTS`: caminho do repo a mapear (ex: `frontend/`, `backend/`, `.`). Se omitido, infere `frontend/`.
+- Create/update `docs/technical-context/code-pattern-<scope>.md`:
+  - Open with a 1-paragraph thesis + a list of the ADRs that govern this pattern (links).
+  - Sections by axis: **Structure** (commented tree), **Stack** (libs + version + role), **Design system** (tokens, components, real code examples from the repo), **Conventions** (with real snippets).
+  - Each section is "how the code does it" — do **not** repeat the rationale (that is in the linked ADR).
+  - Footer: "Generated by `/renata:extract-pattern` on <date> from `<path>`. Living operational detail — update as it evolves; structural decisions go in an ADR."
+- Update `CLAUDE.md` Section 3 (`repo`) by adding the reference: `@docs/technical-context/code-pattern-<scope>.md` → loaded automatically every session.
 
-## Regras de qualidade
+## Arguments
 
-- ❌ Gerar ADR sem confirmação do usuário (Passo 3) → recusar.
-- ❌ Duplicar no doc o que já está na ADR (decisão/justificativa) → recusar; doc é só "como o código faz".
-- ❌ Sobrescrever `code-pattern-<scope>.md` de OUTRO escopo → recusar; cada escopo tem seu arquivo.
-- ❌ Criar ADR pra cada componente/token (inventário) → recusar; ADR é pra decisão estrutural.
+`$ARGUMENTS`: path of the repo to map (e.g., `frontend/`, `backend/`, `.`). If omitted, infers `frontend/`.
 
-## O que este command NÃO faz
+## Quality rules
 
-- ❌ Não gera código/boilerplate — isso é o starter (`init.sh --starter`). Aqui só destila o que já existe.
-- ❌ Não "corrige" o padrão — relata o que o código faz; o usuário decide o que vira regra.
-- ❌ Não opina sobre Git (front/back em remotes diferentes é ortogonal ao framework).
+- ❌ Generating an ADR without user confirmation (Step 3) → refuse.
+- ❌ Duplicating in the doc what is already in the ADR (decision/rationale) → refuse; the doc is only "how the code does it".
+- ❌ Overwriting the `code-pattern-<scope>.md` of ANOTHER scope → refuse; each scope has its own file.
+- ❌ Creating an ADR for each component/token (inventory) → refuse; an ADR is for a structural decision.
+
+## What this command does NOT do
+
+- ❌ Does not generate code/boilerplate — that is the starter (`init.sh --starter`). Here it only distills what already exists.
+- ❌ Does not "fix" the pattern — it reports what the code does; the user decides what becomes a rule.
+- ❌ Does not opine on Git (front/back in different remotes is orthogonal to the framework).

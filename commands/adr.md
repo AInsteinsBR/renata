@@ -1,129 +1,135 @@
-# /renata:adr — Formaliza uma ADR a partir de uma decisão
+---
+description: Formalizes an ADR from a technical decision using the Nygard format and syncs its enforcement block in rules.yaml.
+---
 
-Você é um arquiteto sênior. Recebe a descrição de uma decisão técnica em `$ARGUMENTS` e formaliza no padrão Nygard, gravando em `docs/decisions/ADR-NNN-<slug>.md`.
+# /renata:adr — Formalize an ADR from a decision
 
-**Atribuição clara antes de começar:**
+You are a senior architect. You receive the description of a technical decision in `$ARGUMENTS` and formalize it in the Nygard format, writing it to `docs/decisions/ADR-NNN-<slug>.md`.
 
-- O **arquivo de ADR** (`docs/decisions/ADR-NNN-*.md`) é **conteúdo do projeto** — você escreve aqui.
-- O **`.claude/rules.yaml`** também é **conteúdo do projeto** — quando o enforcement da ADR é via hook automatizado, você **adiciona o bloco YAML diretamente nele**, não apenas sugere.
-- O **template** (`_framework/template/.claude/rules.yaml.template`) é do framework — não toque.
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-ADR e seu bloco em `rules.yaml` são **gêmeos**: nascem juntos, vivem juntos, mudam juntos.
+**Clear ownership before you start:**
 
-## Modo de operação: criar vs refinar
+- The **ADR file** (`docs/decisions/ADR-NNN-*.md`) is **project content** — you write here.
+- The **`.claude/rules.yaml`** is also **project content** — when the ADR's enforcement is via an automated hook, you **add the YAML block directly to it**, not just suggest it.
+- The **template** (`_framework/template/.claude/rules.yaml.template`) belongs to the framework — don't touch it.
 
-Antes de qualquer pergunta, identifique o modo:
+An ADR and its `rules.yaml` block are **twins**: they are born together, live together, and change together.
 
-- **Modo CRIAR** (default): `$ARGUMENTS` descreve uma decisão nova → próximo número livre, ADR do zero.
-- **Modo REFINAR**: `$ARGUMENTS` contém "refinar ADR-NNN" ou similar → carregue a ADR existente, valide cada seção, complete lacunas, e sincronize com `rules.yaml`.
-- **Modo ADOTAR-MCP** (variação do CRIAR): `$ARGUMENTS` descreve adotar um MCP pra uma capacidade (ex: "usar Jira pra tarefas"). Além da ADR Nygard normal, você **escreve a entrada correspondente no bloco `integrations:` do `.claude/rules.yaml`**:
-  - Forma: `<capacidade>: { mcp: <nome-no-.mcp.json>, adr: ADR-NNN, espelho: <true|false> }`.
-  - Capacidades canônicas: `tarefas`, `pr`, `db` (extensível).
-  - `espelho: true` quando o MCP recebe escrita espelhada após confirmação; `false` quando é só leitura/ação.
-  - A ADR e a entrada em `integrations:` são **gêmeas** (mesmo princípio do bloco `adrs:`): nascem juntas, somem juntas se a ADR vira superseded.
-  - Confirme o `<nome-no-.mcp.json>` com o usuário (precisa bater com o servidor declarado no `.mcp.json`).
+## Operating mode: create vs refine
 
-Use `/renata:adr refinar ADR-NNN ...` quando:
+Before any question, identify the mode:
 
-- ADR já existe mas foi escrita fora do fluxo `/renata:adr` (típico em projetos retrofitados — o `rules.yaml` pode estar vazio ou desincronizado).
-- ADR tem placeholders, alternativas faltando, ou enforcement ainda não declarado.
-- Decisão evoluiu e precisa de revisão.
+- **CREATE mode** (default): `$ARGUMENTS` describes a new decision → next free number, ADR from scratch.
+- **REFINE mode**: `$ARGUMENTS` contains "refine ADR-NNN" or similar → load the existing ADR, validate each section, fill gaps, and sync with `rules.yaml`.
+- **ADOPT-MCP mode** (a variation of CREATE): `$ARGUMENTS` describes adopting an MCP for a capability (e.g., "use Jira for tasks"). Beyond the normal Nygard ADR, you **write the corresponding entry into the `integrations:` block of `.claude/rules.yaml`**:
+  - Form: `<capability>: { mcp: <name-in-.mcp.json>, adr: ADR-NNN, espelho: <true|false> }`.
+  - Canonical capabilities: `tarefas`, `pr`, `db` (extensible).
+  - `espelho: true` when the MCP receives a mirrored write after confirmation; `false` when it is read/action only.
+  - The ADR and the entry in `integrations:` are **twins** (same principle as the `adrs:` block): they are born together and disappear together if the ADR becomes superseded.
+  - Confirm the `<name-in-.mcp.json>` with the user (it must match the server declared in `.mcp.json`).
 
-No modo refinar, **não cria nova ADR** — atualiza a existente preservando histórico.
+Use `/renata:adr refine ADR-NNN ...` when:
 
-## Antes de gerar
+- The ADR already exists but was written outside the `/renata:adr` flow (typical in retrofitted projects — `rules.yaml` may be empty or out of sync).
+- The ADR has placeholders, missing alternatives, or enforcement not yet declared.
+- The decision evolved and needs review.
 
-1. **Modo CRIAR:** Liste ADRs existentes em `docs/decisions/` e use o próximo número livre.
-   **Modo REFINAR:** Localize o arquivo `docs/decisions/ADR-NNN-*.md` mencionado. Se não existir, aborte com aviso.
-2. Leia `@CLAUDE.md` para conhecer o contexto do produto:
-   - Se identidade já preenchida, use de contexto.
-   - Se ainda só placeholders, peça primeiro `/renata:prd` (decisão estrutural sem produto definido é prematura).
-3. Leia `@docs/decisions/_template.md` para o padrão Nygard.
-4. Leia `@.claude/rules.yaml` para conhecer a estrutura atual (se já existe). Você vai precisar dele depois.
-5. **Modo REFINAR**: leia a ADR existente e identifique lacunas — quais seções estão completas? Qual está faltando? Há bloco correspondente em `rules.yaml`? Pergunte apenas o que falta.
-   **Modo CRIAR**: Pergunte UMA pergunta por vez:
+In refine mode, you **do not create a new ADR** — you update the existing one while preserving history.
 
-   - **Contexto:** que situação **agora** força essa decisão? (não "o quê", mas o "por quê")
-   - **Alternativas consideradas:** liste TODAS, mesmo as rejeitadas em segundos.
-   - **Por que cada alternativa foi rejeitada?** (motivo concreto, não "não gostei")
-   - **Trade-offs aceitos:** o que abre mão ao escolher esta?
-   - **Gatilho de revisão:** sob que condição esta ADR deve ser reaberta?
-   - **Enforcement:** este é o passo crítico. Pergunte explicitamente qual dos mecanismos abaixo se aplica (pode ser mais de um):
-     - **Hook declarativo** (`.claude/rules.yaml`) — se a violação pode ser detectada por regex/grep no código (ex: `import lib_proibida`, "query SQL sem tenant_id").
-     - **Lint custom no CI** — se exige AST ou análise mais complexa que o hook não cobre.
-     - **Review checklist** — se exige julgamento humano.
-     - **Teste** — se pode ser validado por suite de testes automáticos.
+## Before generating
 
-## Regras de qualidade
+1. **CREATE mode:** List existing ADRs in `docs/decisions/` and use the next free number.
+   **REFINE mode:** Locate the `docs/decisions/ADR-NNN-*.md` file mentioned. If it does not exist, abort with a warning.
+2. Read `@CLAUDE.md` to learn the product context:
+   - If the identity is already filled in, use it as context.
+   - If still only placeholders, ask for `/renata:prd` first (a structural decision without a defined product is premature).
+3. Read `@docs/decisions/_template.md` for the Nygard format.
+4. Read `@.claude/rules.yaml` to learn the current structure (if it already exists). You will need it later.
+5. **REFINE mode**: read the existing ADR and identify gaps — which sections are complete? Which is missing? Is there a corresponding block in `rules.yaml`? Ask only for what is missing.
+   **CREATE mode**: Ask ONE question at a time:
 
-- ❌ "Escolhemos X porque é bom" → exija amarração a restrição (persona, incidente, métrica).
-- ❌ Sem 2 alternativas consideradas → exija.
-- ❌ Sem gatilho de revisão → exija. Decisão sem condição de reabrir é fé religiosa.
-- ❌ Sem enforcement quando possível → sugira mecanismo concreto.
-- ❌ Enforcement marcado como "hook" mas usuário não passou pattern regex → exija o pattern antes de gravar.
+   - **Context:** what situation **now** forces this decision? (not "what", but "why")
+   - **Alternatives considered:** list ALL of them, even those rejected in seconds.
+   - **Why was each alternative rejected?** (a concrete reason, not "I didn't like it")
+   - **Trade-offs accepted:** what do you give up by choosing this one?
+   - **Review trigger:** under what condition should this ADR be reopened?
+   - **Enforcement:** this is the critical step. Ask explicitly which of the mechanisms below applies (it can be more than one):
+     - **Declarative hook** (`.claude/rules.yaml`) — if the violation can be detected by regex/grep in the code (e.g., `import forbidden_lib`, "SQL query without tenant_id").
+     - **Custom lint in CI** — if it requires AST or more complex analysis that the hook does not cover.
+     - **Review checklist** — if it requires human judgment.
+     - **Test** — if it can be validated by an automated test suite.
 
-## Estrutura do arquivo ADR
+## Quality rules
 
-Use o template em `docs/decisions/_template.md`. Preencha **TODAS** as seções. Sem placeholder vazio.
+- ❌ "We chose X because it's good" → require it to be tied to a constraint (persona, incident, metric).
+- ❌ Fewer than 2 alternatives considered → require them.
+- ❌ No review trigger → require one. A decision without a condition to reopen is religious faith.
+- ❌ No enforcement when possible → suggest a concrete mechanism.
+- ❌ Enforcement marked as "hook" but the user did not provide a regex pattern → require the pattern before writing.
 
-## Após gerar a ADR (3 passos obrigatórios)
+## ADR file structure
 
-### Passo 1 — Gravar/atualizar o arquivo da ADR
+Use the template in `docs/decisions/_template.md`. Fill in **ALL** sections. No empty placeholder.
 
-- **Modo CRIAR:** grave `docs/decisions/ADR-NNN-<slug>.md` com Nygard completo.
-- **Modo REFINAR:** atualize o arquivo existente preservando histórico. Se mudou status (ex: `proposed → accepted`), registre a data da mudança.
+## After generating the ADR (3 mandatory steps)
 
-### Passo 2 — Atualizar `docs/decisions/README.md`
+### Step 1 — Write/update the ADR file
 
-- **Modo CRIAR:** adicione linha no índice:
+- **CREATE mode:** write `docs/decisions/ADR-NNN-<slug>.md` with full Nygard format.
+- **REFINE mode:** update the existing file while preserving history. If the status changed (e.g., `proposed → accepted`), record the date of the change.
+
+### Step 2 — Update `docs/decisions/README.md`
+
+- **CREATE mode:** add a line to the index:
 
   ```markdown
-  | NNN | [Título](./ADR-NNN-slug.md) | accepted |
+  | NNN | [Title](./ADR-NNN-slug.md) | accepted |
   ```
 
-- **Modo REFINAR:** atualize a linha existente apenas se status mudou.
+- **REFINE mode:** update the existing line only if the status changed.
 
-### Passo 3 — Se enforcement inclui **hook**, atualize `.claude/rules.yaml` DIRETAMENTE
+### Step 3 — If enforcement includes a **hook**, update `.claude/rules.yaml` DIRECTLY
 
-Não apenas sugira o bloco — **escreva nele**. Procedimento:
+Don't just suggest the block — **write it in**. Procedure:
 
-**Modo REFINAR:** primeiro verifique se já existe bloco `id: ADR-NNN` no `rules.yaml`:
+**REFINE mode:** first check whether an `id: ADR-NNN` block already exists in `rules.yaml`:
 
-- Se existe e está correto, anuncie ("rules.yaml já tem o bloco correto para ADR-NNN, nada a mudar") e pule pro Passo 4.
-- Se existe mas precisa atualizar (pattern, scope ou mensagem mudaram), mostre o **diff** e peça confirmação.
-- Se não existe, siga o fluxo normal abaixo (mostra → confirma → adiciona).
+- If it exists and is correct, announce it ("rules.yaml already has the correct block for ADR-NNN, nothing to change") and skip to Step 4.
+- If it exists but needs updating (pattern, scope, or message changed), show the **diff** and ask for confirmation.
+- If it does not exist, follow the normal flow below (show → confirm → add).
 
-**Modo CRIAR ou bloco ausente em REFINAR:**
+**CREATE mode or block missing in REFINE mode:**
 
-1. **Mostre ao usuário** o bloco YAML que você vai adicionar:
+1. **Show the user** the YAML block you will add:
 
    ```yaml
    - id: ADR-NNN
-     title: "{{título conciso}}"
+     title: "{{concise title}}"
      enforce:
-       - kind: forbid_pattern   # ou require_pattern
+       - kind: forbid_pattern   # or require_pattern
          pattern: "{{regex}}"
-         scope: "{{path}}"      # opcional
-         exclude: "{{path}}"    # opcional
-         message: "{{mensagem ao desenvolvedor que violar}}"
+         scope: "{{path}}"      # optional
+         exclude: "{{path}}"    # optional
+         message: "{{message to the developer who violates it}}"
    ```
 
-2. **Peça confirmação** em uma frase: "Vou adicionar este bloco ao final de `.claude/rules.yaml`. OK?"
+2. **Ask for confirmation** in one sentence: "I'm going to add this block to the end of `.claude/rules.yaml`. OK?"
 
-3. Após `OK`, edite `.claude/rules.yaml` apendando o novo bloco dentro da chave `adrs:`. Se o arquivo ainda não tem chave `adrs:`, crie-a.
+3. After `OK`, edit `.claude/rules.yaml` by appending the new block inside the `adrs:` key. If the file does not yet have an `adrs:` key, create one.
 
-4. Rode `bash .claude/hooks/rules-violation.sh` em modo de validação (sem commit) para confirmar que o YAML está válido e o hook reconhece a nova regra.
+4. Run `bash .claude/hooks/rules-violation.sh` in validation mode (no commit) to confirm the YAML is valid and the hook recognizes the new rule.
 
-5. Se o hook reclamar (YAML inválido, pattern não compila), reverte o append e reporta. **Não deixe o `rules.yaml` quebrado.**
+5. If the hook complains (invalid YAML, pattern does not compile), revert the append and report. **Do not leave `rules.yaml` broken.**
 
-### Passo 4 — Se enforcement inclui **lint/test/checklist**, registre como ação pendente
+### Step 4 — If enforcement includes **lint/test/checklist**, record it as a pending action
 
-- Se for lint custom: anote no fim do arquivo da ADR a regra de lint a criar (path do script, regex, etc).
-- Se for teste: anote o nome do teste a criar.
-- Se for review checklist: sugira o item a adicionar no template de PR.
+- If it is a custom lint: note at the end of the ADR file the lint rule to create (script path, regex, etc.).
+- If it is a test: note the name of the test to create.
+- If it is a review checklist: suggest the item to add to the PR template.
 
-Essas ações não são automatizadas pelo hook — vão para a próxima fase de implementação como tarefa.
+These actions are not automated by the hook — they go to the next implementation phase as a task.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: descrição em 1-2 linhas da decisão (ex: "usar Postgres como banco principal").
+`$ARGUMENTS`: a 1-2 line description of the decision (e.g., "use Postgres as the main database").

@@ -1,103 +1,108 @@
-# /renata:user-journey — Mapeia a jornada de uma persona
+---
+description: Maps a persona's before/during/after journey with a mermaid diagram, anti-journeys, critical points, and the metrics each journey generates.
+---
+# /renata:user-journey — Maps a persona's journey
 
-Você é um pesquisador de produto. Recebe o nome de uma persona em `$ARGUMENTS` e mapeia a jornada **antes / durante / depois**, adicionando em `docs/business-context/jornada.md`.
+You are a product researcher. You receive the name of a persona in `$ARGUMENTS` and map the **before / during / after** journey, appending it to `docs/business-context/jornada.md`.
 
-## Antes de gerar
+Respond to the user and generate content in the user's language (the language they are writing in).
 
-1. Leia `@docs/business-context/personas.md` — a persona precisa existir.
-2. Leia `@CLAUDE.md` para entender o produto.
-3. Se persona não existir, instrua o usuário a rodar `/renata:persona {{nome}}` primeiro e aborte.
+## Before generating
 
-## Estrutura da jornada
+1. Read `@docs/business-context/personas.md` — the persona must exist.
+2. Read `@CLAUDE.md` to understand the product.
+3. If the persona does not exist, instruct the user to run `/renata:persona {{name}}` first and abort.
 
-3 fases, cada uma com 4-7 passos:
+## Journey structure
 
-- **ANTES** — como a persona resolve hoje (sem o produto). Foco nas dores e workarounds.
-- **DURANTE** — como resolve com o produto. Foco no fluxo idealizado.
-- **DEPOIS** — o que muda na vida dela. Foco em ROI e métricas.
+3 phases, each with 4-7 steps:
 
-## ⚠️ Restrições da sintaxe `journey` (importante!)
+- **BEFORE** — how the persona solves it today (without the product). Focus on pains and workarounds.
+- **DURING** — how they solve it with the product. Focus on the idealized flow.
+- **AFTER** — what changes in their life. Focus on ROI and metrics.
 
-O `mermaid journey` é **chato** com sintaxe. Restrições silenciosas que quebram o render:
+## ⚠️ Constraints of the `journey` syntax (important!)
 
-- ❌ **NUNCA use `:` no texto do passo** — o `:` é separador (`passo: nota: ator`). Use `-` ou nada.
-- ❌ **Notas são sempre número 1-5**, nunca texto. Não escreva "ruim", escreva `1`.
-- ✅ **Parênteses só em `section`** (não no nome do passo). `section Antes (hoje, sem produto)` OK. `Procura (rapidamente) no menu` quebra.
-- ✅ **Evite acentos pesados** em alguns visualizadores. Mermaid Chart 11.x aceita, mas se diagrama vai pra Notion/GitHub-old, prefira sem acento.
-- ✅ **Cada section tem 1-7 passos.** Mais que 7 = fragmente em mais sections.
+`mermaid journey` is **finicky** with syntax. Silent constraints that break the render:
 
-Use `journey` mermaid (todas as notas são números 1-5, **nunca** texto):
+- ❌ **NEVER use `:` in the step text** — `:` is a separator (`step: note: actor`). Use `-` or nothing.
+- ❌ **Notes are always a number 1-5**, never text. Do not write "bad", write `1`.
+- ✅ **Parentheses only in `section`** (not in the step name). `section Before (today, without the product)` is OK. `Searches (quickly) in the menu` breaks.
+- ✅ **Avoid heavy accents** in some viewers. Mermaid Chart 11.x accepts them, but if the diagram goes to Notion/GitHub-old, prefer no accents.
+- ✅ **Each section has 1-7 steps.** More than 7 = fragment into more sections.
+
+Use a `journey` mermaid (all notes are numbers 1-5, **never** text):
 
 ```mermaid
 journey
-    title {{Persona}} {{contexto da tarefa}}
-    section Antes (hoje, sem o produto)
-      passo 1: 2: persona
-      passo 2: 1: persona
-    section Durante (com o produto)
-      passo 1: 4: persona
-      passo 2: 5: persona
-    section Depois
-      passo: 5: persona
+    title {{Persona}} {{task context}}
+    section Before (today, without the product)
+      step 1: 2: persona
+      step 2: 1: persona
+    section During (with the product)
+      step 1: 4: persona
+      step 2: 5: persona
+    section After
+      step: 5: persona
 ```
 
-Notas no `journey`: **número** de 1 (péssimo) a 5 (excelente). Nunca palavra.
+Notes in the `journey`: a **number** from 1 (terrible) to 5 (excellent). Never a word.
 
-## Após a jornada visual
+## After the visual journey
 
-Adicione (nesta ordem):
+Add (in this order):
 
-### 1. Anti-jornadas (logo após a jornada)
+### 1. Anti-journeys (right after the journey)
 
-Cenários que NÃO queremos suportar:
+Scenarios we do NOT want to support:
 
 ```markdown
-## Anti-jornadas (cenários que NÃO queremos suportar)
+## Anti-journeys (scenarios we do NOT want to support)
 
-- ❌ {{persona}} quer fazer X complexo. Produto identifica e {{ação}}.
+- ❌ {{persona}} wants to do complex X. The product detects it and {{action}}.
 ```
 
-### 2. Pontos críticos — UMA seção única consolidada ao final do arquivo
+### 2. Critical points — A SINGLE consolidated section at the end of the file
 
-Quando há múltiplas jornadas (1 por persona), os pontos críticos vão **numa seção única no final do arquivo**, com sub-seções por persona. Cada ponto crítico → drives requisito técnico/de produto.
+When there are multiple journeys (1 per persona), the critical points go into **a single section at the end of the file**, with sub-sections per persona. Each critical point → drives a technical/product requirement.
 
 ```markdown
-## Pontos críticos da jornada
+## Journey critical points
 
-Lista consolidada das jornadas. Cada ponto crítico → drives um requisito técnico ou de produto.
+Consolidated list across the journeys. Each critical point → drives a technical or product requirement.
 
-### Da jornada de {{Persona A}}
+### From {{Persona A}}'s journey
 
-1. **{{momento}}** — {{o que acontece se falhamos}}. → drives {{requisito ou ADR}}.
+1. **{{moment}}** — {{what happens if we fail}}. → drives {{requirement or ADR}}.
 
-### Da jornada de {{Persona B}}
+### From {{Persona B}}'s journey
 
-1. **{{momento}}** — {{...}}. → drives {{...}}.
+1. **{{moment}}** — {{...}}. → drives {{...}}.
 ```
 
-### 3. Métricas que cada jornada gera
+### 3. Metrics each journey generates
 
 ```markdown
-## Métricas que cada jornada gera
+## Metrics each journey generates
 
-| Jornada | Métrica que produz |
+| Journey | Metric it produces |
 |---|---|
 | ... | ... |
 ```
 
-> ⚠️ **Quando rodar `/renata:user-journey` para múltiplas personas:** cada execução adiciona uma jornada nova, mas a seção "Pontos críticos da jornada" **consolida no final do arquivo** (não fragmenta). Reorganize a estrutura ao adicionar.
+> ⚠️ **When running `/renata:user-journey` for multiple personas:** each run adds a new journey, but the "Journey critical points" section **consolidates at the end of the file** (it does not fragment). Reorganize the structure as you add.
 
-## Regras de qualidade
+## Quality rules
 
-- ❌ Jornada sem **antes**. Conhecer o que a persona faz hoje é tão importante quanto o "durante".
-- ❌ Jornada sem **anti-jornadas** explícitas.
-- ❌ Pontos críticos sem amarração a requisito técnico/produto.
+- ❌ Journey without a **before**. Knowing what the persona does today is as important as the "during".
+- ❌ Journey without explicit **anti-journeys**.
+- ❌ Critical points without a tie to a technical/product requirement.
 
-## Após gerar
+## After generating
 
-- Append em `docs/business-context/jornada.md`.
-- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- Append to `docs/business-context/jornada.md`.
+- For the next step verified against its prerequisites, run /renata:status.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: nome da persona existente (ex: "Marina").
+`$ARGUMENTS`: the name of an existing persona (e.g. "Marina").

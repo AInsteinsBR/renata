@@ -1,100 +1,100 @@
 ---
 name: detecting-scope-creep
-description: Use sempre que aparecer impulso de "também vou adicionar X", "aproveitando que estou aqui", "já que mexi nisso", ou capacidade não-prevista na feature spec. Compara proposta com escopo IN/OUT da feature ativa e força decisão consciente antes de ampliar trabalho.
+description: Use whenever the urge to "also add X", "while I'm here", "since I'm already touching this" appears, or a capability not foreseen in the feature spec comes up. Compares the proposal against the IN/OUT scope of the active feature and forces a conscious decision before expanding the work.
 ---
 
-# Detectando scope-creep antes que aconteça
+# Detecting scope-creep before it happens
 
-Scope-creep é a forma mais comum de estourar prazo de fase. Cada "só uma coisinha a mais" custa tempo, atenção, contexto, e arrisca o gate da fase.
+Scope-creep is the most common way to blow a phase deadline. Each "just one more little thing" costs time, attention, context, and risks the phase gate.
 
-## Quando esta skill ativa
+## When this skill activates
 
-Auto-ativa quando contexto envolve frases como:
-- "Já que estou aqui, vou também..."
-- "Aproveitando, posso adicionar..."
-- "Faz sentido também..."
-- "Vou só dar um jeito em..."
-- "Também precisamos de..."
-- Proposta menciona capacidade não-listada na feature-spec ativa
+Auto-activates when the context involves phrases like:
+- "Since I'm already here, I'll also..."
+- "While I'm at it, I can add..."
+- "It also makes sense to..."
+- "I'll just quickly fix..."
+- "We also need..."
+- The proposal mentions a capability not listed in the active feature spec
 
-## Procedimento (3 passos)
+## Procedure (3 steps)
 
-### Passo 1 — Identificar feature ativa + ler escopo
+### Step 1 — Identify the active feature + read the scope
 
-1. Consultar `CLAUDE.md` seção 4 — qual é a feature-âncora ativa?
-2. Ler `docs/features/F<N>-*.md` da feature.
-3. Listar mentalmente o escopo IN e o escopo OUT.
+1. Consult `CLAUDE.md` section 4 — what is the active anchor feature?
+2. Read the feature's `docs/features/F<N>-*.md`.
+3. Mentally list the IN scope and the OUT scope.
 
-### Passo 2 — Classificar a proposta
+### Step 2 — Classify the proposal
 
-A coisa nova proposta pertence a qual categoria?
+Which category does the newly proposed thing belong to?
 
-- **(A) Dentro do escopo IN da feature ativa** — OK. Pode prosseguir.
-- **(B) Dentro do escopo OUT explícito** — STOP. Não fazer agora.
-- **(C) Não mencionado em IN nem OUT** — zona cinzenta. Decidir conscientemente.
+- **(A) Within the IN scope of the active feature** — OK. You may proceed.
+- **(B) Within the explicit OUT scope** — STOP. Don't do it now.
+- **(C) Not mentioned in IN or OUT** — gray area. Decide consciously.
 
-### Passo 3 — Conforme classificação
+### Step 3 — According to the classification
 
-#### (A) Está no IN
+#### (A) It's in the IN
 
-Prossiga. Nada a fazer.
+Proceed. Nothing to do.
 
-#### (B) Está no OUT explícito
+#### (B) It's in the explicit OUT
 
-**Recuse claramente.** Resposta sugerida:
+**Decline clearly.** Suggested response:
 
-> "Isso está marcado como escopo OUT em `docs/features/F<N>-*.md`. Razão: <citar do doc>. Se mudou de ideia, podemos:
-> 1. Adiar pra próxima fase (F<N+1>).
-> 2. Abrir nova feature-spec via `/feature-spec` se virou prioridade.
-> 3. Atualizar a feature atual conscientemente (mover do OUT pro IN com justificativa).
+> "This is marked as OUT scope in `docs/features/F<N>-*.md`. Reason: <cite from the doc>. If you've changed your mind, we can:
+> 1. Defer it to the next phase (F<N+1>).
+> 2. Open a new feature spec via `/feature-spec` if it has become a priority.
+> 3. Consciously update the current feature (move it from OUT to IN with justification).
 >
-> Por enquanto, vou seguir o escopo original."
+> For now, I'll follow the original scope."
 
-#### (C) Zona cinzenta
+#### (C) Gray area
 
-Apresentar pro usuário 3 opções de decisão consciente:
+Present the user with 3 conscious-decision options:
 
-1. **Adicionar agora ao IN** — se for crítico pra fase atual. Atualizar a feature-spec.
-2. **Adiar pra próxima fase** — registrar via `/todo` ou no backlog do projeto.
-3. **Spike rápido (`/spike`)** — se a dúvida é "será que vale a pena?".
+1. **Add it to IN now** — if it's critical for the current phase. Update the feature spec.
+2. **Defer to the next phase** — record it via `/todo` or in the project backlog.
+3. **Quick spike (`/spike`)** — if the question is "is it even worth it?".
 
-**NÃO codar sem decisão explícita.**
+**DO NOT code without an explicit decision.**
 
-## Exemplos
+## Examples
 
-### ✅ Bom
+### ✅ Good
 
-> Eric: "Já que vou implementar a feature-âncora, posso aproveitar e adicionar métricas detalhadas (capacidade Z)."
+> Eric: "Since I'm going to implement the anchor feature, I might as well also add detailed metrics (capability Z)."
 >
-> Skill ativa: "Verifiquei `docs/features/F1-<slug>.md` § Escopo. Instrumentação está sim listada como capacidade. MAS a capacidade Z específica não é mencionada — F1 prevê só o básico. Status: zona cinzenta.
+> Skill activates: "I checked `docs/features/F1-<slug>.md` § Scope. Instrumentation is indeed listed as a capability. BUT the specific capability Z is not mentioned — F1 only covers the basics. Status: gray area.
 >
-> Opções:
-> 1. Manter só o básico na Fase 0 (alinhado ao plano).
-> 2. Adicionar a capacidade Z agora (atualizar F1 spec primeiro).
+> Options:
+> 1. Keep only the basics in Phase 0 (aligned with the plan).
+> 2. Add capability Z now (update the F1 spec first).
 >
-> Recomendo opção 1 — a capacidade Z está prevista numa feature de fase posterior (`F7-<slug>.md`). Adicionar agora vira scope-creep de fase futura puxado pra Fase 0."
+> I recommend option 1 — capability Z is planned in a later-phase feature (`F7-<slug>.md`). Adding it now turns into scope-creep of a future phase pulled into Phase 0."
 
-### ❌ Ruim
+### ❌ Bad
 
-> Eric: "Vou aproveitar e fazer auth básica no edge."
+> Eric: "While I'm at it, I'll do basic auth at the edge."
 >
-> Skill **não ativa** ou ativa mas é ignorada: implementação avança.
+> Skill **doesn't activate** or activates but is ignored: implementation moves forward.
 >
-> Resultado: Fase 0 (que tem "sem auth" no escopo OUT) ganha código de auth não-testado, não-revisado, e a Fase 2 vai herdar débito. Gate da Fase 0 atrasa.
+> Result: Phase 0 (which has "no auth" in the OUT scope) gains untested, unreviewed auth code, and Phase 2 will inherit the debt. The Phase 0 gate slips.
 
-### Caso especial: refactor "preparatório"
+### Special case: "preparatory" refactor
 
-Frase típica: "Vou já deixar o código preparado pra multi-tenant que vem na Fase 2."
+Typical phrase: "I'll go ahead and prepare the code for the multi-tenant support coming in Phase 2."
 
-Geralmente **NÃO**. Faz parte da disciplina YAGNI:
-- Construir abstração agora pra "futuro" gera código não-validado.
-- Quando a Fase 2 vier, requisitos podem ter mudado.
-- O `@architect` provavelmente recusaria isso em revisão.
+Generally **NO**. It's part of YAGNI discipline:
+- Building an abstraction now for the "future" produces unvalidated code.
+- By the time Phase 2 arrives, the requirements may have changed.
+- The `@architect` would probably reject this in review.
 
-Exceção: se custo de fazer agora é trivial E custo de fazer depois é alto (ex: nome de coluna). Aí ok, mas DECLARAR.
+Exception: if the cost of doing it now is trivial AND the cost of doing it later is high (e.g., a column name). Then it's OK, but DECLARE it.
 
-## Anti-padrões desta skill
+## Anti-patterns of this skill
 
-- ❌ Aceitar zona cinzenta como "se está em dúvida, faz" — força decisão.
-- ❌ Confundir "refator de qualidade" (dentro do código que está mexendo) com scope-creep (capacidade nova).
-- ❌ Não consultar a feature-spec ativa antes de classificar.
+- ❌ Accepting a gray area as "when in doubt, do it" — force a decision.
+- ❌ Confusing a "quality refactor" (within the code you're already touching) with scope-creep (a new capability).
+- ❌ Not consulting the active feature spec before classifying.

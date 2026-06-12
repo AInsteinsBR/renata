@@ -1,44 +1,44 @@
 ---
 name: keeping-docs-alive
-description: Use sempre que terminar uma task, pausar uma sessão, completar uma fase, ou mudar status do projeto. Garante que docs vivas (CLAUDE.md, .claude/sessions/, plano ativo) reflitam o estado real para a próxima sessão retomar sem perda de contexto. Auto-ativa em "terminei", "pausando", "completou", "fim de fase", "vou parar agora".
+description: Use whenever you finish a task, pause a session, complete a phase, or change the project status. Ensures the living docs (CLAUDE.md, .claude/sessions/, the active plan) reflect the real state so the next session can resume without loss of context. Auto-activates on "done", "pausing", "completed", "end of phase", "I'm going to stop now".
 ---
 
-# Mantendo docs vivas durante execução
+# Keeping docs alive during execution
 
-Docs vivas são o **sistema nervoso entre sessões**. Sem elas atualizadas, a próxima sessão (humana ou IA) começa do zero ou pior — começa errado.
+Living docs are the **nervous system between sessions**. Without them kept up to date, the next session (human or AI) starts from scratch or worse — starts off wrong.
 
-## Quando esta skill ativa
+## When this skill activates
 
-Auto-ativa quando contexto envolve:
-- "Terminei task X" / "task X pronta"
-- "Vou pausar" / "stop por hoje" / "amanhã continuamos"
-- "Fase X completa"
-- "Decidi mudar abordagem para Y"
-- "Vou abrir PR / commit final"
-- Checkbox de plano sendo marcado como concluído
+Auto-activates when the context involves:
+- "Finished task X" / "task X is done"
+- "I'm going to pause" / "stopping for today" / "we'll continue tomorrow"
+- "Phase X complete"
+- "I decided to change the approach to Y"
+- "I'm going to open a PR / final commit"
+- A plan checkbox being marked as complete
 
-## Procedimento (3 passos obrigatórios)
+## Procedure (3 mandatory steps)
 
-### Passo 1 — Atualizar o plano ativo
+### Step 1 — Update the active plan
 
-Se o trabalho atual corresponde a uma task do plano em `docs/superpowers/specs/<plan>.md`:
+If the current work corresponds to a task in the plan at `docs/superpowers/specs/<plan>.md`:
 
-1. **Marcar checkboxes** dos steps completados: `[ ]` → `[x]`.
-2. **Adicionar nota** se a task teve desvio do plano (ex: "tive que adicionar X porque Y").
-3. **Atualizar contagem** se há campo "completed: N/M" no plano.
+1. **Check the checkboxes** of the completed steps: `[ ]` → `[x]`.
+2. **Add a note** if the task deviated from the plan (e.g., "I had to add X because Y").
+3. **Update the count** if there's a "completed: N/M" field in the plan.
 
-### Passo 2 — Atualizar `CLAUDE.md`
+### Step 2 — Update `CLAUDE.md`
 
-Seção 4 (Camada feature) — se houve mudança de fase/feature:
-- `**Fase ativa:**` deve apontar pra fase em curso real.
-- `**Feature-âncora:**` idem.
+Section 4 (Feature layer) — if there was a phase/feature change:
+- `**Fase ativa:**` should point to the actual phase in progress.
+- `**Feature-âncora:**` likewise.
 
-Seção 5 (Camada session) — sempre que pausar/retomar:
-- Apontar pra arquivo de sessão atual: `.claude/sessions/<data>-fase-N-<descrição>.md`.
+Section 5 (Session layer) — whenever you pause/resume:
+- Point to the current session file: `.claude/sessions/<data>-fase-N-<descrição>.md`.
 
-Seção 9 (Próximos passos) — atualizar pra refletir o que vem agora.
+Section 9 (Next steps) — update to reflect what comes next.
 
-### Passo 3 — Criar/atualizar arquivo de sessão
+### Step 3 — Create/update the session file
 
 `.claude/sessions/<YYYY-MM-DD>-fase-<N>-<descrição>.md`:
 
@@ -72,23 +72,23 @@ docker compose ...
 \`\`\`
 ```
 
-## Quando NÃO ativar
+## When NOT to activate
 
-- ❌ Mudança trivial (typo, comment) — não vale poluir docs.
-- ❌ Mid-task ("acabei de escrever uma função") — espera completar a task inteira.
-- ❌ Refatoração que não muda fase/feature/escopo.
+- ❌ Trivial change (typo, comment) — not worth cluttering the docs.
+- ❌ Mid-task ("I just wrote a function") — wait until the whole task is complete.
+- ❌ Refactoring that doesn't change the phase/feature/scope.
 
-## Exemplo bom
+## Good example
 
-> Usuário: "Acabei a Task 4. Vou pausar por hoje."
+> User: "Finished Task 4. I'm going to pause for today."
 >
-> Skill ativa: "Vou atualizar 3 coisas:
-> 1. `docs/superpowers/specs/2026-05-27-fase-0-spike.md` — marcar steps 4.1 a 4.11 como `[x]`.
-> 2. `CLAUDE.md` seção 5 — apontar pra `.claude/sessions/2026-05-27-fase-0-task5.md`.
-> 3. Criar `.claude/sessions/2026-05-27-fase-0-task5.md` com 'Última task completada: Task 4 · Próxima ação: implementar o componente da Task 5'."
+> Skill activates: "I'll update 3 things:
+> 1. `docs/superpowers/specs/2026-05-27-fase-0-spike.md` — mark steps 4.1 through 4.11 as `[x]`.
+> 2. `CLAUDE.md` section 5 — point to `.claude/sessions/2026-05-27-fase-0-task5.md`.
+> 3. Create `.claude/sessions/2026-05-27-fase-0-task5.md` with 'Last task completed: Task 4 · Next action: implement the Task 5 component'."
 
-## Anti-padrões
+## Anti-patterns
 
-- ❌ Atualizar só os checkboxes e esquecer CLAUDE.md.
-- ❌ Criar sessão com "fiz várias coisas" sem detalhe acionável.
-- ❌ Não atualizar quando "vou continuar amanhã" — amanhã você esquece.
+- ❌ Updating only the checkboxes and forgetting CLAUDE.md.
+- ❌ Creating a session with "did several things" and no actionable detail.
+- ❌ Not updating when "I'll continue tomorrow" — tomorrow you'll forget.

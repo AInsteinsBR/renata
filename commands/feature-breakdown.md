@@ -1,84 +1,90 @@
-# /renata:feature-breakdown — Lista features candidatas e marca a âncora
+---
+description: Generates a prioritized list of 3-7 candidate features and marks the anchor feature.
+---
 
-Você é um tech lead + PM. Dado um produto/PRD, gera lista de **3-7 features candidatas** priorizadas, com **feature-âncora** marcada.
+# /renata:feature-breakdown — List candidate features and mark the anchor
 
-## Antes de gerar
+You are a tech lead + PM. Given a product/PRD, you generate a prioritized list of **3-7 candidate features**, with the **anchor feature** marked.
 
-1. Leia `@docs/prd/` (precisa de PRD ativo).
-2. Leia `@docs/business-context/` (personas + jornada).
-3. Se faltar PRD ou persona, instrua a rodar `/renata:prd` ou `/renata:persona` primeiro e aborte.
-4. Pergunte UMA por vez:
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-   - **Quais capacidades de alto nível** você imagina pra esse produto? (3-7 itens)
-   - Para cada uma: **categoria binária** — `MUST` (sem ela, **alguma hipótese do PRD** cai) ou `OUT-OF-SCOPE` (não entra no produto, vai pra anti-features). Sem categorias intermediárias. **A categoria continua binária** — o eixo de valor abaixo serve pra *ordenar os MUSTs entre si*, não pra criar um "meio-MUST".
-   - Para cada `MUST`: **esforço estimado** (XS/S/M/L/XL) e **fase de entrada**.
-   - Para cada `MUST`: **qual hipótese ela endereça** (H1, H2…) + **valor de aprendizado** (Alto/Médio/Baixo) — *quanto essa feature, se entregue, te diz sobre aquela hipótese?* Se o PRD tem N hipóteses, features diferentes podem provar hipóteses diferentes — marque qual. Feature que prova/derruba uma aposta vale mais cedo do que feature que só completa o produto.
-   - **Dependências** entre elas?
+## Before generating
 
-## Como escolher a feature-âncora
+1. Read `@docs/prd/` (an active PRD is required).
+2. Read `@docs/business-context/` (personas + journey).
+3. If a PRD or persona is missing, instruct to run `/renata:prd` or `/renata:persona` first and abort.
+4. Ask ONE at a time:
 
-Aplique os 5 critérios canônicos:
+   - **Which high-level capabilities** do you imagine for this product? (3-7 items)
+   - For each one: **binary category** — `MUST` (without it, **some PRD hypothesis** falls) or `OUT-OF-SCOPE` (does not enter the product, goes to anti-features). No intermediate categories. **The category stays binary** — the value axis below serves to *order the MUSTs among themselves*, not to create a "half-MUST".
+   - For each `MUST`: **estimated effort** (XS/S/M/L/XL) and **entry phase**.
+   - For each `MUST`: **which hypothesis it addresses** (H1, H2…) + **learning value** (High/Medium/Low) — *how much does this feature, if delivered, tell you about that hypothesis?* If the PRD has N hypotheses, different features may prove different hypotheses — mark which one. A feature that proves/disproves a bet is worth more early than a feature that just completes the product.
+   - **Dependencies** between them?
 
-1. ✅ **MUST sem dúvida** — sem ela, hipótese do PRD não pode ser validada.
-2. ✅ **Outras dependem dela** — grau de saída alto no grafo.
-3. ✅ **Cabe em P (1-2 fases)** — não monstruosa. Se for XL, quebrar.
-4. ✅ **Valor isolado** — mesmo sozinha, prova algo da hipótese.
-5. ✅ **Mata o maior risco de hipótese primeiro** — entre as candidatas que passam em 1-4, prefira a de **maior valor de aprendizado**. A âncora não é só a raiz topológica do grafo; é a que faz o `/renata:hypothesis-check` ter o que medir o quanto antes.
+## How to choose the anchor feature
 
-> ⚠️ Sem o critério 5, você pode escolher uma âncora tecnicamente correta (todos dependem dela) que entrega **zero aprendizado de produto** — você constrói o encanamento e só descobre se alguém quer o produto fases depois. O critério 5 corrige isso.
+Apply the 5 canonical criteria:
 
-A âncora é a feature que **atravessa várias entregas** (Demo Day, etc) e serve como espinha.
+1. ✅ **MUST without a doubt** — without it, a PRD hypothesis cannot be validated.
+2. ✅ **Others depend on it** — high out-degree in the graph.
+3. ✅ **Fits in P (1-2 phases)** — not monstrous. If it's XL, break it down.
+4. ✅ **Isolated value** — even alone, it proves something about the hypothesis.
+5. ✅ **Kills the biggest hypothesis risk first** — among the candidates that pass 1-4, prefer the one with the **highest learning value**. The anchor is not just the topological root of the graph; it is the one that gives `/renata:hypothesis-check` something to measure as soon as possible.
 
-## Sequenciamento dos MUSTs (valor × esforço)
+> ⚠️ Without criterion 5, you might choose a technically correct anchor (everyone depends on it) that delivers **zero product learning** — you build the plumbing and only find out if anyone wants the product phases later. Criterion 5 fixes this.
 
-A categoria é binária (MUST/OUT), mas a **ordem de ataque dos MUSTs não é**. Depois de marcar a âncora, ordene os MUSTs restantes por **leverage = valor de aprendizado ÷ esforço**:
+The anchor is the feature that **runs across several deliveries** (Demo Day, etc.) and serves as the spine.
 
-| Quadrante | Valor | Esforço | Ordem |
+## Sequencing the MUSTs (value × effort)
+
+The category is binary (MUST/OUT), but the **order of attack on the MUSTs is not**. After marking the anchor, order the remaining MUSTs by **leverage = learning value ÷ effort**:
+
+| Quadrant | Value | Effort | Order |
 |---|---|---|---|
-| 🥇 Quick win | Alto | Baixo | Primeiro (depois da âncora) |
-| 🥈 Aposta grande | Alto | Alto | Cedo, mas planeje |
-| 🥉 Encanamento | Baixo | Baixo | Quando destravar dependência |
-| 🚧 Armadilha | Baixo | Alto | Por último — questione se é MUST mesmo |
+| 🥇 Quick win | High | Low | First (after the anchor) |
+| 🥈 Big bet | High | High | Early, but plan it |
+| 🥉 Plumbing | Low | Low | When it unblocks a dependency |
+| 🚧 Trap | Low | High | Last — question whether it's really a MUST |
 
-> Se um MUST cai na 🚧 **armadilha** (baixo valor de aprendizado + alto esforço), isso é um **sinal de alerta**: talvez não seja MUST de verdade. Reabra a categorização antes de comprometer fases nele.
+> If a MUST falls in the 🚧 **trap** quadrant (low learning value + high effort), this is a **warning sign**: maybe it isn't really a MUST. Reopen the categorization before committing phases to it.
 
-## Estrutura de saída
+## Output structure
 
-Atualize `docs/features/README.md`:
+Update `docs/features/README.md`:
 
 ```markdown
-# Features · {{Produto}}
+# Features · {{Product}}
 
-> Cada feature é um pedaço entregável com critério de pronto explícito. Feature-âncora marcada em negrito + ⚓.
+> Each feature is a deliverable piece with an explicit done criterion. The anchor feature is marked in bold + ⚓.
 
-## Índice
+## Index
 
-| ID | Nome | Categoria | Valor aprend. | Esforço | Leverage | Entra em | Depende de |
+| ID | Name | Category | Learning value | Effort | Leverage | Enters in | Depends on |
 |---|---|---|---|---|---|---|---|
-| **F1** | **[{{Âncora}}]({{link}})** ⚓ | MUST | Alto | L | 🥈 | Fase 0 | — |
-| F2 | [{{nome}}]({{link}}) | MUST | Alto | S | 🥇 | Fase 1 | F1 |
+| **F1** | **[{{Anchor}}]({{link}})** ⚓ | MUST | High | L | 🥈 | Phase 0 | — |
+| F2 | [{{name}}]({{link}}) | MUST | High | S | 🥇 | Phase 1 | F1 |
 | ...
 
-⚓ = feature-âncora. Leverage: 🥇 quick win · 🥈 aposta grande · 🥉 encanamento · 🚧 armadilha (questionar se é MUST).
+⚓ = anchor feature. Leverage: 🥇 quick win · 🥈 big bet · 🥉 plumbing · 🚧 trap (question whether it's a MUST).
 
-## Por que F1 é a âncora
+## Why F1 is the anchor
 
-(5 critérios aplicados explicitamente)
+(5 criteria applied explicitly)
 
-- ✅ MUST sem dúvida — {{justificativa}}
-- ✅ Outras dependem — {{quais}}
-- ✅ Cabe em {{tamanho}}
-- ✅ Valor isolado — {{como prova a hipótese mesmo só ela}}
-- ✅ Mata o maior risco de hipótese — {{qual aprendizado de produto ela destrava primeiro}}
+- ✅ MUST without a doubt — {{rationale}}
+- ✅ Others depend on it — {{which ones}}
+- ✅ Fits in {{size}}
+- ✅ Isolated value — {{how it proves the hypothesis even on its own}}
+- ✅ Kills the biggest hypothesis risk — {{which product learning it unblocks first}}
 
-## Ordem de ataque dos MUSTs (por leverage)
+## Order of attack on the MUSTs (by leverage)
 
-1. ⚓ {{F-âncora}} — espinha, destrava o resto.
-2. 🥇 {{quick win de maior valor}}.
-3. {{...restante por leverage decrescente}}.
-4. 🚧 {{armadilhas — reavaliar se são MUST de verdade}}.
+1. ⚓ {{anchor feature}} — the spine, unblocks the rest.
+2. 🥇 {{highest-value quick win}}.
+3. {{...remainder by decreasing leverage}}.
+4. 🚧 {{traps — reassess whether they are really a MUST}}.
 
-## Dependências entre features
+## Dependencies between features
 
 ```mermaid
 flowchart TB
@@ -87,21 +93,21 @@ flowchart TB
     ...
 ```
 
-## O que NÃO é feature deste produto
+## What is NOT a feature of this product
 
-- ❌ {{algo que poderia ser confundido mas está fora}}
+- ❌ {{something that could be confused but is out}}
 ```
 
-## Após gerar
+## After generating
 
-- Grave `docs/features/README.md`.
-- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
+- Save `docs/features/README.md`.
+- For the next step verified against the prerequisites, run /renata:status.
 
   ```text
-  Próximo passo: rode /renata:status. (Pós-breakdown, o fluxo canônico segue para
-  /renata:phase-roadmap — distribuir todas as features em fases. O /renata:status confirma.)
+  Next step: run /renata:status. (After the breakdown, the canonical flow goes to
+  /renata:phase-roadmap — distribute all features across phases. /renata:status confirms.)
   ```
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: opcional — tema/contexto extra se houver.
+`$ARGUMENTS`: optional — extra theme/context if any.

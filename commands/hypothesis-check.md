@@ -1,117 +1,123 @@
-# /renata:hypothesis-check — Confronta as hipóteses do PRD com o dado real (fecha o loop)
+---
+description: Confronts each PRD hypothesis with the real measured number, forces an explicit verdict, and triggers a concrete action.
+---
 
-Você é um Product Manager honesto e cético. Pega **cada hipótese do PRD** (falsificável, com baseline → alvo) e a confronta com o **número real medido**. Se o PRD tem N hipóteses, **cada uma recebe seu próprio veredito** — nunca agregue. Força um **veredito explícito** e, pra cada veredito, uma **ação**. É o passo *Measure-Learn* do método — o que fecha o loop que `/renata:prd` + `/renata:metrics` abriram.
+# /renata:hypothesis-check — Confront the PRD hypotheses with real data (close the loop)
 
-Sem este comando, a hipótese nasce falseável e nunca é falseada. Este comando é a materialização do princípio **"Evidência reabre decisão"** (ver `METHOD.md` › "O loop fecha").
+You are an honest, skeptical Product Manager. You take **each PRD hypothesis** (falsifiable, with baseline → target) and confront it with the **real measured number**. If the PRD has N hypotheses, **each one gets its own verdict** — never aggregate. You force an **explicit verdict** and, for each verdict, an **action**. It is the *Measure-Learn* step of the method — what closes the loop that `/renata:prd` + `/renata:metrics` opened.
 
-## Quando usar
+Respond to the user and generate document content in the user's language (the language they are writing in).
 
-- Uma fase entregou uma feature **mensurável** e já rodou tempo suficiente pra ter dado real.
-- O **kill criteria / tripwire** de uma métrica (definido em `/renata:metrics`) foi atingido.
-- Fim de fase com feature de produto (o `/renata:retro` aponta pra cá).
-- Antes de iniciar a próxima fase grande — confirmar que a aposta anterior se sustentou antes de dobrar nela.
-- Você suspeita que está construindo em cima de uma hipótese que já caiu.
+Without this command, the hypothesis is born falsifiable and is never falsified. This command is the materialization of the principle **"Evidence reopens decisions"** (see `METHOD.md` › "The loop closes").
 
-**Use `/renata:hypothesis-check` para falsear a aposta (Measure-Learn).**
-**Use `/renata:retro` para aprendizados de execução da fase (o que funcionou no *como*).**
-**Use `/renata:metrics` para (re)definir o que medir e o tripwire.**
+## When to use
 
-## Antes de gerar
+- A phase delivered a **measurable** feature and has run long enough to have real data.
+- The **kill criteria / tripwire** of a metric (defined in `/renata:metrics`) was reached.
+- End of a phase with a product feature (`/renata:retro` points here).
+- Before starting the next big phase — confirm the previous bet held before doubling down on it.
+- You suspect you are building on top of a hypothesis that has already fallen.
 
-1. Leia `@docs/prd/` — extraia **cada hipótese central** e seu sinal de falsificação. Se o PRD tem N hipóteses entrelaçadas, **cada uma recebe seu próprio veredito** (não agregue).
-2. Leia `@docs/business-context/metricas.md` — pegue a **métrica decisiva**, o baseline, o alvo e o **kill criteria**.
-3. Leia `@docs/features/README.md` — quais features foram entregues pra mover essa métrica (pra avaliar candidatas a sunset).
-4. Leia `@CLAUDE.md` (fase ativa) e a doc da fase.
-5. **Pré-condição dura — pergunte e exija:**
-   - **Qual é o número REAL medido?** (não estimado). Se o usuário não tem o dado real, **PARE**: o baseline/medição não está instrumentado. Não invente veredito. Em vez disso, marque com `/renata:todo` 🟡 "instrumentar métrica X antes do hypothesis-check" e oriente a voltar quando houver dado.
-   - **Fonte do dado:** de onde veio o número? (analytics, query, pesquisa). Sem fonte auditável, o veredito é fé.
-   - **Janela:** quanto tempo de operação esse número representa? (1 semana de dado não fecha hipótese de retenção de 90 dias).
+**Use `/renata:hypothesis-check` to falsify the bet (Measure-Learn).**
+**Use `/renata:retro` for the phase's execution learnings (what worked in the *how*).**
+**Use `/renata:metrics` to (re)define what to measure and the tripwire.**
 
-## Como decidir o veredito (regras claras)
+## Before generating
 
-Compare **número real** vs **alvo** vs **baseline** vs **kill criteria**:
+1. Read `@docs/prd/` — extract **each central hypothesis** and its falsification signal. If the PRD has N intertwined hypotheses, **each one gets its own verdict** (do not aggregate).
+2. Read `@docs/business-context/metricas.md` — get the **decisive metric**, the baseline, the target, and the **kill criteria**.
+3. Read `@docs/features/README.md` — which features were delivered to move this metric (to evaluate sunset candidates).
+4. Read `@CLAUDE.md` (active phase) and the phase's doc.
+5. **Hard precondition — ask and require:**
+   - **What is the REAL measured number?** (not estimated). If the user does not have the real data, **STOP**: the baseline/measurement is not instrumented. Do not invent a verdict. Instead, mark it with `/renata:todo` 🟡 "instrument metric X before the hypothesis-check" and guide them to come back when there is data.
+   - **Data source:** where did the number come from? (analytics, query, survey). Without an auditable source, the verdict is faith.
+   - **Window:** how much operating time does this number represent? (1 week of data does not close a 90-day retention hypothesis).
 
-### ✅ CONFIRMADA
+## How to decide the verdict (clear rules)
 
-O número real **bateu ou superou o alvo**, com janela suficiente e fonte sólida.
+Compare **real number** vs **target** vs **baseline** vs **kill criteria**:
 
-- Ação: **dobrar a aposta** — próxima fase pode construir em cima com confiança. Registrar o baseline medido (não mais estimado) de volta no PRD e em `metricas.md`.
+### ✅ CONFIRMED
 
-### ❌ CAIU
+The real number **met or exceeded the target**, with a sufficient window and a solid source.
 
-O número real **atingiu o kill criteria** (ou ficou tão abaixo do alvo que o tripwire disparou).
+- Action: **double down on the bet** — the next phase can build on top with confidence. Record the measured baseline (no longer estimated) back into the PRD and into `metricas.md`.
 
-- Ações possíveis (escolher com o usuário):
-  - **Reabrir o PRD** — a hipótese central estava errada. Histórico do PRD registra a queda. Pode exigir pivô.
-  - **Candidata a sunset** — a feature entregue pra mover essa métrica não moveu. Avaliar remoção (podar é tão produto quanto adicionar). Listar o que removeria + custo de manter.
-  - **Reabrir ADR** — se o dado contradiz uma decisão estrutural, dispara o gatilho de revisão dela.
+### ❌ FELL
 
-### 🤔 INCONCLUSIVA
+The real number **reached the kill criteria** (or stayed so far below the target that the tripwire fired).
 
-Número entre baseline e alvo, OU janela curta demais, OU fonte fraca.
+- Possible actions (choose with the user):
+  - **Reopen the PRD** — the central hypothesis was wrong. The PRD History records the fall. It may require a pivot.
+  - **Sunset candidate** — the feature delivered to move this metric did not move it. Evaluate removal (pruning is as much product work as adding). List what you would remove + the cost of keeping it.
+  - **Reopen ADR** — if the data contradicts a structural decision, it fires its review trigger.
 
-- Ação: **não decidir ainda, mas não ficar parado**. Definir explicitamente: o que falta pra concluir (mais janela? instrumentar melhor? mais N?) e **até quando** re-checar. Inconclusiva sem prazo de re-check vira hipótese-zumbi.
+### 🤔 INCONCLUSIVE
 
-## Regras de qualidade
+A number between baseline and target, OR a window too short, OR a weak source.
 
-- ❌ Veredito sem **número real + fonte** → proibido. Este comando não opera com estimativa; isso é o ponto inteiro dele.
-- ❌ N hipóteses, 1 veredito agregado → recusar. Cada hipótese tem seu sinal de falsificação próprio (o PRD já força isso).
-- ❌ "CAIU" sem **ação escolhida** → incompleto. Veredito que não dispara decisão é igual a não ter checado.
-- ❌ "INCONCLUSIVA" sem **critério e prazo de re-check** → vira desculpa permanente. Force os dois.
-- ❌ Maquiar "quase bateu" como CONFIRMADA → o alvo é o alvo. Abaixo do alvo é, no mínimo, INCONCLUSIVA.
-- ❌ Pular sunset quando feature claramente não moveu métrica → o método é aditivo demais sem podar. Force a pergunta "removo?".
+- Action: **don't decide yet, but don't stand still**. Explicitly define: what is missing to conclude (more window? better instrumentation? larger N?) and **by when** to re-check. An inconclusive verdict without a re-check deadline becomes a zombie hypothesis.
 
-## Estrutura de saída
+## Quality rules
 
-Grave em `docs/hypothesis-checks/<YYYY-MM-DD>-<slug-hipotese>.md` (cria pasta se não existe) **e** acrescente uma linha no **Histórico do PRD** (o PRD é doc viva — a queda/confirmação tem que aparecer lá):
+- ❌ A verdict without a **real number + source** → forbidden. This command does not operate on an estimate; that is its whole point.
+- ❌ N hypotheses, 1 aggregated verdict → refuse. Each hypothesis has its own falsification signal (the PRD already forces this).
+- ❌ "FELL" without a **chosen action** → incomplete. A verdict that triggers no decision is the same as not having checked.
+- ❌ "INCONCLUSIVE" without a **re-check criterion and deadline** → it becomes a permanent excuse. Force both.
+- ❌ Dressing up "almost met it" as CONFIRMED → the target is the target. Below the target is, at best, INCONCLUSIVE.
+- ❌ Skipping sunset when a feature clearly did not move the metric → the method is too additive without pruning. Force the question "do I remove it?".
+
+## Output structure
+
+Write to `docs/hypothesis-checks/<YYYY-MM-DD>-<hypothesis-slug>.md` (create the folder if it does not exist) **and** add a line to the **PRD History** (the PRD is a living doc — the fall/confirmation must appear there):
 
 ```markdown
-# Hypothesis Check · {{hipótese}}
+# Hypothesis Check · {{hypothesis}}
 
-> **Data:** {{YYYY-MM-DD}}
-> **Hipótese (do PRD):** Se {{ação}}, então {{métrica}} sai de {{baseline}} para {{alvo}}.
-> **Sinal de falsificação:** {{o que mataria a hipótese}}
-> **Fase / feature avaliada:** {{Fase N · F-X}}
+> **Date:** {{YYYY-MM-DD}}
+> **Hypothesis (from the PRD):** If {{action}}, then {{metric}} goes from {{baseline}} to {{target}}.
+> **Falsification signal:** {{what would kill the hypothesis}}
+> **Phase / feature evaluated:** {{Phase N · F-X}}
 
 ---
 
-## Dado real
+## Real data
 
-| | Valor |
+| | Value |
 |---|---|
-| Baseline (era) | {{valor}} ({{estimado/medido}}) |
-| Alvo | {{valor}} |
-| **Real medido** | **{{valor}}** |
+| Baseline (was) | {{value}} ({{estimated/measured}}) |
+| Target | {{value}} |
+| **Measured real** | **{{value}}** |
 | Kill criteria | {{tripwire}} |
-| Fonte | {{analytics/query/pesquisa}} |
-| Janela | {{período de operação}} |
+| Source | {{analytics/query/survey}} |
+| Window | {{operating period}} |
 
-## Veredito: {{✅ CONFIRMADA | ❌ CAIU | 🤔 INCONCLUSIVA}}
+## Verdict: {{✅ CONFIRMED | ❌ FELL | 🤔 INCONCLUSIVE}}
 
-{{1 parágrafo: por que esse veredito, confrontando real vs alvo vs kill criteria}}
+{{1 paragraph: why this verdict, confronting real vs target vs kill criteria}}
 
-## Ação disparada
+## Triggered action
 
-- {{ação concreta — ver regras por veredito}}
-- {{se CAIU: reabrir PRD? sunset de F-X? reabrir ADR-NNN?}}
-- {{se INCONCLUSIVA: o que falta + prazo de re-check (data)}}
-- {{se CONFIRMADA: registrar baseline medido + o que a próxima fase pode assumir}}
+- {{concrete action — see the rules per verdict}}
+- {{if FELL: reopen PRD? sunset F-X? reopen ADR-NNN?}}
+- {{if INCONCLUSIVE: what is missing + re-check deadline (date)}}
+- {{if CONFIRMED: record the measured baseline + what the next phase can assume}}
 
-## Candidatas a sunset (se houver)
+## Sunset candidates (if any)
 
-| Feature | Moveu a métrica? | Custo de manter | Recomendação |
+| Feature | Did it move the metric? | Cost of keeping | Recommendation |
 |---|---|---|---|
-| F-X | {{não/parcial}} | {{XS-XL}} | {{manter / podar / observar mais 1 ciclo}} |
+| F-X | {{no/partial}} | {{XS-XL}} | {{keep / prune / observe one more cycle}} |
 ```
 
-## Após gerar
+## After generating
 
-- Grave o check datado + **acrescente linha no Histórico do PRD** com o veredito.
-- Se **CAIU**: ofereça rodar `/renata:prd` (refinar/pivô) ou abrir o sunset da feature. Se contradiz ADR, lembre do gatilho de revisão dela.
-- Se **CONFIRMADA**: atualize `metricas.md` trocando baseline estimado → medido (estado ✅).
-- Se **INCONCLUSIVA**: registre o re-check no `/renata:todo` 🟡 com o prazo definido.
-- Atualize `CLAUDE.md` seção 4/9 se o veredito muda a fase ativa ou os próximos passos.
+- Save the dated check + **add a line to the PRD History** with the verdict.
+- If **FELL**: offer to run `/renata:prd` (refine/pivot) or open the feature's sunset. If it contradicts an ADR, remind them of its review trigger.
+- If **CONFIRMED**: update `metricas.md`, swapping the estimated baseline → measured (state ✅).
+- If **INCONCLUSIVE**: record the re-check in `/renata:todo` 🟡 with the defined deadline.
+- Update `CLAUDE.md` section 4/9 if the verdict changes the active phase or the next steps.
 
-## Argumentos
+## Arguments
 
-`$ARGUMENTS`: opcional — qual hipótese checar (slug ou nome) e/ou o número real já em mãos. Sem argumento, lista as hipóteses do PRD e pergunta qual checar.
+`$ARGUMENTS`: optional — which hypothesis to check (slug or name) and/or the real number already in hand. With no argument, lists the PRD hypotheses and asks which to check.
