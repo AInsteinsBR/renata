@@ -16,21 +16,21 @@
 flowchart TD
     A["💡 Tenho uma ideia"] --> B["0. Pré-flight<br/>10min"]
     B --> C["1. Criar projeto<br/>5min"]
-    C --> D["2. PRD<br/>1-2h · /prd"]
+    C --> D["2. PRD<br/>1-2h · /renata:prd"]
     D --> E{"PRD aprovado?"}
     E -->|não| D
-    E -->|sim| F["3. Personas<br/>30min · /persona"]
-    F --> G["4. Jornadas<br/>30min · /user-journey"]
-    G --> H["5. Métricas<br/>45min · /metrics"]
-    H --> I["6. ADRs<br/>2-4h · /adr<br/>🛠 time tech entra"]
-    I --> J["7. Features<br/>1h · /feature-breakdown"]
-    J --> J5["7.5. Fasear<br/>/phase-roadmap"]
-    J5 --> K["8. Spec por fase<br/>1-2h · /feature-spec"]
+    E -->|sim| F["3. Personas<br/>30min · /renata:persona"]
+    F --> G["4. Jornadas<br/>30min · /renata:user-journey"]
+    G --> H["5. Métricas<br/>45min · /renata:metrics"]
+    H --> I["6. ADRs<br/>2-4h · /renata:adr<br/>🛠 time tech entra"]
+    I --> J["7. Features<br/>1h · /renata:feature-breakdown"]
+    J --> J5["7.5. Fasear<br/>/renata:phase-roadmap"]
+    J5 --> K["8. Spec por fase<br/>1-2h · /renata:feature-spec"]
     K --> K2{"Produto tem UI<br/>significativa?"}
     K2 -->|não| KA{"Premissa de valor/<br/>viabilidade testada?"}
-    K2 -->|sim| K3["8.5. Design de telas<br/>1-2h · /screens"]
+    K2 -->|sim| K3["8.5. Design de telas<br/>1-2h · /renata:screens"]
     K3 --> KA
-    KA -->|"não, é só intuição"| KT["Testar premissa<br/>/assumption-test"]
+    KA -->|"não, é só intuição"| KT["Testar premissa<br/>/renata:assumption-test"]
     KT -->|premissa caiu| D
     KT -->|premissa sustenta| L
     KA -->|sim| L["9. Roadmap<br/>1h · manual"]
@@ -38,11 +38,11 @@ flowchart TD
     M --> N{"Tudo pronto<br/>pra codar?"}
     N -->|não| O["Volta na etapa<br/>que falhou"]
     O --> E
-    N -->|sim| P["11. Plano de execução<br/>15min · 🛠 /plan-phase"]
+    N -->|sim| P["11. Plano de execução<br/>15min · 🛠 /renata:plan-phase"]
     P --> Q["12. Executar<br/>🛠 dias-semanas<br/>↻ loop task-a-task"]
-    Q --> R["13. Retro<br/>1h · /retro"]
+    Q --> R["13. Retro<br/>1h · /renata:retro"]
     R --> RH{"Entregou feature<br/>mensurável?"}
-    RH -->|sim| HC["Veredito da hipótese<br/>/hypothesis-check"]
+    RH -->|sim| HC["Veredito da hipótese<br/>/renata:hypothesis-check"]
     RH -->|não| S{"Próxima fase?"}
     HC -->|"❌ caiu / 🤔 inconclusiva"| HCB["Evidência reabre:<br/>PRD · ADR · sunset"]
     HCB --> D
@@ -74,7 +74,7 @@ flowchart TD
 - ◇ **Losango** = decisão / gate. Se "não", volta. Se "sim", segue.
 - ⬜ **Retângulo** = etapa que produz um documento ou código.
 
-**Você vai chegar até "🎉 Released" seguindo esse caminho — não tem atalho.** E mesmo depois, o loop não fecha sozinho: feature mensurável entregue dispara `/hypothesis-check`, e evidência pode te mandar de volta pro PRD. Released não é o fim da seta.
+**Você vai chegar até "🎉 Released" seguindo esse caminho — não tem atalho.** E mesmo depois, o loop não fecha sozinho: feature mensurável entregue dispara `/renata:hypothesis-check`, e evidência pode te mandar de volta pro PRD. Released não é o fim da seta.
 
 > 🔁 **O nó "12. Executar" é um loop por dentro** (`↻ task-a-task`). Esse mapa o mostra como uma caixa só porque é a visão de pássaro. O ciclo detalhado dele — pegar task → teste → código → revisão → checkpoint — está na [Visão B](#visão-b-o-loop-de-execução-etapa-12) e na própria Etapa 12.
 
@@ -95,7 +95,7 @@ O mapa acima é a **visão de fluxo** — como o processo anda no tempo. Mas o m
 
 ### 🔁 Visão B — O loop de execução (Etapa 12)
 
-Dentro do nó "12. Executar", a porta de entrada é o `/execute` (que orquestra o `superpowers:executing-plans` por dentro). Para **cada task** do plano, este ciclo roda. 🤖 = loop conduz · 🧑 = você decide.
+Dentro do nó "12. Executar", a porta de entrada é o `/renata:execute` (que orquestra o `superpowers:executing-plans` por dentro). Para **cada task** do plano, este ciclo roda. 🤖 = loop conduz · 🧑 = você decide.
 
 ```mermaid
 flowchart TD
@@ -114,7 +114,7 @@ flowchart TD
     GATE -->|"não"| T1
     GATE -->|"sim"| DONE(["Fase pronta<br/>→ Etapa 13 Retro"])
 
-    SOS["⚠️ deu errado?<br/>systematic-debugging /<br/>/adr / @architect"] -.-> T3
+    SOS["⚠️ deu errado?<br/>systematic-debugging /<br/>/renata:adr / @architect"] -.-> T3
 
     classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
     classDef done  fill:#d4edda,stroke:#28a745,color:#000
@@ -280,7 +280,7 @@ A **Etapa 6 é só o primeiro lote concentrado** (ADRs que destravam o resto). V
 - **Durante Etapa 12 (execução)** — escolhe biblioteca, padrão de teste, etc
 - **Durante Etapa 13 (retro)** — descobre que decisão antiga estava errada → ADR `superseded`
 
-A regra: **se aparece decisão com impacto > 1 sprint, abre `/adr`. Não importa em que etapa você está.**
+A regra: **se aparece decisão com impacto > 1 sprint, abre `/renata:adr`. Não importa em que etapa você está.**
 
 ### Em uma frase
 
@@ -297,19 +297,19 @@ Se essa explicação ainda está confusa, abra [`METHOD.pt-br.md`](./METHOD.pt-b
 | 0 | Pré-flight | 10min | — | Ambiente pronto |
 | 0.5 | Retrofit (só se já tem projeto) | 15min | — | Framework aplicado em projeto existente |
 | 1 | Criar projeto | 5min | — | Estrutura inicial |
-| 2 | Definir produto | 1-2h | `/prd` | `docs/prd/<slug>.md` |
-| 3 | Mapear personas | 30min cada | `/persona` | `docs/business-context/personas.md` |
-| 4 | Mapear jornadas | 30min | `/user-journey` | `docs/business-context/jornada.md` |
-| 5 | Definir métricas | 45min | `/metrics` | `docs/business-context/metricas.md` |
-| 6 | Decisões técnicas (ADRs) | 2-4h | `/adr` | `docs/decisions/ADR-*.md` |
-| 7 | Priorizar features | 1h | `/feature-breakdown` | `docs/features/README.md` |
-| 8 | Spec da feature âncora | 1-2h | `/feature-spec` | `docs/features/F1-*.md` |
-| **8.5** | **Design de telas (opcional)** | **1-2h** | **`/screens`** | **`docs/design/`** |
+| 2 | Definir produto | 1-2h | `/renata:prd` | `docs/prd/<slug>.md` |
+| 3 | Mapear personas | 30min cada | `/renata:persona` | `docs/business-context/personas.md` |
+| 4 | Mapear jornadas | 30min | `/renata:user-journey` | `docs/business-context/jornada.md` |
+| 5 | Definir métricas | 45min | `/renata:metrics` | `docs/business-context/metricas.md` |
+| 6 | Decisões técnicas (ADRs) | 2-4h | `/renata:adr` | `docs/decisions/ADR-*.md` |
+| 7 | Priorizar features | 1h | `/renata:feature-breakdown` | `docs/features/README.md` |
+| 8 | Spec da feature âncora | 1-2h | `/renata:feature-spec` | `docs/features/F1-*.md` |
+| **8.5** | **Design de telas (opcional)** | **1-2h** | **`/renata:screens`** | **`docs/design/`** |
 | 9 | Roadmap macro | 1h | manual | `docs/roadmap/` |
 | 10 | Arquitetura técnica | 2-3h | manual | `docs/technical-context/` |
-| 11 | Plano de execução | 15min | `/plan-phase` (envolve `superpowers:writing-plans`) | `docs/superpowers/specs/` |
-| 12 | Executar | dias-semanas | `/execute <fase>` (envolve `superpowers:executing-plans` + gate de pronto) | código real |
-| 13 | Retro da fase | 1h | `/retro` | `docs/roadmap/fase-N-retro.md` |
+| 11 | Plano de execução | 15min | `/renata:plan-phase` (envolve `superpowers:writing-plans`) | `docs/superpowers/specs/` |
+| 12 | Executar | dias-semanas | `/renata:execute <fase>` (envolve `superpowers:executing-plans` + gate de pronto) | código real |
+| 13 | Retro da fase | 1h | `/renata:retro` | `docs/roadmap/fase-N-retro.md` |
 
 ---
 
@@ -344,7 +344,7 @@ Antes de seguir, fixe esses 3 conceitos:
 | Termo | O que é |
 |---|---|
 | **Doc viva** | Documento em `docs/` que evolui junto com o projeto. NÃO é "escreveu e esqueceu" — é "escreve, decide, volta, atualiza". |
-| **Slash command** | Comando que você digita no Claude Code começando com `/`. Ex: `/prd`. Ele te faz perguntas e gera doc. |
+| **Slash command** | Comando que você digita no Claude Code começando com `/`. Ex: `/renata:prd`. Ele te faz perguntas e gera doc. |
 | **Hook** | Script que roda sozinho antes de cada commit, conferindo se você não está violando decisões antigas. |
 
 ---
@@ -395,7 +395,7 @@ cp $FW/template/docs/decisions/_template.md docs/decisions/
 
 Se você já tinha ADRs antes do framework:
 
-- O `.claude/rules.yaml` foi populado **fora** do fluxo `/adr` (manualmente, ou ficou vazio).
+- O `.claude/rules.yaml` foi populado **fora** do fluxo `/renata:adr` (manualmente, ou ficou vazio).
 - Isso é **débito técnico**: o YAML perdeu a amarração com a ADR.
 
 **Caminho de limpeza:**
@@ -403,10 +403,10 @@ Se você já tinha ADRs antes do framework:
 Para cada ADR existente que tem enforcement por hook, rode:
 
 ```text
-/adr refinar ADR-001 — re-validar enforcement no rules.yaml
+/renata:adr refinar ADR-001 — re-validar enforcement no rules.yaml
 ```
 
-O `/adr` em modo refinar lê a ADR, valida o bloco YAML correspondente, e completa o que falta com sua confirmação.
+O `/renata:adr` em modo refinar lê a ADR, valida o bloco YAML correspondente, e completa o que falta com sua confirmação.
 
 ## Validação
 
@@ -448,12 +448,12 @@ O RENATA é um **plugin do Claude Code** — você instala uma vez e ele fica di
 **b) Inicializar a estrutura no projeto novo:** abra o Claude Code no diretório do projeto e rode:
 
 ```text
-/renata-init "TaskFlow"
+/renata:init "TaskFlow"
 ```
 
-(ou `/renata-init "TaskFlow" --starter <URL-do-starter>` se você tem um boilerplate de frontend.)
+(ou `/renata:init "TaskFlow" --starter <URL-do-starter>` se você tem um boilerplate de frontend.)
 
-O `/renata-init` cria a estrutura, preenche o `CLAUDE.md` com o nome, e — se o projeto já tem git — **ativa automaticamente** o bloqueio de commits que violam ADR.
+O `/renata:init` cria a estrutura, preenche o `CLAUDE.md` com o nome, e — se o projeto já tem git — **ativa automaticamente** o bloqueio de commits que violam ADR.
 
 ## 1.3. Conferir o que foi criado
 
@@ -501,8 +501,8 @@ Abra `CLAUDE.md` no seu editor (VSCode, Sublime, etc). Você vai ver vários `{{
 
 ## Pegadinhas comuns
 
-- **`/renata-init` não aparece**: o plugin não está instalado/habilitado. Rode `/plugin install renata@ainsteins` e confira em `/plugin`.
-- **CLAUDE.md já existia**: o `/renata-init` pergunta antes de sobrescrever — confirme só se for proposital.
+- **`/renata:init` não aparece**: o plugin não está instalado/habilitado. Rode `/plugin install renata@ainsteins` e confira em `/plugin`.
+- **CLAUDE.md já existia**: o `/renata:init` pergunta antes de sobrescrever — confirme só se for proposital.
 
 ---
 
@@ -535,12 +535,12 @@ cd $PROJECT_DIR
 claude
 ```
 
-## 2.3. Invocar `/prd`
+## 2.3. Invocar `/renata:prd`
 
 Digite no Claude Code:
 
 ```text
-/prd app de gestão de tarefas pra freelancers solo gerenciando múltiplos clientes
+/renata:prd app de gestão de tarefas pra freelancers solo gerenciando múltiplos clientes
 ```
 
 ## 2.4. Responder as 9 perguntas
@@ -590,7 +590,7 @@ Abra `CLAUDE.md` e preencha agora:
 - [ ] Hipótese tem formato "Se X, então Y sai de Z pra W".
 - [ ] **Teste do elevador:** você consegue explicar o produto em 30s mostrando só esse arquivo? Se não, refine.
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
@@ -621,10 +621,10 @@ Abra `CLAUDE.md` e preencha agora:
 > - **Secundária:** Cliente do Marcos (recebe entregas, não usa o app).
 > - **Indireta:** nenhuma (Marcos opera sozinho).
 
-## 3.2. Invocar `/persona` para cada uma
+## 3.2. Invocar `/renata:persona` para cada uma
 
 ```text
-/persona Marcos · Freelancer Designer
+/renata:persona Marcos · Freelancer Designer
 ```
 
 **O comando faz 4 turnos:**
@@ -664,7 +664,7 @@ E no fim do arquivo (uma única seção consolidada):
 - [ ] Anti-personas listadas.
 - [ ] **Teste do mantra:** você consegue citar a frase âncora da primária de cor?
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
@@ -684,10 +684,10 @@ E no fim do arquivo (uma única seção consolidada):
 
 Geralmente 1 jornada por persona. Se duas personas fazem a mesma sequência, fazer 1 com nota das diferenças.
 
-## 4.2. Invocar `/user-journey`
+## 4.2. Invocar `/renata:user-journey`
 
 ```text
-/user-journey Marcos
+/renata:user-journey Marcos
 ```
 
 **Saída esperada:** jornada em 3 fases (`antes`, `durante`, `depois`) usando `mermaid journey`.
@@ -741,7 +741,7 @@ Tabela amarrando ponto crítico → métrica observável.
 - [ ] Anti-jornadas listadas
 - [ ] Métricas mapeadas em tabela
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
@@ -757,10 +757,10 @@ Tabela amarrando ponto crítico → métrica observável.
 
 **Objetivo:** estruturar como você vai medir se está dando certo — em 4 camadas.
 
-## 5.1. Invocar `/metrics`
+## 5.1. Invocar `/renata:metrics`
 
 ```text
-/metrics
+/renata:metrics
 ```
 
 **O comando estrutura em 4 camadas:**
@@ -829,7 +829,7 @@ Quem olha qual métrica e com que frequência.
 > ⛔ **GATE 5→6 (não pule).** Antes de tocar em features, as **ADRs** (Etapa 6) são
 > obrigatórias. O PRD + métricas já forçam decisões técnicas (banco, stack, transporte).
 > Ir pra features sem ADR = features soltas que voltam pra retrabalho. Se você está
-> tentado a pular pra `/feature-breakdown` agora, **pare e rode `/status`** — ele vai
+> tentado a pular pra `/renata:feature-breakdown` agora, **pare e rode `/renata:status`** — ele vai
 > apontar a Etapa 6. O hook `etapa-gate` bloqueia o breakdown se as ADRs faltarem.
 
 ---
@@ -842,7 +842,7 @@ Quem olha qual métrica e com que frequência.
 
 ## Esta etapa não é linear
 
-Você abre ADR sempre que aparece decisão com impacto > 1 sprint. Pode rodar `/adr` várias vezes ao longo de dias.
+Você abre ADR sempre que aparece decisão com impacto > 1 sprint. Pode rodar `/renata:adr` várias vezes ao longo de dias.
 
 ## 6.1. Listar decisões pendentes
 
@@ -863,10 +863,10 @@ Pergunte ao time tech:
 
 **Cada uma → 1 ADR.**
 
-## 6.2. Para cada decisão, invocar `/adr`
+## 6.2. Para cada decisão, invocar `/renata:adr`
 
 ```text
-/adr usar PostgreSQL como banco principal
+/renata:adr usar PostgreSQL como banco principal
 ```
 
 **O comando guia em 6 perguntas:**
@@ -886,13 +886,13 @@ Pergunte ao time tech:
 > **Gatilho de revisão:** se aparecer feature com schema dinâmico real.
 > **Enforcement:** hook bloqueia `import mongoose` ou `import pymongo`.
 
-## 6.3. `/adr` atualiza `rules.yaml` automaticamente
+## 6.3. `/renata:adr` atualiza `rules.yaml` automaticamente
 
-Quando o enforcement é via hook, o **próprio `/adr`** adiciona o bloco YAML em `.claude/rules.yaml` com sua confirmação. **Você não edita manualmente.**
+Quando o enforcement é via hook, o **próprio `/renata:adr`** adiciona o bloco YAML em `.claude/rules.yaml` com sua confirmação. **Você não edita manualmente.**
 
 Fluxo:
 
-1. `/adr` pergunta se enforcement é via hook.
+1. `/renata:adr` pergunta se enforcement é via hook.
 2. Se sim, pede o pattern regex + scope + mensagem.
 3. **Mostra** o bloco YAML que vai adicionar.
 4. **Pede confirmação** ("Vou adicionar este bloco ao rules.yaml. OK?").
@@ -900,7 +900,7 @@ Fluxo:
 
 **Sua responsabilidade:** revisar o bloco antes de confirmar — pattern faz sentido? scope cobre o que precisa? mensagem ajuda quem violar?
 
-> ⚠️ **`rules.yaml` é conteúdo do projeto, não do framework.** Cada bloco é gêmeo de uma ADR. Se você se pegar editando manualmente fora do `/adr`, pare — perdendo a amarração ADR ↔ regra. Use `/adr` em modo refinar.
+> ⚠️ **`rules.yaml` é conteúdo do projeto, não do framework.** Cada bloco é gêmeo de uma ADR. Se você se pegar editando manualmente fora do `/renata:adr`, pare — perdendo a amarração ADR ↔ regra. Use `/renata:adr` em modo refinar.
 
 ## 6.4. Ativar hook em pre-commit
 
@@ -915,7 +915,7 @@ A partir daqui, todo commit roda o hook.
 
 ## 6.5. Atualizar índice de ADRs
 
-`/adr` já atualiza `docs/decisions/README.md` automaticamente. Confira que está lá.
+`/renata:adr` já atualiza `docs/decisions/README.md` automaticamente. Confira que está lá.
 
 ## 6.6. (Opcional) Configurar integrações MCP
 
@@ -933,14 +933,14 @@ Quer que o projeto use MCP — Jira pra tarefas, GitHub pra PRs, Postgres pra co
 
 (O nome do servidor — aqui `jira` — é o que você referencia no próximo passo. Credenciais são responsabilidade sua, não do framework.)
 
-**Passo 2 — decidir via `/adr`.** Adotar um MCP como fonte espelhada é decisão estrutural. Rode `/adr usar Jira pra tarefas` — ele cria a ADR e escreve o bloco `integrations:` no `.claude/rules.yaml`:
+**Passo 2 — decidir via `/renata:adr`.** Adotar um MCP como fonte espelhada é decisão estrutural. Rode `/renata:adr usar Jira pra tarefas` — ele cria a ADR e escreve o bloco `integrations:` no `.claude/rules.yaml`:
 
 ```yaml
 integrations:
   tarefas: { mcp: jira, adr: ADR-009, espelho: true }
 ```
 
-**Como funciona depois:** ao rodar `/todo` ou `/triage`, o command grava **primeiro no local** (`docs/backlog/todos.md`) e então **pergunta** se quer espelhar no Jira. Você confirma → vira card. Sem confirmar → fica só local. Se o MCP não estiver disponível na sessão, opera 100% local e avisa. Nada quebra por falta de MCP.
+**Como funciona depois:** ao rodar `/renata:todo` ou `/renata:triage`, o command grava **primeiro no local** (`docs/backlog/todos.md`) e então **pergunta** se quer espelhar no Jira. Você confirma → vira card. Sem confirmar → fica só local. Se o MCP não estiver disponível na sessão, opera 100% local e avisa. Nada quebra por falta de MCP.
 
 **`espelho: true` vs `false`:** `true` = escreve no local e oferece push (tarefas). `false` = MCP só pra leitura/ação pontual, sem espelhar escrita (típico de `db`).
 
@@ -949,7 +949,7 @@ integrations:
 Tem um repo que já segue o padrão da casa — um starter clonado, um projeto antigo, um boilerplate? Em vez de o Claude garimpar esse código toda sessão, **destile o padrão** uma vez:
 
 ```text
-/extract-pattern frontend/
+/renata:extract-pattern frontend/
 ```
 
 O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arquitetura, stack, design system, convenções). Você **confirma item a item** o que detectou (o código é a verdade, mas você é o juiz do que vira regra). Ele então gera:
@@ -957,7 +957,7 @@ O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arqui
 - **ADRs** — uma por decisão estrutural (stack, arquitetura, design system), com alternativas e gatilho de revisão.
 - **`docs/technical-context/code-pattern-frontend.md`** — o detalhe operacional (componentes, tokens, exemplos), que o `CLAUDE.md` passa a carregar automaticamente.
 
-**Vários padrões no mesmo projeto** (ex: front e back): rode uma vez por escopo — `/extract-pattern frontend/` e `/extract-pattern backend/`. Cada um gera seu `code-pattern-<escopo>.md` e ADRs marcadas pelo escopo, sem misturar.
+**Vários padrões no mesmo projeto** (ex: front e back): rode uma vez por escopo — `/renata:extract-pattern frontend/` e `/renata:extract-pattern backend/`. Cada um gera seu `code-pattern-<escopo>.md` e ADRs marcadas pelo escopo, sem misturar.
 
 > ADR ≠ doc: a ADR registra **a decisão** (por que shadcn, não Material); o `code-pattern-*.md` registra **o detalhe** (quais componentes, quais tokens). A ADR aponta pro doc; nada é duplicado.
 
@@ -968,7 +968,7 @@ O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arqui
 - [ ] **Teste manual do hook:** cole um `import` que viola alguma ADR e tente commitar — deve falhar
 - [ ] Cada ADR tem gatilho de revisão explícito
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
@@ -986,15 +986,15 @@ O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arqui
 
 ## 7.1. Brainstorm livre
 
-Antes do `/feature-breakdown`, liste em rascunho:
+Antes do `/renata:feature-breakdown`, liste em rascunho:
 
 - O que o produto **precisa** ter pra hipótese se sustentar?
 - O que explicitamente **NÃO** vai ter?
 
-## 7.2. Invocar `/feature-breakdown`
+## 7.2. Invocar `/renata:feature-breakdown`
 
 ```text
-/feature-breakdown
+/renata:feature-breakdown
 ```
 
 **O comando pede 3-7 features candidatas, e classifica cada uma em binário:**
@@ -1016,7 +1016,7 @@ Antes do `/feature-breakdown`, liste em rascunho:
 
 A "âncora" não é UMA feature — é o **conjunto mínimo** que entrega valor de ponta a
 ponta (uma jornada-âncora fechada). Marque quais features compõem a Fase 0. As demais
-serão distribuídas em fases na Etapa 7.5 (`/phase-roadmap`).
+serão distribuídas em fases na Etapa 7.5 (`/renata:phase-roadmap`).
 
 Critérios pro conjunto-âncora:
 1. ✅ Juntas, fecham ≥1 jornada de ponta a ponta
@@ -1039,7 +1039,7 @@ Critérios pro conjunto-âncora:
 - [ ] Diagrama de dependências claro
 - [ ] Anti-features listadas
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
@@ -1056,10 +1056,10 @@ Critérios pro conjunto-âncora:
 **Objetivo:** distribuir **TODAS** as features em fases (Fase 0, 1, 2...) com tempo
 aproximado. Nenhuma fica de fora — a Fase 0 é o conjunto-âncora.
 
-## 7.5.1. Invocar `/phase-roadmap`
+## 7.5.1. Invocar `/renata:phase-roadmap`
 
 ```text
-/phase-roadmap
+/renata:phase-roadmap
 ```
 
 O comando distribui cada feature do breakdown numa fase e gera
@@ -1079,7 +1079,7 @@ O comando distribui cada feature do breakdown numa fase e gera
 - [ ] Fase 0 = conjunto-âncora
 
 > ⛔ **GATE 7.5→8.** A spec (Etapa 8) só começa após o faseamento. Você speca **fase a
-> fase**, começando pela Fase 0. Rode `/status` pra confirmar.
+> fase**, começando pela Fase 0. Rode `/renata:status` pra confirmar.
 
 ---
 
@@ -1088,10 +1088,10 @@ O comando distribui cada feature do breakdown numa fase e gera
 **Objetivo:** detalhar TODAS as features da Fase 0 (conjunto-âncora) ao ponto de iniciar
 implementação. Specar fase a fase — não só uma feature.
 
-## 8.1. Invocar `/feature-spec`
+## 8.1. Invocar `/renata:feature-spec`
 
 ```text
-/feature-spec F1
+/renata:feature-spec F1
 ```
 
 **O comando guia em:**
@@ -1129,7 +1129,7 @@ Pode esperar — não precisa fazer todas agora. Foque na âncora.
 - [ ] Cada spec tem plano em fases com critério verificável
 - [ ] Nenhuma feature da Fase 0 ficou sem spec
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ---
 
@@ -1152,18 +1152,18 @@ Se rodou `init.sh ... --starter <URL>`, você já tem:
 - `frontend/` clonado do seu starter (Next.js + Tailwind + shadcn + componentes seus, por exemplo).
 - `docs/decisions/ADR-001-frontend-starter.md` documentando essa escolha.
 
-Nesse caso, `/screens` gera briefs que **assumem** que código vai morar no starter. Você não vai colar em Lovable — vai implementar direto.
+Nesse caso, `/renata:screens` gera briefs que **assumem** que código vai morar no starter. Você não vai colar em Lovable — vai implementar direto.
 
 ### Cenário B — Você NÃO tem starter (vai usar ferramenta externa)
 
-Sem starter, `/screens` gera briefs **genéricos** que você cola em ferramenta externa (Lovable, Claude Design, v0).
+Sem starter, `/renata:screens` gera briefs **genéricos** que você cola em ferramenta externa (Lovable, Claude Design, v0).
 
 > ⚠️ **Importante:** o output da ferramenta externa é **PROTÓTIPO**, não código final. A Etapa 10 (arquitetura técnica) e Etapa 11 (plano de execução) decidem quanto reaproveitar vs reescrever conforme suas ADRs.
 
-## 8.5.2 — Invocar `/screens`
+## 8.5.2 — Invocar `/renata:screens`
 
 ```text
-/screens
+/renata:screens
 ```
 
 O comando detecta automaticamente se você está no Cenário A ou B (procura por ADR de frontend) e ajusta o output.
@@ -1246,7 +1246,7 @@ Se persona-âncora trava em algum ponto, **volte ao brief**. Não siga pra Etapa
 | Tela sem persona-âncora citada | Tela não existe pra ninguém. Cortar ou amarrar. |
 | Cenário B sem validação com persona | Não siga pra Etapa 9. Itere até persona aprovar. |
 | Cenário B aceito output do Lovable como código final | ⚠️ Vai cair na Etapa 10 — Lovable escolheu stack que pode não bater com ADRs. Refazer ou aceitar conscientemente. |
-| Cenário A com brief tentando "criar componente novo" | Não. Reaproveite o que o starter já tem. Se realmente precisa novo, abra `/adr` autorizando. |
+| Cenário A com brief tentando "criar componente novo" | Não. Reaproveite o que o starter já tem. Se realmente precisa novo, abra `/renata:adr` autorizando. |
 
 ---
 
@@ -1326,7 +1326,7 @@ Cada fase tem **gate explícito** — critério objetivo pra iniciar a próxima.
 - [ ] Gates explícitos em todas
 - [ ] Anti-roadmap listado (o que NÃO vai ser feito)
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ---
 
@@ -1381,7 +1381,7 @@ Quando o macro não chega:
 - [ ] Decisões refletidas como ADRs (volta na Etapa 6 se faltar)
 - [ ] "O que NÃO está nesta stack" listado
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
@@ -1400,11 +1400,11 @@ Quando o macro não chega:
 
 > ⚠️ **Atenção crítica:** o `superpowers:writing-plans` sozinho é **genérico** — ele não conhece nosso método. Sem blindagem, ele pode gerar plano que ignora ADRs, faz scope-creep, ou pula testes em passos críticos.
 >
-> **Use sempre `/plan-phase`** em vez de invocar `superpowers:writing-plans` direto. O `/plan-phase` envolve o `writing-plans` com 10 pré-requisitos + revisão automática do `@architect`.
+> **Use sempre `/renata:plan-phase`** em vez de invocar `superpowers:writing-plans` direto. O `/renata:plan-phase` envolve o `writing-plans` com 10 pré-requisitos + revisão automática do `@architect`.
 
-## 11.1. Pré-flight checklist (obrigatório antes de invocar `/plan-phase`)
+## 11.1. Pré-flight checklist (obrigatório antes de invocar `/renata:plan-phase`)
 
-Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **NÃO invoque `/plan-phase`** — corrija primeiro.
+Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **NÃO invoque `/renata:plan-phase`** — corrija primeiro.
 
 | # | Item | Como confirmar |
 |---|---|---|
@@ -1417,23 +1417,23 @@ Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **
 | 7 | Fase a planejar tem doc própria | `ls docs/roadmap/fase-N-*.md` |
 | 8 | `rules.yaml` válido | `bash .claude/hooks/rules-violation.sh` |
 | 9 | Sem plano `running` da mesma fase ativo | `grep -l "Status:.*running" docs/superpowers/specs/*.md` retorna vazio |
-| 10 | Se a fase tem UI: design existe | feature-spec menciona telas/UI → `docs/design/inventory.md` existe (senão `/screens`) |
+| 10 | Se a fase tem UI: design existe | feature-spec menciona telas/UI → `docs/design/inventory.md` existe (senão `/renata:screens`) |
 
 > 💡 **TaskFlow exemplo:** ao chegar nesta etapa para a Fase 0, confirma que: PRD existe (`taskflow.md`), persona Marcos está em `personas.md`, métricas têm contained rate, ADRs cobrem Postgres + framework + auth, feature F1 spec'ada, `fase-0-spike.md` existe.
 
-## 11.2. Invocar `/plan-phase`
+## 11.2. Invocar `/renata:plan-phase`
 
 ```text
-/plan-phase 0
+/renata:plan-phase 0
 ```
 
 Ou pelo nome:
 
 ```text
-/plan-phase Fase 0 Spike Técnico
+/renata:plan-phase Fase 0 Spike Técnico
 ```
 
-## 11.3. O que `/plan-phase` faz internamente
+## 11.3. O que `/renata:plan-phase` faz internamente
 
 1. **Valida os 10 pré-requisitos** (se algum falha, aborta e te orienta).
 2. **Lista artefatos** que vai passar ao `writing-plans` (PRD + ADRs + feature-spec + roadmap).
@@ -1465,7 +1465,7 @@ Mesmo após `@architect` aprovar, **você (PM + tech lead) lê o plano antes de 
 - [ ] Estimativas (t-shirt sizes) somam algo realista para o orçamento de tempo da fase?
 - [ ] Algum passo soa "scope-creep" (capacidade não-prevista na feature-spec)?
 
-Se algo soar errado, ou refine direto no arquivo, ou re-invoque `/plan-phase` com instrução adicional.
+Se algo soar errado, ou refine direto no arquivo, ou re-invoque `/renata:plan-phase` com instrução adicional.
 
 ## Validação da Etapa 11
 
@@ -1476,16 +1476,16 @@ Se algo soar errado, ou refine direto no arquivo, ou re-invoque `/plan-phase` co
 - [ ] Plano cita ADRs onde se aplicam
 - [ ] CLAUDE.md Seção 5 (session) aponta para o plano
 
-> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/status` pra confirmar o próximo passo.
+> ⛔ **GATE.** Não avance sem os itens acima ✅. Rode `/renata:status` pra confirmar o próximo passo.
 
 ## Pegadinhas comuns
 
 | Sintoma | Solução |
 |---|---|
-| `/plan-phase` aborta no pré-requisito #6 ("feature âncora sem spec") | Volte à Etapa 8. |
+| `/renata:plan-phase` aborta no pré-requisito #6 ("feature âncora sem spec") | Volte à Etapa 8. |
 | `@architect` retorna 5+ bloqueadores | Sinal de que a feature-spec está vaga. Refine spec antes de re-plano. |
 | Plano com 1500+ linhas e checkpoints raros | Re-invoque pedindo mais granularidade (passos menores). |
-| Plano cita ADR-X mas o arquivo da ADR não diz isso | Erro do `writing-plans` interpretando errado. Refine o plano manualmente ou abra `/adr refinar ADR-X`. |
+| Plano cita ADR-X mas o arquivo da ADR não diz isso | Erro do `writing-plans` interpretando errado. Refine o plano manualmente ou abra `/renata:adr refinar ADR-X`. |
 
 ---
 
@@ -1497,11 +1497,11 @@ Se algo soar errado, ou refine direto no arquivo, ou re-invoque `/plan-phase` co
 
 ## 12.0. Quem dirige a execução
 
-Você **não** fica chamando comando por comando na mão. A porta de entrada é o **`/execute <fase>`** — o espelho de saída do `/plan-phase`. Assim como o `/plan-phase` envolve o `superpowers:writing-plans` com guardrails do método, o `/execute` envolve o **`superpowers:executing-plans`** com os guardrails da execução: valida pré-requisitos, carrega contexto (ADRs, plano, spec), conduz o loop task a task, e aplica o **gate de pronto** (nenhuma task fecha sem teste verde + hook não-bloqueando). Ele lê o plano gerado na Etapa 11, pega uma task por vez, executa, e **pausa nos checkpoints** pra você revisar.
+Você **não** fica chamando comando por comando na mão. A porta de entrada é o **`/renata:execute <fase>`** — o espelho de saída do `/renata:plan-phase`. Assim como o `/renata:plan-phase` envolve o `superpowers:writing-plans` com guardrails do método, o `/renata:execute` envolve o **`superpowers:executing-plans`** com os guardrails da execução: valida pré-requisitos, carrega contexto (ADRs, plano, spec), conduz o loop task a task, e aplica o **gate de pronto** (nenhuma task fecha sem teste verde + hook não-bloqueando). Ele lê o plano gerado na Etapa 11, pega uma task por vez, executa, e **pausa nos checkpoints** pra você revisar.
 
 O seu papel (PM) durante a Etapa 12 é:
 
-1. **Abrir a execução** (12.1) — uma vez, com `/execute`.
+1. **Abrir a execução** (12.1) — uma vez, com `/renata:execute`.
 2. **Responder os checkpoints** — quando o loop pausa, você confere e libera (ou corrige).
 3. **Acionar subagents/skills** quando o loop sinaliza que precisa (12.5).
 
@@ -1510,14 +1510,14 @@ O resto (escrever teste, codar, rodar, atualizar doc) o loop conduz. **O método
 ## 12.1. Abrir a execução
 
 ```text
-/execute 0
+/renata:execute 0
 ```
 
-(ou `/execute Fase 0 Spike Técnico` — mesmo formato de argumento do `/plan-phase`. Se omitir, infere da fase ativa no `CLAUDE.md`.)
+(ou `/renata:execute Fase 0 Spike Técnico` — mesmo formato de argumento do `/renata:plan-phase`. Se omitir, infere da fase ativa no `CLAUDE.md`.)
 
-O `/execute` faz um **pré-flight** (confirma que há plano aprovado pelo `@architect`, sem bloqueadores abertos, sem outro plano `running`, `rules.yaml` válido) e só então assume o volante, orquestrando o `superpowers:executing-plans` por dentro. As seções 12.2-12.4 descrevem **o que ele faz por dentro** — leia pra saber o que esperar e onde você entra.
+O `/renata:execute` faz um **pré-flight** (confirma que há plano aprovado pelo `@architect`, sem bloqueadores abertos, sem outro plano `running`, `rules.yaml` válido) e só então assume o volante, orquestrando o `superpowers:executing-plans` por dentro. As seções 12.2-12.4 descrevem **o que ele faz por dentro** — leia pra saber o que esperar e onde você entra.
 
-> **Use sempre `/execute`** em vez de invocar `superpowers:executing-plans` direto — igual você usa `/plan-phase` em vez de `writing-plans` direto. O command sozinho não conhece o método nem o gate de pronto.
+> **Use sempre `/renata:execute`** em vez de invocar `superpowers:executing-plans` direto — igual você usa `/renata:plan-phase` em vez de `writing-plans` direto. O command sozinho não conhece o método nem o gate de pronto.
 
 ## 12.2. O loop de uma task (o ciclo que se repete)
 
@@ -1531,7 +1531,7 @@ Para **cada task** do plano, este ciclo de 7 passos roda. Quem executa cada pass
 | 2 | **Carrega ADRs relevantes** | 🤖 | Skill `respecting-adrs` ativa e injeta as ADRs que tocam esta task | `respecting-adrs` (auto) |
 | 3 | **Teste vermelho (red)** | 🤖 | Escreve o teste **antes** do código; roda; confirma que falha | `superpowers:test-driven-development` (auto) |
 | 4 | **Código + teste verde (green)** | 🤖 | Implementa o mínimo pra passar; roda os testes; confirma verde | TDD (auto) |
-| 5 | **Verifica de verdade (gate de pronto)** | 🤖 | Roda comando de validação do plano (não confia em "deve funcionar"); a task não fecha sem teste verde + hook não-bloqueando | `superpowers:verification-before-completion` (gate do `/execute`) |
+| 5 | **Verifica de verdade (gate de pronto)** | 🤖 | Roda comando de validação do plano (não confia em "deve funcionar"); a task não fecha sem teste verde + hook não-bloqueando | `superpowers:verification-before-completion` (gate do `/renata:execute`) |
 | 6 | **Revisão de código** | 🧑→🤖 | Antes de fechar a task | `@code-reviewer` no diff |
 | 7 | **Atualiza docs vivas + fecha task** | 🤖 | Marca task como done no plano; atualiza `.claude/sessions/` e CLAUDE.md | `keeping-docs-alive` (auto) |
 
@@ -1565,9 +1565,9 @@ Não é "se" — é "quando". O loop não esconde falha; ele para e te mostra. O
 | Sintoma | O que fazer |
 |---|---|
 | **Teste não passa depois de 2-3 tentativas** | Pare de tentar variações. Acione `superpowers:systematic-debugging` — ele força hipótese → teste → conclusão em vez de chute. |
-| **Hook bloqueou o commit** (violou ADR) | Não desligue o hook. Ou **refatora** pra respeitar a ADR, ou abre `/adr` pra **superseding** consciente da decisão antiga. |
-| **A task revelou decisão estrutural não-prevista** | Pause a task. Abra `/adr <decisão>` **antes** de codar. Se tiver dúvida, `@architect` revisa a proposta. |
-| **A task está maior do que o plano dizia** | Provável scope-creep ou estimativa errada. `detecting-scope-creep` deve ativar; se a task real é XL, volte e quebre no plano (`/plan-phase` ou edição manual). |
+| **Hook bloqueou o commit** (violou ADR) | Não desligue o hook. Ou **refatora** pra respeitar a ADR, ou abre `/renata:adr` pra **superseding** consciente da decisão antiga. |
+| **A task revelou decisão estrutural não-prevista** | Pause a task. Abra `/renata:adr <decisão>` **antes** de codar. Se tiver dúvida, `@architect` revisa a proposta. |
+| **A task está maior do que o plano dizia** | Provável scope-creep ou estimativa errada. `detecting-scope-creep` deve ativar; se a task real é XL, volte e quebre no plano (`/renata:plan-phase` ou edição manual). |
 | **Critério de aceite da feature não bate** | `@qa-tester` reprovou. Não marque a feature como pronta. Volte ao loop com as tasks que faltam. |
 | **Você não sabe se a fase acabou** | A fase termina quando **todas as tasks do plano estão `[x]`** E o **gate da fase** (em `docs/roadmap/fase-N-*.md`) está satisfeito. Sem gate verde, não é fim de fase. |
 
@@ -1597,23 +1597,23 @@ Skills carregam sozinhas pelo contexto — você não precisa invocar:
 
 | Quando | Comando |
 |---|---|
-| Risco técnico não validado no meio da fase | `/spike <pergunta>` |
-| Acumulou fila de bugs/débitos | `/triage <contexto>` |
-| Usou dado provisório num doc que convém validar depois (sem travar) | marca inline `<!-- TODO[data][impacto]: ... -->` + `/todo sync` |
-| Quer ver/priorizar todas as pendências num lugar só | `/todo list` |
-| Escopo da fase começou a parecer grande demais | `/phase-scope <fase>` |
-| Código atual emperrando próxima feature | `/refactor <alvo>` |
-| Decisão estrutural não-prevista aparece | `/adr <decisão>` antes de codar |
-| Premissa de negócio não-testada antes de construir ("alguém quer? paga?") | `/assumption-test <premissa>` |
-| Fase entregou feature mensurável — a hipótese se confirmou? | `/hypothesis-check [hipótese]` |
-| Feature entregue não moveu a métrica — remover? | `/hypothesis-check` (decide sunset) |
+| Risco técnico não validado no meio da fase | `/renata:spike <pergunta>` |
+| Acumulou fila de bugs/débitos | `/renata:triage <contexto>` |
+| Usou dado provisório num doc que convém validar depois (sem travar) | marca inline `<!-- TODO[data][impacto]: ... -->` + `/renata:todo sync` |
+| Quer ver/priorizar todas as pendências num lugar só | `/renata:todo list` |
+| Escopo da fase começou a parecer grande demais | `/renata:phase-scope <fase>` |
+| Código atual emperrando próxima feature | `/renata:refactor <alvo>` |
+| Decisão estrutural não-prevista aparece | `/renata:adr <decisão>` antes de codar |
+| Premissa de negócio não-testada antes de construir ("alguém quer? paga?") | `/renata:assumption-test <premissa>` |
+| Fase entregou feature mensurável — a hipótese se confirmou? | `/renata:hypothesis-check [hipótese]` |
+| Feature entregue não moveu a métrica — remover? | `/renata:hypothesis-check` (decide sunset) |
 
 ## 12.7. Mudanças de escopo durante execução
 
 Toda mudança de escopo:
 
 1. Refletir no roadmap (`docs/roadmap/fase-N-<nome>.md`)
-2. Se vira ADR, abrir via `/adr`
+2. Se vira ADR, abrir via `/renata:adr`
 3. Atualizar a feature spec se afeta capacidades
 
 **NUNCA muda código sem refletir nas docs vivas.**
@@ -1630,10 +1630,10 @@ Toda mudança de escopo:
 
 **Objetivo:** ao fim de cada fase, capturar aprendizados e decidir próximo passo.
 
-## 13.1. Invocar `/retro`
+## 13.1. Invocar `/renata:retro`
 
 ```text
-/retro 0
+/renata:retro 0
 ```
 
 Gera `docs/roadmap/fase-0-retro.md` com estrutura padrão.
@@ -1737,25 +1737,25 @@ Pra quando você já fez o tutorial uma vez e quer consultar rápido.
 
 | Etapa | Comando | O que faz |
 |---|---|---|
-| 2 | `/prd <ideia>` | Micro PRD em 9 perguntas |
-| 3 | `/persona <nome>` | Persona estruturada em 4 turnos |
-| 4 | `/user-journey <persona>` | Antes/durante/depois |
-| 5 | `/metrics` | 4 camadas (adoção, engajamento, valor, qualidade) |
-| 6 | `/adr <decisão>` | ADR Nygard + atualiza `rules.yaml` |
-| 7 | `/feature-breakdown` | Lista features + identifica âncora |
-| 8 | `/feature-spec <id>` | Detalha feature + plano em fases |
-| 8.5 | `/screens` | Inventário + fluxo + briefs de telas (opcional) |
-| gate | `/assumption-test <premissa>` | Testar risco de valor/viabilidade antes de construir (loop Measure-Learn) |
+| 2 | `/renata:prd <ideia>` | Micro PRD em 9 perguntas |
+| 3 | `/renata:persona <nome>` | Persona estruturada em 4 turnos |
+| 4 | `/renata:user-journey <persona>` | Antes/durante/depois |
+| 5 | `/renata:metrics` | 4 camadas (adoção, engajamento, valor, qualidade) |
+| 6 | `/renata:adr <decisão>` | ADR Nygard + atualiza `rules.yaml` |
+| 7 | `/renata:feature-breakdown` | Lista features + identifica âncora |
+| 8 | `/renata:feature-spec <id>` | Detalha feature + plano em fases |
+| 8.5 | `/renata:screens` | Inventário + fluxo + briefs de telas (opcional) |
+| gate | `/renata:assumption-test <premissa>` | Testar risco de valor/viabilidade antes de construir (loop Measure-Learn) |
 | 9 | manual | Roadmap macro (fases + gates) |
-| 11 | `/plan-phase <fase>` | Plano blindado (writing-plans + @architect) |
-| 12 | `/spike <pergunta>` | Investigação de risco |
-| 12 | `/phase-scope <fase>` | Re-escopar com MoSCoW |
-| 12 | `/triage <contexto>` | Priorizar bugs/débitos |
-| 12 | `/todo <add\|sync\|list\|done>` | Backlog de pendências (inline + sync central) |
-| 12 | `/refactor <alvo>` | Refactor disciplinado |
-| 13 | `/retro [fase]` | Retrospectiva (aprendizado de execução) |
-| 13 | `/hypothesis-check [hipótese]` | Veredito da hipótese vs dado real (✅/❌/🤔 + sunset) |
-| — | `/status [N]` | Onde estou no fluxo + próximo passo (valida etapa atual com gate humano) |
+| 11 | `/renata:plan-phase <fase>` | Plano blindado (writing-plans + @architect) |
+| 12 | `/renata:spike <pergunta>` | Investigação de risco |
+| 12 | `/renata:phase-scope <fase>` | Re-escopar com MoSCoW |
+| 12 | `/renata:triage <contexto>` | Priorizar bugs/débitos |
+| 12 | `/renata:todo <add\|sync\|list\|done>` | Backlog de pendências (inline + sync central) |
+| 12 | `/renata:refactor <alvo>` | Refactor disciplinado |
+| 13 | `/renata:retro [fase]` | Retrospectiva (aprendizado de execução) |
+| 13 | `/renata:hypothesis-check [hipótese]` | Veredito da hipótese vs dado real (✅/❌/🤔 + sunset) |
+| — | `/renata:status [N]` | Onde estou no fluxo + próximo passo (valida etapa atual com gate humano) |
 
 ## Subagentes (chame quando bater dúvida)
 

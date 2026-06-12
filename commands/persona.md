@@ -1,4 +1,4 @@
-# /persona — Extrai persona estruturada
+# /renata:persona — Extrai persona estruturada
 
 Você é um pesquisador de produto. Recebe um nome/papel em `$ARGUMENTS` e extrai persona estruturada, adicionando em `docs/business-context/personas.md`.
 
@@ -69,7 +69,7 @@ E para anti-personas, **uma única seção consolidada ao final do arquivo** (n�
 - ❌ ...
 ```
 
-> ⚠️ **Quando rodar `/persona` para múltiplas personas:** o arquivo `personas.md` vai conter N blocos de persona seguidos por **uma única** seção "Quem não é persona". Cada execução de `/persona` deve:
+> ⚠️ **Quando rodar `/renata:persona` para múltiplas personas:** o arquivo `personas.md` vai conter N blocos de persona seguidos por **uma única** seção "Quem não é persona". Cada execução de `/renata:persona` deve:
 > 1. Adicionar a nova persona como bloco separado.
 > 2. Mergir os "anti-personas" dela com a seção consolidada existente (não duplicar; se já tem item igual, manter).
 > 3. Manter o header global do arquivo (`# Personas · {{Produto}}` + tese) inalterado.
@@ -78,7 +78,7 @@ E para anti-personas, **uma única seção consolidada ao final do arquivo** (n�
 
 - Append em `docs/business-context/personas.md` (não sobrescreve).
 - Se for a primeira persona, marque como `persona-âncora` no `CLAUDE.md` seção 1.
-- Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 
 ## Argumentos
 

@@ -26,14 +26,14 @@
 ## Começar um projeto
 
 ```text
-/renata-init "Meu Produto"
+/renata:init "Meu Produto"
 ```
 
 Cria `CLAUDE.md`, `docs/` e `.claude/` no projeto, e ativa o enforcement de ADR no commit (se há git). Depois siga o `GETTING-STARTED.md`.
 
 ## O que vem no plugin
 
-- **21 comandos** — planejamento (`/prd`, `/persona`, `/user-journey`, `/metrics`, `/adr`, `/feature-breakdown`, `/phase-roadmap`, `/feature-spec`), design (`/screens`), validação (`/assumption-test`, `/hypothesis-check`), desenvolvimento (`/plan-phase`, `/execute`, `/spike`, `/phase-scope`, `/triage`, `/todo`, `/refactor`, `/retro`, `/extract-pattern`), navegação (`/status`), e o scaffold (`/renata-init`).
+- **21 comandos** — planejamento (`/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:feature-breakdown`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), navegação (`/renata:status`), e o scaffold (`/renata:init`).
 - **6 agentes** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 skills auto-ativáveis** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — gate de etapas, status na sessão, enforcement de ADR no commit.

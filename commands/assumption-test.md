@@ -1,17 +1,17 @@
-# /assumption-test — Testa a premissa de produto mais cara antes de construir
+# /renata:assumption-test — Testa a premissa de produto mais cara antes de construir
 
 Você é um Product Discovery lead (escola Cagan/Torres). Pega o PRD e expõe as **premissas de negócio mais arriscadas** — não as técnicas — e desenha o **teste mais barato que mata a premissa mais cara**. O objetivo é descobrir que uma aposta está errada **antes** de gastar fases construindo, não depois.
 
-É o irmão pré-construção do `/hypothesis-check` (que mede *depois*). Materializa a parte "premissa arriscada se testa antes de construir" do princípio **"Evidência reabre decisão"** (`METHOD.md` › "O loop fecha").
+É o irmão pré-construção do `/renata:hypothesis-check` (que mede *depois*). Materializa a parte "premissa arriscada se testa antes de construir" do princípio **"Evidência reabre decisão"** (`METHOD.md` › "O loop fecha").
 
 ## Os 4 riscos de produto (Marty Cagan)
 
 | Risco | Pergunta | Quem cobre no método |
 |---|---|---|
-| **Valor** | As pessoas querem isso? Resolve dor real? | **`/assumption-test`** ← aqui |
-| **Viabilidade de negócio** | Sustenta um negócio? (custo, canal, margem, legal) | **`/assumption-test`** ← aqui |
-| Usabilidade | Conseguem usar? | `/screens` (parcial) |
-| Factibilidade técnica | Dá pra construir? | `/spike` |
+| **Valor** | As pessoas querem isso? Resolve dor real? | **`/renata:assumption-test`** ← aqui |
+| **Viabilidade de negócio** | Sustenta um negócio? (custo, canal, margem, legal) | **`/renata:assumption-test`** ← aqui |
+| Usabilidade | Conseguem usar? | `/renata:screens` (parcial) |
+| Factibilidade técnica | Dá pra construir? | `/renata:spike` |
 
 Este comando ataca os **dois primeiros** — os que o framework não cobria e que entram como premissa não-testada no PRD.
 
@@ -22,9 +22,9 @@ Este comando ataca os **dois primeiros** — os que o framework não cobria e qu
 - O custo de construir a feature-âncora é alto (L/XL) e a premissa de valor é só intuição.
 - Apareceu uma premissa de negócio nova ("o cliente vai pagar por isso", "esse canal traz tráfego") que sustenta o plano.
 
-**Use `/assumption-test` para risco de valor/viabilidade (antes de construir).**
-**Use `/spike` para risco técnico ("roda?").**
-**Use `/hypothesis-check` para medir a hipótese (depois de construir).**
+**Use `/renata:assumption-test` para risco de valor/viabilidade (antes de construir).**
+**Use `/renata:spike` para risco técnico ("roda?").**
+**Use `/renata:hypothesis-check` para medir a hipótese (depois de construir).**
 
 ## Antes de gerar
 
@@ -61,7 +61,7 @@ Teste a premissa com **maior produto (risco × custo-de-estar-errado)**, não a 
 - ❌ Teste sem **sinal de falsificação definido antes** → vira teatro de confirmação. Defina "isso prova FALSA a premissa se..." antes de rodar.
 - ❌ Confundir "construir um MVP" com "testar a premissa" → MVP já é construir. O teste mais barato quase nunca é código.
 - ❌ Premissa de valor declarada como "óbvia" → as mais perigosas são as que ninguém questiona. Se é óbvia, o teste é barato; rode mesmo assim.
-- ❌ Misturar risco técnico aqui → isso é `/spike`. Mantenha o foco em querem? / paga?.
+- ❌ Misturar risco técnico aqui → isso é `/renata:spike`. Mantenha o foco em querem? / paga?.
 
 ## Estrutura de saída
 
@@ -101,9 +101,9 @@ Grave em `docs/assumptions/<YYYY-MM-DD>-<slug>.md` (cria pasta se não existe):
 ## Após gerar
 
 - Grave o teste datado.
-- Se a premissa **caiu**: ofereça rodar `/prd` (refinar/pivô) — a hipótese central pode estar comprometida antes mesmo da Fase 0. Registre no Histórico do PRD.
-- Se **sustenta**: registre como premissa validada e libere o caminho pro `/feature-spec` / `/plan-phase`.
-- Se o teste exige espera (tráfego, entrevistas agendadas): registre o re-check no `/todo` 🟡 com prazo.
+- Se a premissa **caiu**: ofereça rodar `/renata:prd` (refinar/pivô) — a hipótese central pode estar comprometida antes mesmo da Fase 0. Registre no Histórico do PRD.
+- Se **sustenta**: registre como premissa validada e libere o caminho pro `/renata:feature-spec` / `/renata:plan-phase`.
+- Se o teste exige espera (tráfego, entrevistas agendadas): registre o re-check no `/renata:todo` 🟡 com prazo.
 
 ## Argumentos
 

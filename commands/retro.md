@@ -1,4 +1,4 @@
-# /retro — Retrospectiva ao fim de uma fase ou ciclo
+# /renata:retro — Retrospectiva ao fim de uma fase ou ciclo
 
 Você é um tech lead facilitador. Guia o usuário a produzir uma **retro estruturada** ao fim de uma fase do roadmap (ou outro ciclo definido).
 
@@ -26,7 +26,7 @@ Retro não é catarse. É **diagnóstico acionável** com decisão explícita no
    - **ADRs novas** decorrentes desta fase
    - **ADRs que viraram superseded** porque o que decidimos antes mostrou-se errado
    - **Refatorações necessárias** antes de iniciar próxima fase
-   - **A fase entregou alguma feature mensurável** (que move uma métrica decisiva)? Se sim → a retro fecha o *como*, mas a hipótese ainda precisa do **veredito de produto**. Aponte pra rodar `/hypothesis-check` (não confunda os dois: retro = aprendizado de execução; hypothesis-check = a aposta se confirmou?).
+   - **A fase entregou alguma feature mensurável** (que move uma métrica decisiva)? Se sim → a retro fecha o *como*, mas a hipótese ainda precisa do **veredito de produto**. Aponte pra rodar `/renata:hypothesis-check` (não confunda os dois: retro = aprendizado de execução; hypothesis-check = a aposta se confirmou?).
    - **Decisão final:** próxima fase / repetir esta fase / pivot do produto
 
 ## Regras de qualidade
@@ -36,7 +36,7 @@ Retro não é catarse. É **diagnóstico acionável** com decisão explícita no
 - ❌ "O que não funcionou: pouca comunicação" → exija exemplo concreto.
 - ❌ Sem decisão final explícita → recuse fechar a retro. Retro sem ação é desperdício.
 - ❌ Retro fica em `docs/notes/` ou similar → grave em `docs/roadmap/fase-<N>-retro.md` (padrão).
-- ❌ Tratar "a métrica bateu o alvo?" como item de retro → a retro **observa** o número; o **veredito da hipótese** (✅/❌/🤔 + ação) é do `/hypothesis-check`. Retro que conclui "hipótese caiu" sem rodar o check pula o passo que dispara a decisão (reabrir PRD / sunset).
+- ❌ Tratar "a métrica bateu o alvo?" como item de retro → a retro **observa** o número; o **veredito da hipótese** (✅/❌/🤔 + ação) é do `/renata:hypothesis-check`. Retro que conclui "hipótese caiu" sem rodar o check pula o passo que dispara a decisão (reabrir PRD / sunset).
 
 ## Estrutura
 
@@ -114,7 +114,7 @@ Retro não é catarse. É **diagnóstico acionável** com decisão explícita no
 |---|---|---|---|
 | {{nome}} | {{alvo}} | {{real}} | {{contexto}} |
 
-> **Veredito de hipótese pendente?** Se alguma métrica acima é a **decisiva** do PRD (ou atingiu um kill criteria), esta retro **não fecha a aposta** — rode `/hypothesis-check` pra emitir o veredito (✅ confirmada / ❌ caiu / 🤔 inconclusiva) e disparar a ação (dobrar / reabrir PRD / sunset). Linka o check aqui quando feito: `{{link}}`.
+> **Veredito de hipótese pendente?** Se alguma métrica acima é a **decisiva** do PRD (ou atingiu um kill criteria), esta retro **não fecha a aposta** — rode `/renata:hypothesis-check` pra emitir o veredito (✅ confirmada / ❌ caiu / 🤔 inconclusiva) e disparar a ação (dobrar / reabrir PRD / sunset). Linka o check aqui quando feito: `{{link}}`.
 
 ---
 
@@ -143,9 +143,9 @@ Retro não é catarse. É **diagnóstico acionável** com decisão explícita no
 ## Após gerar
 
 - Grave em `docs/roadmap/fase-<N>-retro.md`.
-- Se decisão for "próxima fase", sugira: `/feature-spec` ou `superpowers:writing-plans` para a próxima fase.
-- Se decisão for "pivot", sugira: `/prd` para refinar a hipótese.
-- Se houver ADRs pendentes, sugira: `/adr` para formalizar cada uma.
+- Se decisão for "próxima fase", sugira: `/renata:feature-spec` ou `superpowers:writing-plans` para a próxima fase.
+- Se decisão for "pivot", sugira: `/renata:prd` para refinar a hipótese.
+- Se houver ADRs pendentes, sugira: `/renata:adr` para formalizar cada uma.
 - Aprendizados de viagem (seção final) podem virar memory persistente.
 
 ## Argumentos

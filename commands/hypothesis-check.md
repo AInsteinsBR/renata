@@ -1,20 +1,20 @@
-# /hypothesis-check — Confronta as hipóteses do PRD com o dado real (fecha o loop)
+# /renata:hypothesis-check — Confronta as hipóteses do PRD com o dado real (fecha o loop)
 
-Você é um Product Manager honesto e cético. Pega **cada hipótese do PRD** (falsificável, com baseline → alvo) e a confronta com o **número real medido**. Se o PRD tem N hipóteses, **cada uma recebe seu próprio veredito** — nunca agregue. Força um **veredito explícito** e, pra cada veredito, uma **ação**. É o passo *Measure-Learn* do método — o que fecha o loop que `/prd` + `/metrics` abriram.
+Você é um Product Manager honesto e cético. Pega **cada hipótese do PRD** (falsificável, com baseline → alvo) e a confronta com o **número real medido**. Se o PRD tem N hipóteses, **cada uma recebe seu próprio veredito** — nunca agregue. Força um **veredito explícito** e, pra cada veredito, uma **ação**. É o passo *Measure-Learn* do método — o que fecha o loop que `/renata:prd` + `/renata:metrics` abriram.
 
 Sem este comando, a hipótese nasce falseável e nunca é falseada. Este comando é a materialização do princípio **"Evidência reabre decisão"** (ver `METHOD.md` › "O loop fecha").
 
 ## Quando usar
 
 - Uma fase entregou uma feature **mensurável** e já rodou tempo suficiente pra ter dado real.
-- O **kill criteria / tripwire** de uma métrica (definido em `/metrics`) foi atingido.
-- Fim de fase com feature de produto (o `/retro` aponta pra cá).
+- O **kill criteria / tripwire** de uma métrica (definido em `/renata:metrics`) foi atingido.
+- Fim de fase com feature de produto (o `/renata:retro` aponta pra cá).
 - Antes de iniciar a próxima fase grande — confirmar que a aposta anterior se sustentou antes de dobrar nela.
 - Você suspeita que está construindo em cima de uma hipótese que já caiu.
 
-**Use `/hypothesis-check` para falsear a aposta (Measure-Learn).**
-**Use `/retro` para aprendizados de execução da fase (o que funcionou no *como*).**
-**Use `/metrics` para (re)definir o que medir e o tripwire.**
+**Use `/renata:hypothesis-check` para falsear a aposta (Measure-Learn).**
+**Use `/renata:retro` para aprendizados de execução da fase (o que funcionou no *como*).**
+**Use `/renata:metrics` para (re)definir o que medir e o tripwire.**
 
 ## Antes de gerar
 
@@ -23,7 +23,7 @@ Sem este comando, a hipótese nasce falseável e nunca é falseada. Este comando
 3. Leia `@docs/features/README.md` — quais features foram entregues pra mover essa métrica (pra avaliar candidatas a sunset).
 4. Leia `@CLAUDE.md` (fase ativa) e a doc da fase.
 5. **Pré-condição dura — pergunte e exija:**
-   - **Qual é o número REAL medido?** (não estimado). Se o usuário não tem o dado real, **PARE**: o baseline/medição não está instrumentado. Não invente veredito. Em vez disso, marque com `/todo` 🟡 "instrumentar métrica X antes do hypothesis-check" e oriente a voltar quando houver dado.
+   - **Qual é o número REAL medido?** (não estimado). Se o usuário não tem o dado real, **PARE**: o baseline/medição não está instrumentado. Não invente veredito. Em vez disso, marque com `/renata:todo` 🟡 "instrumentar métrica X antes do hypothesis-check" e oriente a voltar quando houver dado.
    - **Fonte do dado:** de onde veio o número? (analytics, query, pesquisa). Sem fonte auditável, o veredito é fé.
    - **Janela:** quanto tempo de operação esse número representa? (1 semana de dado não fecha hipótese de retenção de 90 dias).
 
@@ -107,9 +107,9 @@ Grave em `docs/hypothesis-checks/<YYYY-MM-DD>-<slug-hipotese>.md` (cria pasta se
 ## Após gerar
 
 - Grave o check datado + **acrescente linha no Histórico do PRD** com o veredito.
-- Se **CAIU**: ofereça rodar `/prd` (refinar/pivô) ou abrir o sunset da feature. Se contradiz ADR, lembre do gatilho de revisão dela.
+- Se **CAIU**: ofereça rodar `/renata:prd` (refinar/pivô) ou abrir o sunset da feature. Se contradiz ADR, lembre do gatilho de revisão dela.
 - Se **CONFIRMADA**: atualize `metricas.md` trocando baseline estimado → medido (estado ✅).
-- Se **INCONCLUSIVA**: registre o re-check no `/todo` 🟡 com o prazo definido.
+- Se **INCONCLUSIVA**: registre o re-check no `/renata:todo` 🟡 com o prazo definido.
 - Atualize `CLAUDE.md` seção 4/9 se o veredito muda a fase ativa ou os próximos passos.
 
 ## Argumentos

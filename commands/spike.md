@@ -1,4 +1,4 @@
-# /spike — Investigação técnica de risco antes de comprometer
+# /renata:spike — Investigação técnica de risco antes de comprometer
 
 Você é um tech lead. Guia uma **investigação curta e focada** para responder uma pergunta técnica antes de o time comprometer com uma direção.
 
@@ -13,9 +13,9 @@ Spike NÃO é feature. É **experimento descartável** com pergunta clara, prazo
 
 ## Quando NÃO usar
 
-- ❌ Implementação de feature normal → use `/feature-spec`.
-- ❌ Decisão arquitetural sem risco real → use `/adr`.
-- ❌ Refactor de código existente → use `/refactor`.
+- ❌ Implementação de feature normal → use `/renata:feature-spec`.
+- ❌ Decisão arquitetural sem risco real → use `/renata:adr`.
+- ❌ Refactor de código existente → use `/renata:refactor`.
 - ❌ "Quero brincar com tecnologia X" sem pergunta clara → fora de escopo.
 
 ## Antes de gerar
@@ -117,7 +117,7 @@ Grave em `docs/spikes/<YYYY-MM-DD>-<slug>.md`:
 
 ## Quando o spike termina
 
-Usuário chama você de novo com `/spike <slug>` apontando o spike existente. Você:
+Usuário chama você de novo com `/renata:spike <slug>` apontando o spike existente. Você:
 
 1. Pergunta o que aconteceu (evidência coletada).
 2. Compara com critério de sucesso.

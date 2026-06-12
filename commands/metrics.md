@@ -1,4 +1,4 @@
-# /metrics — Define ou refina métricas do produto
+# /renata:metrics — Define ou refina métricas do produto
 
 Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcional) e estrutura métricas em 4 camadas em `docs/business-context/metricas.md`.
 
@@ -8,7 +8,7 @@ Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcion
 2. Leia `@docs/prd/` — métrica decisiva precisa amarrar com hipótese do PRD.
 3. Leia `@docs/business-context/personas.md` — métricas servem personas específicas.
 4. Leia `@docs/business-context/jornada.md` se existir — pontos críticos da jornada geram métricas.
-5. Se faltar PRD ou persona, instrua a rodar `/prd` ou `/persona` primeiro.
+5. Se faltar PRD ou persona, instrua a rodar `/renata:prd` ou `/renata:persona` primeiro.
 6. Pergunte UMA por vez:
 
    **Camada 1 — Adoção (alguém usa?):**
@@ -29,10 +29,10 @@ Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcion
 
    **Kill criteria / tripwire (obrigatório por métrica):**
    - Qual é o número que, se atingido, **dispara uma decisão** (não só um alerta)? Ex: "se adoção < 10% do alvo em 30 dias → para e repensa a feature". Alvo sem tripwire é dashboard, não instrumento de gestão.
-   - Qual é a **ação** disparada? (repensar feature · reabrir PRD · rodar `/hypothesis-check` · candidata a sunset).
+   - Qual é a **ação** disparada? (repensar feature · reabrir PRD · rodar `/renata:hypothesis-check` · candidata a sunset).
 
    **Estado do baseline (estimado vs medido):**
-   - O baseline atual é **chute** ou **medido de verdade**? Se chute: a métrica está **instrumentada** (evento/telemetria existe)? Se não, isso é dívida — marque com TODO 🟡 (`/todo`) "instrumentar antes de declarar pronto".
+   - O baseline atual é **chute** ou **medido de verdade**? Se chute: a métrica está **instrumentada** (evento/telemetria existe)? Se não, isso é dívida — marque com TODO 🟡 (`/renata:todo`) "instrumentar antes de declarar pronto".
 
    **Cadência de revisão:**
    - Quem revê qual métrica e com que frequência?
@@ -47,8 +47,8 @@ Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcion
 - ❌ Mais de 1 métrica decisiva → escolher uma. Outras viram secundárias.
 - ❌ Falta de **anti-métricas** explícitas → exigir.
 - ❌ Métrica sem **kill criteria / tripwire** → recusar. Todo alvo precisa de um número que dispara decisão. "Subir é bom" não é gestão.
-- ❌ Kill criteria que dispara **alerta** mas não **ação** → insuficiente. "Hipótese em risco" não é ação; "rodar `/hypothesis-check` e decidir sunset" é.
-- ❌ Baseline marcado como medido sem **fonte instrumentada** → é chute disfarçado. Estimativa honesta vira dívida (`/todo` 🟡 "instrumentar"), não baseline final.
+- ❌ Kill criteria que dispara **alerta** mas não **ação** → insuficiente. "Hipótese em risco" não é ação; "rodar `/renata:hypothesis-check` e decidir sunset" é.
+- ❌ Baseline marcado como medido sem **fonte instrumentada** → é chute disfarçado. Estimativa honesta vira dívida (`/renata:todo` 🟡 "instrumentar"), não baseline final.
 
 ## Estrutura
 
@@ -68,7 +68,7 @@ Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcion
 **Meta inicial:** {{valor}}.
 **Meta prod:** {{valor}}.
 **Por que essa métrica:** {{justificativa}}.
-**🔫 Kill criteria:** se {{métrica}} {{< X}} em {{período}} → **{{ação: repensar feature | reabrir PRD | rodar /hypothesis-check | candidata a sunset}}**.
+**🔫 Kill criteria:** se {{métrica}} {{< X}} em {{período}} → **{{ação: repensar feature | reabrir PRD | rodar /renata:hypothesis-check | candidata a sunset}}**.
 
 ## 2 · Engajamento
 
@@ -82,7 +82,7 @@ Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcion
 **Como medir:** {{fórmula}}.
 **Baseline:** {{valor estimado, fonte}} · **estado:** {{🟡 estimado | ✅ medido}}.
 **Meta {{fase}}:** {{valor}}.
-**🔫 Kill criteria:** se {{métrica}} {{< X}} em {{período}} → **{{ação}}**. _(É o tripwire da hipótese que esta métrica decide — quando dispara, `/hypothesis-check` é obrigatório.)_
+**🔫 Kill criteria:** se {{métrica}} {{< X}} em {{período}} → **{{ação}}**. _(É o tripwire da hipótese que esta métrica decide — quando dispara, `/renata:hypothesis-check` é obrigatório.)_
 **Por que essa métrica:** {{esta é a métrica do CFO/stakeholder. Amarra com qual hipótese do PRD (H1, H2…)}}.
 
 ## 4 · Qualidade percebida (opcional)
@@ -123,7 +123,7 @@ Você é um Product Manager + Data Lead. Recebe contexto em `$ARGUMENTS` (opcion
 
 - Grave em `docs/business-context/metricas.md`.
 - Atualize `CLAUDE.md` seção 2 referenciando o arquivo (se ainda não estava).
-- Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 
 ## Argumentos
 

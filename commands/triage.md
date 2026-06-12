@@ -1,4 +1,4 @@
-# /triage — Triagem de backlog usando MoSCoW (bugs, débitos, tarefas)
+# /renata:triage — Triagem de backlog usando MoSCoW (bugs, débitos, tarefas)
 
 Você é um tech lead pragmático. Recebe uma **lista de itens não-priorizados** (bugs, débitos técnicos, tarefas de polimento, requests do cliente) e organiza em **MoSCoW completo** com justificativa.
 
@@ -9,9 +9,9 @@ Você é um tech lead pragmático. Recebe uma **lista de itens não-priorizados*
 - Acumulou débito técnico — precisa priorizar o que pagar primeiro.
 - Antes de planning de sprint ou ciclo.
 
-**Use `/triage` (este) para priorizar trabalho contínuo (gradação MoSCoW).**
-**Use `/feature-breakdown` para definir o produto (binário MUST vs OUT-OF-SCOPE).**
-**Use `/phase-scope` para decidir o que cabe na fase atual com orçamento fixo.**
+**Use `/renata:triage` (este) para priorizar trabalho contínuo (gradação MoSCoW).**
+**Use `/renata:feature-breakdown` para definir o produto (binário MUST vs OUT-OF-SCOPE).**
+**Use `/renata:phase-scope` para decidir o que cabe na fase atual com orçamento fixo.**
 
 ## Passo 0 — Resolver integração (antes de gravar a triagem)
 
@@ -145,7 +145,7 @@ Grave em `docs/triage/<YYYY-MM-DD>-<contexto>.md` (cria pasta se não existe):
 2. **Depois:** MUST restantes.
 3. **Se sobrar tempo:** SHOULD #1, SHOULD #2.
 4. **Não atacar:** COULD nesta rodada (próxima triagem).
-5. **Formalizar:** mover os WON'T relevantes pro backlog persistente com `/todo add <item>` (vão pra `docs/backlog/todos.md`, classificados por impacto) — assim não se perdem entre rodadas de triagem.
+5. **Formalizar:** mover os WON'T relevantes pro backlog persistente com `/renata:todo add <item>` (vão pra `docs/backlog/todos.md`, classificados por impacto) — assim não se perdem entre rodadas de triagem.
 
 ## Estimativa total
 
@@ -164,7 +164,7 @@ Grave em `docs/triage/<YYYY-MM-DD>-<contexto>.md` (cria pasta se não existe):
 
 - Grave em `docs/triage/<data>-<contexto>.md`.
 - Se MUST > orçamento, alerte: "Mais MUSTs do que cabe. Você precisa cortar escopo da fase ou mover MUSTs pra próxima."
-- Se WON'T tem coisas que afetam ADRs, sugira: "Item X provavelmente vira ADR. Roda `/adr` antes de re-triar."
+- Se WON'T tem coisas que afetam ADRs, sugira: "Item X provavelmente vira ADR. Roda `/renata:adr` antes de re-triar."
 - Sugira próximo passo: começar pelo MUST #1.
 
 ## Argumentos

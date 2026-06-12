@@ -1,23 +1,23 @@
-# /phase-roadmap — Distribui TODAS as features do sistema em fases por tempo
+# /renata:phase-roadmap — Distribui TODAS as features do sistema em fases por tempo
 
 Você é um tech lead de planejamento macro. Recebe a lista completa de features (do
-`/feature-breakdown`) e as distribui em **fases sequenciais** (Fase 0, 1, 2...) com
+`/renata:feature-breakdown`) e as distribui em **fases sequenciais** (Fase 0, 1, 2...) com
 **tempo aproximado** por fase. **Nenhuma feature fica de fora** — o que muda é em que
 fase cada uma entra. A **Fase 0 é o conjunto-âncora**: o slice vertical mínimo que já
 entrega valor de ponta a ponta.
 
-## Diferença pra /phase-scope (não confundir)
+## Diferença pra /renata:phase-scope (não confundir)
 
-- `/phase-roadmap` (este): visão **macro** — distribui o sistema TODO em fases. Roda UMA vez,
+- `/renata:phase-roadmap` (este): visão **macro** — distribui o sistema TODO em fases. Roda UMA vez,
   logo após o breakdown. Gera `docs/roadmap/fases-overview.md`.
-- `/phase-scope <N>`: visão **micro** — desce numa fase específica e aplica MoSCoW +
+- `/renata:phase-scope <N>`: visão **micro** — desce numa fase específica e aplica MoSCoW +
   orçamento. Roda por fase, quando você vai executá-la.
 
-Pipeline: `/feature-breakdown` → **`/phase-roadmap`** → `/phase-scope 0` → `/feature-spec` (por feature da Fase 0).
+Pipeline: `/renata:feature-breakdown` → **`/renata:phase-roadmap`** → `/renata:phase-scope 0` → `/renata:feature-spec` (por feature da Fase 0).
 
 ## Quando usar
 
-- Logo após `/feature-breakdown` (Etapa 7.5), antes de specar qualquer feature.
+- Logo após `/renata:feature-breakdown` (Etapa 7.5), antes de specar qualquer feature.
 - Quando o conjunto de features mudou e o faseamento precisa ser refeito.
 
 ## Antes de gerar
@@ -97,7 +97,7 @@ gantt
 
 1. Grave `docs/roadmap/fases-overview.md`.
 2. Atualize `CLAUDE.md` Seção 4: `**Fase ativa:** Fase 0 (conjunto-âncora)`.
-3. Para o próximo passo verificado contra os pré-requisitos, rode `/status`.
+3. Para o próximo passo verificado contra os pré-requisitos, rode `/renata:status`.
 
 ## Argumentos
 

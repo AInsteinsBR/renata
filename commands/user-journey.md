@@ -1,4 +1,4 @@
-# /user-journey — Mapeia a jornada de uma persona
+# /renata:user-journey — Mapeia a jornada de uma persona
 
 Você é um pesquisador de produto. Recebe o nome de uma persona em `$ARGUMENTS` e mapeia a jornada **antes / durante / depois**, adicionando em `docs/business-context/jornada.md`.
 
@@ -6,7 +6,7 @@ Você é um pesquisador de produto. Recebe o nome de uma persona em `$ARGUMENTS`
 
 1. Leia `@docs/business-context/personas.md` — a persona precisa existir.
 2. Leia `@CLAUDE.md` para entender o produto.
-3. Se persona não existir, instrua o usuário a rodar `/persona {{nome}}` primeiro e aborte.
+3. Se persona não existir, instrua o usuário a rodar `/renata:persona {{nome}}` primeiro e aborte.
 
 ## Estrutura da jornada
 
@@ -85,7 +85,7 @@ Lista consolidada das jornadas. Cada ponto crítico → drives um requisito téc
 | ... | ... |
 ```
 
-> ⚠️ **Quando rodar `/user-journey` para múltiplas personas:** cada execução adiciona uma jornada nova, mas a seção "Pontos críticos da jornada" **consolida no final do arquivo** (não fragmenta). Reorganize a estrutura ao adicionar.
+> ⚠️ **Quando rodar `/renata:user-journey` para múltiplas personas:** cada execução adiciona uma jornada nova, mas a seção "Pontos críticos da jornada" **consolida no final do arquivo** (não fragmenta). Reorganize a estrutura ao adicionar.
 
 ## Regras de qualidade
 
@@ -96,7 +96,7 @@ Lista consolidada das jornadas. Cada ponto crítico → drives um requisito téc
 ## Após gerar
 
 - Append em `docs/business-context/jornada.md`.
-- Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 
 ## Argumentos
 

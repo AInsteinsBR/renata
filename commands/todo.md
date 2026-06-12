@@ -1,4 +1,4 @@
-# /todo — Backlog de pendências (inline no doc + sync central)
+# /renata:todo — Backlog de pendências (inline no doc + sync central)
 
 Você gerencia o **backlog de TODOs** do projeto: pendências que não bloqueiam o trabalho atual mas precisam ser registradas. O backlog vive em `docs/backlog/todos.md`, ordenado por **impacto no andamento**.
 
@@ -18,7 +18,7 @@ A capacidade desta operação é **`tarefas`**. Antes de qualquer escrita:
    b. Se `espelho: true` → **PERGUNTE**: "Espelhar este TODO no `<MCP>` (cria/atualiza card)?". Confirmou → push via MCP, anote o id externo (ex: `JIRA-123`) ao lado do item local. Recusou → fica só local; espelha depois.
    c. Se `espelho: false` → não faz push de escrita.
 
-> Padrão de degradação idêntico ao `etapa-gate.sh` (ferramenta ausente → avisa, nunca trava). Sem MCP, o `/todo` funciona inteiro localmente.
+> Padrão de degradação idêntico ao `etapa-gate.sh` (ferramenta ausente → avisa, nunca trava). Sem MCP, o `/renata:todo` funciona inteiro localmente.
 
 ## Quando usar
 
@@ -27,8 +27,8 @@ A capacidade desta operação é **`tarefas`**. Antes de qualquer escrita:
 - Quer puxar a próxima pendência relevante pra executar.
 - Fechou uma pendência e quer marcar como feita.
 
-**Use `/todo` para o registro persistente de pendências.**
-**Use `/triage` quando precisar priorizar uma rodada inteira em MoSCoW (os WON'T do triage podem virar entradas aqui).**
+**Use `/renata:todo` para o registro persistente de pendências.**
+**Use `/renata:triage` quando precisar priorizar uma rodada inteira em MoSCoW (os WON'T do triage podem virar entradas aqui).**
 
 ## Convenção do marcador inline
 
@@ -76,7 +76,7 @@ Este é o modo mais importante. Faça **nesta ordem**:
 - Sem filtro: mostra o central inteiro, seções na ordem 🔴 → 🟡 → ⚪ → ⚠️.
 - `list bloqueia` / `list importa` / `list nice`: filtra por impacto.
 - `list orfaos`: só os órfãos pendentes de decisão.
-- Sempre destaque no topo: se há 🔴 abertos, alerte "Tem TODO marcado como bloqueia-fase aberto — isso devia estar no /phase-scope, não só no backlog."
+- Sempre destaque no topo: se há 🔴 abertos, alerte "Tem TODO marcado como bloqueia-fase aberto — isso devia estar no /renata:phase-scope, não só no backlog."
 
 ### `done <id>` — fecha um TODO
 
@@ -88,7 +88,7 @@ Este é o modo mais importante. Faça **nesta ordem**:
 ## Regras de qualidade
 
 - ❌ TODO sem impacto definido → recuse, pergunte 🔴/🟡/⚪. "Impacto no andamento" é o eixo de ordenação inteiro.
-- ❌ 🔴 que mora no backlog há tempo → não é TODO, é trabalho de fase. Alerte pra mover pro `/phase-scope`.
+- ❌ 🔴 que mora no backlog há tempo → não é TODO, é trabalho de fase. Alerte pra mover pro `/renata:phase-scope`.
 - ❌ `sync` fechando órfão sem perguntar → **proibido**. Órfão sempre passa por confirmação humana (decisão do Eric).
 - ❌ Duplicar entrada que já existe → o `id` por hash existe justamente pra evitar isso. Sempre cheque antes de adicionar.
 - ✅ `id` estável: mesmo texto → mesmo id, sempre. Isso é o que faz a reconciliação funcionar entre runs.
@@ -97,7 +97,7 @@ Este é o modo mais importante. Faça **nesta ordem**:
 
 - Confirme em 1 linha o que mudou no `docs/backlog/todos.md`.
 - Se algum 🔴 está aberto, lembre que ele compete com o gate da fase.
-- Sugira próximo passo natural (ex: depois de `sync` com órfãos → resolver os órfãos; depois de `add` 🔴 → rodar `/phase-scope`).
+- Sugira próximo passo natural (ex: depois de `sync` com órfãos → resolver os órfãos; depois de `add` 🔴 → rodar `/renata:phase-scope`).
 
 ## Argumentos
 

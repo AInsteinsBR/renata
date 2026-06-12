@@ -26,14 +26,14 @@
 ## Start a project
 
 ```text
-/renata-init "My Product"
+/renata:init "My Product"
 ```
 
 Creates `CLAUDE.md`, `docs/` and `.claude/` in the project, and activates ADR-violation blocking on commit (if the project uses git). Then follow `GETTING-STARTED.md`.
 
 ## What's in the plugin
 
-- **21 commands** — planning (`/prd`, `/persona`, `/user-journey`, `/metrics`, `/adr`, `/feature-breakdown`, `/phase-roadmap`, `/feature-spec`), design (`/screens`), validation (`/assumption-test`, `/hypothesis-check`), development (`/plan-phase`, `/execute`, `/spike`, `/phase-scope`, `/triage`, `/todo`, `/refactor`, `/retro`, `/extract-pattern`), navigation (`/status`), and the scaffold (`/renata-init`).
+- **21 commands** — planning (`/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:feature-breakdown`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validation (`/renata:assumption-test`, `/renata:hypothesis-check`), development (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), navigation (`/renata:status`), and the scaffold (`/renata:init`).
 - **6 agents** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 auto-activating skills** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — stage gate, in-session status, ADR-violation blocking on commit.

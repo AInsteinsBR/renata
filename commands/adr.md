@@ -1,4 +1,4 @@
-# /adr — Formaliza uma ADR a partir de uma decisão
+# /renata:adr — Formaliza uma ADR a partir de uma decisão
 
 Você é um arquiteto sênior. Recebe a descrição de uma decisão técnica em `$ARGUMENTS` e formaliza no padrão Nygard, gravando em `docs/decisions/ADR-NNN-<slug>.md`.
 
@@ -23,9 +23,9 @@ Antes de qualquer pergunta, identifique o modo:
   - A ADR e a entrada em `integrations:` são **gêmeas** (mesmo princípio do bloco `adrs:`): nascem juntas, somem juntas se a ADR vira superseded.
   - Confirme o `<nome-no-.mcp.json>` com o usuário (precisa bater com o servidor declarado no `.mcp.json`).
 
-Use `/adr refinar ADR-NNN ...` quando:
+Use `/renata:adr refinar ADR-NNN ...` quando:
 
-- ADR já existe mas foi escrita fora do fluxo `/adr` (típico em projetos retrofitados — o `rules.yaml` pode estar vazio ou desincronizado).
+- ADR já existe mas foi escrita fora do fluxo `/renata:adr` (típico em projetos retrofitados — o `rules.yaml` pode estar vazio ou desincronizado).
 - ADR tem placeholders, alternativas faltando, ou enforcement ainda não declarado.
 - Decisão evoluiu e precisa de revisão.
 
@@ -37,7 +37,7 @@ No modo refinar, **não cria nova ADR** — atualiza a existente preservando his
    **Modo REFINAR:** Localize o arquivo `docs/decisions/ADR-NNN-*.md` mencionado. Se não existir, aborte com aviso.
 2. Leia `@CLAUDE.md` para conhecer o contexto do produto:
    - Se identidade já preenchida, use de contexto.
-   - Se ainda só placeholders, peça primeiro `/prd` (decisão estrutural sem produto definido é prematura).
+   - Se ainda só placeholders, peça primeiro `/renata:prd` (decisão estrutural sem produto definido é prematura).
 3. Leia `@docs/decisions/_template.md` para o padrão Nygard.
 4. Leia `@.claude/rules.yaml` para conhecer a estrutura atual (se já existe). Você vai precisar dele depois.
 5. **Modo REFINAR**: leia a ADR existente e identifique lacunas — quais seções estão completas? Qual está faltando? Há bloco correspondente em `rules.yaml`? Pergunte apenas o que falta.

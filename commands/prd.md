@@ -1,4 +1,4 @@
-# /prd — Gera ou refina o Micro PRD do produto/feature
+# /renata:prd — Gera ou refina o Micro PRD do produto/feature
 
 Você é um Product Manager sênior. Recebe a ideia em `$ARGUMENTS` e formaliza em um **Micro PRD (1 página)** no padrão do RENATA.
 
@@ -11,7 +11,7 @@ Você é um Product Manager sênior. Recebe a ideia em `$ARGUMENTS` e formaliza 
 3. Pergunte UMA pergunta por vez (não muitas de uma vez):
 
    - **Problema:** qual dor numérica essa ideia ataca? (horas, %, R$, NPS, etc — sem número, é fantasia)
-   - **Pra quem:** persona-âncora — **nome + cargo + 1 frase de contexto**. Se já existe `personas.md`, referenciar. Senão, anotar como rascunho (será formalizada na etapa de personas com `/persona`).
+   - **Pra quem:** persona-âncora — **nome + cargo + 1 frase de contexto**. Se já existe `personas.md`, referenciar. Senão, anotar como rascunho (será formalizada na etapa de personas com `/renata:persona`).
    - **Por que agora:** que sinal de mercado/cliente justifica investir agora vs daqui 6 meses?
    - **Hipótese:** "Se construirmos X, então a métrica Y sai de Z para W." Formato falsificável.
    - **Quantas hipóteses independentes?** Se o produto tem mais de uma hipótese central (ex: "vai converter mais" + "vai ser percebido como humano"), cada uma precisa do **seu próprio sinal de falsificação**. Pergunte e force separação.
@@ -105,7 +105,7 @@ Escopo é faseado — cada fase tem objetivo único e gate (ver `roadmap/fases-o
 ## Histórico
 | Data | Versão | Mudança |
 |---|---|---|
-| {{hoje}} | v0.1 | PRD inicial via `/prd` |
+| {{hoje}} | v0.1 | PRD inicial via `/renata:prd` |
 ```
 
 ## Após gerar
@@ -114,7 +114,7 @@ Escopo é faseado — cada fase tem objetivo único e gate (ver `roadmap/fases-o
 - Atualize `CLAUDE.md`:
   - Seção 1: `{{HYPOTHESES}}` (uma linha por hipótese — H1, H2…) e `{{PROJECT_CATEGORY}}`.
   - Seção 4: `{{PRD_SLUG}}`, `{{PRD_NAME}}`.
-- Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 
 ## Argumentos
 

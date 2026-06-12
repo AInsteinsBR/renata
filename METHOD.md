@@ -80,10 +80,10 @@ Documentation is not descriptive — it is **opinionated**. "The system uses Pos
 
 **Principle of return: the loop doesn't close at delivery. Real data has the authority to reopen what was already decided.**
 
-- **Every hypothesis has a verdict.** The PRD's decisive metric exists to be confronted with the real number: ✅ confirmed · ❌ failed · 🤔 inconclusive. A hypothesis that never receives a verdict was not falsifiable — it was faith. (Closed by `/hypothesis-check`.)
+- **Every hypothesis has a verdict.** The PRD's decisive metric exists to be confronted with the real number: ✅ confirmed · ❌ failed · 🤔 inconclusive. A hypothesis that never receives a verdict was not falsifiable — it was faith. (Closed by `/renata:hypothesis-check`.)
 - **An estimate is debt until it becomes a measurement.** A guessed baseline unblocks the start, but before declaring a feature *truly done*, the metric needs to be **observable** (instrumented, not guessed). Estimating is leaving a TODO 🟡, not closing the account.
-- **Every metric has a number that triggers a decision (kill criteria / tripwire).** A target without a failure threshold is a dashboard, not a management instrument. "If adoption < X% in N days, stop and rethink" is what turns measurement into action. (Defined in `/metrics`.)
-- **A risky business assumption is tested before building, not after.** Technical risk has `/spike`. **Value** risk ("does anyone want this?") and **viability** risk ("does it sustain a business?") have `/assumption-test` — the cheapest test that kills the most expensive assumption. (Cagan's 4 risks: value, usability, viability, feasibility.)
+- **Every metric has a number that triggers a decision (kill criteria / tripwire).** A target without a failure threshold is a dashboard, not a management instrument. "If adoption < X% in N days, stop and rethink" is what turns measurement into action. (Defined in `/renata:metrics`.)
+- **A risky business assumption is tested before building, not after.** Technical risk has `/renata:spike`. **Value** risk ("does anyone want this?") and **viability** risk ("does it sustain a business?") have `/renata:assumption-test` — the cheapest test that kills the most expensive assumption. (Cagan's 4 risks: value, usability, viability, feasibility.)
 - **Evidence reopens PRD, ADR and feature — including to kill them.** A hypothesis that failed can reopen the PRD. Data that contradicts an ADR triggers its review trigger. A delivered feature that didn't move the metric is a **sunset candidate** — pruning is as much product as adding. The method is too additive without this.
 
 > **In one sentence:** the 7 principles prepare the decision; this one keeps it honest after the world has answered.
@@ -138,16 +138,16 @@ None of these ADRs need to wait for the feature spec — they are **prerequisite
 - **During Step 12** (execution! you choose a library, a test pattern, etc.)
 - **During Step 13 (retro)** — you discover an old decision was wrong → ADR `superseded`
 
-The rule is simple: **if a decision with impact > 1 sprint appears, open `/adr`. It doesn't matter which step you're on.**
+The rule is simple: **if a decision with impact > 1 sprint appears, open `/renata:adr`. It doesn't matter which step you're on.**
 
 ### Symptoms of the wrong order
 
 | Sign                                                                       | Diagnosis                                                        |
 | -------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | Tried to write ADR-001 and didn't know whether the product is mobile/web   | Shallow PRD. Go back to Step 2 and refine scope IN.              |
-| Tried to write feature F1 and realized you needed to decide the stack first| Missing ADR. Pause F1, open `/adr`.                              |
+| Tried to write feature F1 and realized you needed to decide the stack first| Missing ADR. Pause F1, open `/renata:adr`.                              |
 | Wrote 8 ADRs but they don't cover any real feature                         | Detailed too much too early. Go back to features.                |
-| The execution plan cites a library no ADR mentioned                        | Missing ADR. Open `/adr` during execution, then continue.        |
+| The execution plan cites a library no ADR mentioned                        | Missing ADR. Open `/renata:adr` during execution, then continue.        |
 
 ### In one sentence
 
@@ -169,7 +169,7 @@ The confusion comes from treating the PRD as a **feature catalog**. It is not. T
 
 | Situation | What to do | Why |
 |---|---|---|
-| New bet on the **same engine/codebase**, reinforces the product, dies along with it if the parent thesis falls | **New hypothesis in the existing PRD** | `/prd` supports "N hypotheses intertwined with N falsification signals". Context in a single place. |
+| New bet on the **same engine/codebase**, reinforces the product, dies along with it if the parent thesis falls | **New hypothesis in the existing PRD** | `/renata:prd` supports "N hypotheses intertwined with N falsification signals". Context in a single place. |
 | New capability that only **completes** the product, with no new falsifiable bet | **Feature only** (`docs/features/`) pointing to the PRD | Not every feature is a hypothesis. A feature serves an existing hypothesis; it doesn't create a new verdict. |
 | Something that **could be cut/sold separately** without killing this product | **Another PROJECT** (run RENATA from scratch, its own folder) | It's not a new PRD here — it's another product. Shares code via lib/service, not via the PRD. |
 
@@ -181,7 +181,7 @@ Common mistake: thinking that 1 hypothesis = 1 persona = 1 journey. The real rel
 
 - **1 anchor persona** dominates the PRD (Principle 1). There can be secondary ones.
 - **N hypotheses** can share the same persona or have different personas. **Don't force parity.**
-- **Journeys are per persona**, not per hypothesis. Each real persona gets its own `/user-journey`.
+- **Journeys are per persona**, not per hypothesis. Each real persona gets its own `/renata:user-journey`.
 - **The decisive metric is per hypothesis** — each bet has its own number that confirms or kills it.
 
 ### ADRs are cross-cutting — they don't live inside the PRD
@@ -199,7 +199,7 @@ Another common inversion: *"do I add the ADRs to the PRD?"* **No.**
 *TaskFlow*, task management for the solo freelancer. Two hypotheses: **H1** "capture in <5s increases retention" and **H2** "smart reminders reduce forgotten tasks by 40%". Same persona (Marina, freelancer), same engine, they reinforce each other (capturing fast only matters if the task isn't forgotten afterwards). → **1 PRD, 2 hypotheses, 2 decisive metrics, 1 anchor persona, 1 journey, 1 set of ADRs** (database, auth, push). H1 and H2 live/die together: if nobody uses TaskFlow, both fall.
 
 **Example B — same persona, new journey → becomes a hypothesis in the same PRD.**
-TaskFlow gains **invoice issuance**. Same Marina, but it's another pain (fiscal bureaucracy, ~3h/month) that the PRD didn't map. → run `/user-journey Marina` for the new fiscal flow, it becomes **hypothesis H3 in the same PRD** (a line in the History recording the expansion), reuses the existing ADRs + maybe 1 new one (integration with the city hall's API, an ADR with a declared scope). It's **not** a new PRD — it's the same bet growing.
+TaskFlow gains **invoice issuance**. Same Marina, but it's another pain (fiscal bureaucracy, ~3h/month) that the PRD didn't map. → run `/renata:user-journey Marina` for the new fiscal flow, it becomes **hypothesis H3 in the same PRD** (a line in the History recording the expansion), reuses the existing ADRs + maybe 1 new one (integration with the city hall's API, an ADR with a declared scope). It's **not** a new PRD — it's the same bet growing.
 
 **Example C — separable product → another PROJECT (not another PRD).**
 TaskFlow wants to launch a **team management module** (several freelancers on a team, a dashboard for the manager). Another persona (Rafael, manager), another decisive metric (team productivity), and — crucially — it **could be sold separately** or cut without killing solo TaskFlow. → this is **another project**: run RENATA from scratch in its own folder, with its own PRD, CLAUDE.md, personas and ADRs. Reuse TaskFlow code as a **shared library/service** (not by copying docs). Do **not** turn it into a second PRD inside the TaskFlow project — genuinely separable = a separate project.
@@ -255,60 +255,60 @@ docs/
 
 | Command                  | When to use                                                        | What it generates                               |
 | ------------------------ | ------------------------------------------------------------------ | ----------------------------------------------- |
-| `/prd <idea>`          | Start of a new product/large feature                              | `docs/prd/<slug>.md`                          |
-| `/persona <name>`      | Before any user-focused feature                                   | `docs/business-context/personas.md` (append)  |
-| `/user-journey <persona>`   | After persona, before feature                                     | `docs/business-context/jornada.md` (append)   |
-| `/metrics`            | After PRD + personas, before features                             | `docs/business-context/metricas.md`           |
-| `/adr <decision>`      | When a structural decision is identified                          | `docs/decisions/ADR-NNN-<slug>.md`            |
-| `/feature-spec <name>` | Before implementing a feature                                      | `docs/features/F<N>-<slug>.md`                |
-| `/feature-breakdown`   | When there are 3+ candidate features                              | `docs/features/README.md` (binary MUST/OUT)  |
-| `/phase-roadmap`              | After breakdown — distribute all features into phases by time    | `docs/roadmap/fases-overview.md`              |
+| `/renata:prd <idea>`          | Start of a new product/large feature                              | `docs/prd/<slug>.md`                          |
+| `/renata:persona <name>`      | Before any user-focused feature                                   | `docs/business-context/personas.md` (append)  |
+| `/renata:user-journey <persona>`   | After persona, before feature                                     | `docs/business-context/jornada.md` (append)   |
+| `/renata:metrics`            | After PRD + personas, before features                             | `docs/business-context/metricas.md`           |
+| `/renata:adr <decision>`      | When a structural decision is identified                          | `docs/decisions/ADR-NNN-<slug>.md`            |
+| `/renata:feature-spec <name>` | Before implementing a feature                                      | `docs/features/F<N>-<slug>.md`                |
+| `/renata:feature-breakdown`   | When there are 3+ candidate features                              | `docs/features/README.md` (binary MUST/OUT)  |
+| `/renata:phase-roadmap`              | After breakdown — distribute all features into phases by time    | `docs/roadmap/fases-overview.md`              |
 
 ### Design (between planning and execution)
 
 | Command      | When to use                                      | What it generates                                        |
 | ------------ | ------------------------------------------------ | -------------------------------------------------------- |
-| `/screens` | The product has significant UI (between Step 8 and 9) | `docs/design/inventory.md` + `flow.md` + `briefs/` |
-| `/extract-pattern <path>` | Distill the pattern of a repo (starter/legacy) into ADRs + a loadable doc (involves `@pattern-mapper`) | `docs/decisions/ADR-*` + `docs/technical-context/code-pattern-<scope>.md` |
+| `/renata:screens` | The product has significant UI (between Step 8 and 9) | `docs/design/inventory.md` + `flow.md` + `briefs/` |
+| `/renata:extract-pattern <path>` | Distill the pattern of a repo (starter/legacy) into ADRs + a loadable doc (involves `@pattern-mapper`) | `docs/decisions/ADR-*` + `docs/technical-context/code-pattern-<scope>.md` |
 
 ### Development (operating within a phase)
 
 | Command                        | When to use                                                                                                    | What it generates                                             |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `/plan-phase <phase>`          | Generate a hardened execution plan (involves `superpowers:writing-plans` + `@architect` review)           | `docs/superpowers/specs/<date>-fase-N-plan.md`              |
-| `/execute <phase>`           | Execute the phase with an approved plan (involves `superpowers:executing-plans` + done gate + `@qa-tester`) | code + plan marked `running`→done                     |
-| `/spike <question>`          | Validate a technical risk before committing                                                                    | `docs/spikes/<date>-<slug>.md`                              |
-| `/phase-scope <phase>`        | Decide what fits in the phase with a fixed budget                                                              | `docs/roadmap/fase-N-scope.md` (full MoSCoW)            |
-| `/triage <context>`         | Prioritize a backlog of bugs/debts                                                                             | `docs/triage/<date>-<context>.md` (full MoSCoW)        |
-| `/todo <add\|sync\|list\|done>` | Record and control pending items that don't block                                                           | `docs/backlog/todos.md` (ordered by impact on progress) |
-| `/refactor <target>`           | Guide a disciplined refactor                                                                                   | `docs/refactors/<date>-<slug>.md`                           |
-| `/retro [phase]`              | Retrospective at the end of a phase                                                                            | `docs/roadmap/fase-N-retro.md`                              |
+| `/renata:plan-phase <phase>`          | Generate a hardened execution plan (involves `superpowers:writing-plans` + `@architect` review)           | `docs/superpowers/specs/<date>-fase-N-plan.md`              |
+| `/renata:execute <phase>`           | Execute the phase with an approved plan (involves `superpowers:executing-plans` + done gate + `@qa-tester`) | code + plan marked `running`→done                     |
+| `/renata:spike <question>`          | Validate a technical risk before committing                                                                    | `docs/spikes/<date>-<slug>.md`                              |
+| `/renata:phase-scope <phase>`        | Decide what fits in the phase with a fixed budget                                                              | `docs/roadmap/fase-N-scope.md` (full MoSCoW)            |
+| `/renata:triage <context>`         | Prioritize a backlog of bugs/debts                                                                             | `docs/triage/<date>-<context>.md` (full MoSCoW)        |
+| `/renata:todo <add\|sync\|list\|done>` | Record and control pending items that don't block                                                           | `docs/backlog/todos.md` (ordered by impact on progress) |
+| `/renata:refactor <target>`           | Guide a disciplined refactor                                                                                   | `docs/refactors/<date>-<slug>.md`                           |
+| `/renata:retro [phase]`              | Retrospective at the end of a phase                                                                            | `docs/roadmap/fase-N-retro.md`                              |
 
 ### Navigation (cross-cutting — at any step)
 
 | Command         | When to use                                                     | What it generates                                        |
 | --------------- | --------------------------------------------------------------- | -------------------------------------------------------- |
-| `/status [N]` | Know which step of the flow you're on and what the next step is | On-screen diagnosis (reads `.claude/progress-map.yaml`) |
+| `/renata:status [N]` | Know which step of the flow you're on and what the next step is | On-screen diagnosis (reads `.claude/progress-map.yaml`) |
 
 ### Product validation (Measure-Learn — closes the loop)
 
 | Command                           | When to use                                                              | What it generates                                                        |
 | --------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `/assumption-test <assumption>`   | **Before** building: untested value/viability risk                | `docs/assumptions/<date>-<slug>.md`                                    |
-| `/hypothesis-check [hypothesis]` | **After** building: confront the PRD's hypothesis with real data  | `docs/hypothesis-checks/<date>-<slug>.md` + a line in the PRD's History |
+| `/renata:assumption-test <assumption>`   | **Before** building: untested value/viability risk                | `docs/assumptions/<date>-<slug>.md`                                    |
+| `/renata:hypothesis-check [hypothesis]` | **After** building: confront the PRD's hypothesis with real data  | `docs/hypothesis-checks/<date>-<slug>.md` + a line in the PRD's History |
 
-> These two materialize the **"Evidence reopens the decision"** principle (see "The loop closes"). `/assumption-test` kills the wrong bet before the cost; `/hypothesis-check` issues the verdict (✅/❌/🤔) and triggers action — including the **sunset** of a feature that didn't move the metric.
+> These two materialize the **"Evidence reopens the decision"** principle (see "The loop closes"). `/renata:assumption-test` kills the wrong bet before the cost; `/renata:hypothesis-check` issues the verdict (✅/❌/🤔) and triggers action — including the **sunset** of a feature that didn't move the metric.
 
 ### When to use binary vs full MoSCoW
 
-- **Binary (MUST / OUT)** in `/feature-breakdown`: to decide what goes into the **product**.
-- **Full MoSCoW (MUST / SHOULD / COULD / WON'T)** in `/phase-scope` and `/triage`: to **operate** within the product with a limited budget.
+- **Binary (MUST / OUT)** in `/renata:feature-breakdown`: to decide what goes into the **product**.
+- **Full MoSCoW (MUST / SHOULD / COULD / WON'T)** in `/renata:phase-scope` and `/renata:triage`: to **operate** within the product with a limited budget.
 
-### `/todo` vs `/triage` (don't confuse them)
+### `/renata:todo` vs `/renata:triage` (don't confuse them)
 
-- **`/triage`** prioritizes a **round** of work in MoSCoW — it's a one-off decision ("what do I tackle now"). It generates a dated snapshot.
-- **`/todo`** is the **persistent record** of pending items that don't block, ordered by impact on progress (🔴 blocks the phase / 🟡 matters / ⚪ nice-to-have). It lives in `docs/backlog/todos.md` and is born glued to the context via the inline marker `<!-- TODO[date][impact]: ... -->` in the doc itself, reconciled by `/todo sync`.
-- The two talk to each other: the **WON'T** items of a `/triage` are natural candidates to become entries in `/todo` so they don't get lost.
+- **`/renata:triage`** prioritizes a **round** of work in MoSCoW — it's a one-off decision ("what do I tackle now"). It generates a dated snapshot.
+- **`/renata:todo`** is the **persistent record** of pending items that don't block, ordered by impact on progress (🔴 blocks the phase / 🟡 matters / ⚪ nice-to-have). It lives in `docs/backlog/todos.md` and is born glued to the context via the inline marker `<!-- TODO[date][impact]: ... -->` in the doc itself, reconciled by `/renata:todo sync`.
+- The two talk to each other: the **WON'T** items of a `/renata:triage` are natural candidates to become entries in `/renata:todo` so they don't get lost.
 
 ---
 
@@ -319,7 +319,7 @@ docs/
 - **`@qa-tester`** — pragmatic QA: runs the real app (Playwright/manual), validates against the PRD/feature acceptance criteria, reports findings in a structured format. Complements TDD; does **not** replace it.
 - **`@perf-auditor`** — deep analysis of performance, hot paths, bottlenecks.
 - **`@security-reviewer`** — lightweight security review (practical OWASP top 10).
-- **`@pattern-mapper`** — sweeps a repo and returns the map of the pattern (4 axes, with evidence strength). Input for `/extract-pattern`. Doesn't write the ADR/doc.
+- **`@pattern-mapper`** — sweeps a repo and returns the map of the pattern (4 axes, with evidence strength). Input for `/renata:extract-pattern`. Doesn't write the ADR/doc.
 
 ### When to call each agent
 
@@ -345,7 +345,7 @@ Framework skills that load automatically when the context matches:
 
 - `brainstorming`, `writing-plans`, `executing-plans`, `subagent-driven-development`
 - `test-driven-development`, `systematic-debugging`
-- `verification-before-completion` — **it is the done gate of Principle 4**: no task closes (`[x]`) without "test passes + hook doesn't block". Anchored in Step 3 of `/execute`. (The observable metric, the 3rd criterion, is validated at the end of the phase via `@qa-tester` / `/hypothesis-check`.)
+- `verification-before-completion` — **it is the done gate of Principle 4**: no task closes (`[x]`) without "test passes + hook doesn't block". Anchored in Step 3 of `/renata:execute`. (The observable metric, the 3rd criterion, is validated at the end of the phase via `@qa-tester` / `/renata:hypothesis-check`.)
 - `requesting-code-review`, `receiving-code-review`
 
 ### Difference: skill vs agent vs slash command
@@ -376,16 +376,16 @@ To avoid confusion between framework artifacts and project content:
 | -------------------------------------------- | -------------------- | ----------------------------------------------------------------- |
 | `.claude/hooks/rules-violation.sh`         | Framework            | RENATA (generic, the same in every project)                    |
 | `.claude/rules.yaml.template`              | Framework            | RENATA (empty schema)                                       |
-| **`.claude/rules.yaml`**             | **Project**    | **`/adr`** (each block is born alongside the corresponding ADR) |
+| **`.claude/rules.yaml`**             | **Project**    | **`/renata:adr`** (each block is born alongside the corresponding ADR) |
 | `docs/decisions/_template.md`              | Framework            | RENATA (generic Nygard template)                           |
 | `docs/decisions/_adr-frontend-template.md` | Framework            | RENATA (template for a starter ADR)                         |
-| `docs/decisions/ADR-NNN-*.md`              | Project              | `/adr` (each file is born from a decision)                     |
+| `docs/decisions/ADR-NNN-*.md`              | Project              | `/renata:adr` (each file is born from a decision)                     |
 | **Starter kit (external repo)**         | **You/Team** | Lives**outside** the framework. Referenced by an ADR.            |
 | **`frontend/` (cloned from the starter)** | **Project**    | `init.sh --starter` clones it, then you evolve it                  |
 
-**Principle:** an ADR and its block in `rules.yaml` are **twins**. They are born together via `/adr`. They live together. If an ADR becomes `superseded`, its block in `rules.yaml` is removed (or updated to the ADR that replaced it).
+**Principle:** an ADR and its block in `rules.yaml` are **twins**. They are born together via `/renata:adr`. They live together. If an ADR becomes `superseded`, its block in `rules.yaml` is removed (or updated to the ADR that replaced it).
 
-> ⚠️ **Anti-pattern observed in v0.1:** populating `rules.yaml` manually outside the `/adr` flow is technical debt — the YAML loses its anchoring to the ADR. The `/adr` v0.2 writes directly into `rules.yaml` with a quick user confirmation, avoiding this drift.
+> ⚠️ **Anti-pattern observed in v0.1:** populating `rules.yaml` manually outside the `/renata:adr` flow is technical debt — the YAML loses its anchoring to the ADR. The `/renata:adr` v0.2 writes directly into `rules.yaml` with a quick user confirmation, avoiding this drift.
 
 ---
 
@@ -396,7 +396,7 @@ The method supports **MCP** (Model Context Protocol) servers — git, Jira, data
 - **Local is always the source of truth.** A versioned doc (Principle 7) is the primary truth; the MCP is a **mirror**, never a blind source.
 - **Write local first, mirror after confirming.** Nothing goes to Jira/Git before it exists and is correct locally, and the push only happens with explicit confirmation. This protects the external system from provisional data.
 - **MCP as a one-off action/read** (open a PR, read an issue, query a database) → low friction, `espelho: false`, doesn't compete with anything.
-- **MCP as a mirrored source** (Jira receives the tasks) → **a structural decision: requires `/adr`**, because it changes where the truth mirrors to and can retire a native flow. `/adr` writes the `integrations:` block in `rules.yaml` (the ADR's twin).
+- **MCP as a mirrored source** (Jira receives the tasks) → **a structural decision: requires `/renata:adr`**, because it changes where the truth mirrors to and can retire a native flow. `/renata:adr` writes the `integrations:` block in `rules.yaml` (the ADR's twin).
 - **Graceful fallback mandatory.** Every use of MCP degrades to local if the server is absent/unavailable — identical to `etapa-gate.sh` with `yq`. **With no MCP at all, the framework works in full.**
 
 Configuration in two places: `.mcp.json` (project root) declares the servers; the `integrations:` block in `.claude/rules.yaml` maps capability → MCP. Canonical capabilities: `tarefas` · `pr` · `db` (extensible).

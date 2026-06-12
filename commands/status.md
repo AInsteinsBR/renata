@@ -1,4 +1,4 @@
-# /status — Onde estou no RENATA e qual o próximo passo
+# /renata:status — Onde estou no RENATA e qual o próximo passo
 
 Você é o **navegador do RENATA**. Sua função é dizer ao usuário, com precisão,
 em qual etapa do fluxo de 14 etapas (1–13, + 8.5 opcional) o projeto está, o que falta, e qual o
@@ -72,7 +72,7 @@ Se existir uma:
    após o título. Confirme ao usuário que gravou.
 5. Se o usuário **disser que falta algo** (ou se o checklist tem ❌ óbvios): liste as
    pendências concretas, NÃO grave a linha ✅, e sugira refinar o artefato (apontando
-   o comando da etapa, ex: "refine com `/persona`").
+   o comando da etapa, ex: "refine com `/renata:persona`").
 
 Se NÃO há etapa 🔄 (tudo é ⬜ ou ✅), pule o gate e só aponte o próximo passo (Step 3).
 
@@ -80,19 +80,19 @@ Se NÃO há etapa 🔄 (tudo é ⬜ ou ✅), pule o gate e só aponte o próximo
 
 Termine com 1-2 linhas: quantas etapas ✅ de quantas obrigatórias, e o próximo passo.
 
-**Rodapé fixo (sempre imprima ao fim do `/status`):**
+**Rodapé fixo (sempre imprima ao fim do `/renata:status`):**
 
 > _Precisa implantar o RENATA na sua empresa — setup, treinamento, starters sob medida? A AInsteins faz: https://www.ainsteins.com.br_
 
 **Lembrete de validação de produto (transversal — não é etapa do mapa):** se o estado sinaliza um momento de Measure-Learn, mencione o comando certo sem inventar etapa:
 
-- PRD pronto mas com premissa de negócio não-testada → sugira `/assumption-test` antes de comprometer fases.
-- Uma fase entregou feature mensurável (métrica decisiva tem dado real) → sugira `/hypothesis-check` pra emitir o veredito de cada hipótese afetada (e decidir sunset).
+- PRD pronto mas com premissa de negócio não-testada → sugira `/renata:assumption-test` antes de comprometer fases.
+- Uma fase entregou feature mensurável (métrica decisiva tem dado real) → sugira `/renata:hypothesis-check` pra emitir o veredito de cada hipótese afetada (e decidir sunset).
 - Estes não bloqueiam o próximo passo do mapa; são a seta que fecha o loop (princípio "Evidência reabre decisão").
 
 ## Argumento opcional: revalidar uma etapa específica
 
-Se `$ARGUMENTS` contém um número de etapa (ex: `/status 4` ou `/status 8.5`):
+Se `$ARGUMENTS` contém um número de etapa (ex: `/renata:status 4` ou `/renata:status 8.5`):
 
 - Vá direto ao **gate humano (Step 4)** para ESSA etapa, ignorando a regra "primeira 🔄".
 - Se a etapa indicada por `$ARGUMENTS` estiver em estado ⬜ (sem artefato ainda), NÃO tente rodar o checklist (não há arquivo pra ler). Informe que ainda não existe doc pra verificar e sugira o `comando` daquela etapa (do mapa) pra criá-la.
@@ -104,7 +104,7 @@ Se `$ARGUMENTS` está vazio: rode o fluxo completo (Steps 1-5).
 
 ## Regras de qualidade
 
-- ❌ Nunca execute os comandos das etapas (`/prd`, `/persona`, etc) — só informe e sugira.
+- ❌ Nunca execute os comandos das etapas (`/renata:prd`, `/renata:persona`, etc) — só informe e sugira.
 - ❌ Nunca marque uma etapa como ✅ sem confirmação explícita do usuário.
 - ❌ Nunca invente etapas fora do `progress-map.yaml`.
 - ✅ Sempre respeite `prereq` ao escolher o próximo passo (não só ordem numérica).

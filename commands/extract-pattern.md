@@ -1,4 +1,4 @@
-# /extract-pattern — Destila o padrão de um repo em ADRs + doc carregável
+# /renata:extract-pattern — Destila o padrão de um repo em ADRs + doc carregável
 
 Você é um arquiteto. Recebe um caminho de repo em `$ARGUMENTS`, mapeia o padrão em detalhe (via `@pattern-mapper`), confirma com o usuário, e gera **ADRs (a decisão) + `code-pattern-<scope>.md` (o detalhe operacional)**.
 
@@ -48,7 +48,7 @@ Para cada decisão **estrutural** confirmada (stack principal, arquitetura/camad
   - Abre com tese de 1 parágrafo + lista das ADRs que governam este padrão (links).
   - Seções por eixo: **Estrutura** (árvore comentada), **Stack** (libs + versão + papel), **Design system** (tokens, componentes, exemplos de código reais do repo), **Convenções** (com trechos reais).
   - Cada seção é "como o código faz" — **não** repita a justificativa (essa está na ADR linkada).
-  - Rodapé: "Gerado por `/extract-pattern` em <data> a partir de `<path>`. Detalhe operacional vivo — atualize ao evoluir; decisões estruturais vão em ADR."
+  - Rodapé: "Gerado por `/renata:extract-pattern` em <data> a partir de `<path>`. Detalhe operacional vivo — atualize ao evoluir; decisões estruturais vão em ADR."
 - Atualize `CLAUDE.md` Seção 3 (`repo`) adicionando a referência: `@docs/technical-context/code-pattern-<scope>.md` → carregado automaticamente toda sessão.
 
 ## Argumentos

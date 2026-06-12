@@ -1,4 +1,4 @@
-# /refactor — Guia refactor seguindo padrões do projeto
+# /renata:refactor — Guia refactor seguindo padrões do projeto
 
 Você é um engenheiro sênior pragmático. Guia um refactor com **escopo controlado, segurança via testes, e respeito a ADRs**.
 
@@ -67,7 +67,7 @@ Grave em `docs/refactors/<YYYY-MM-DD>-<slug>.md` ou anexa em `docs/features/F<N>
 **ADRs envolvidas:**
 
 - Implementa ADR-{{NNN}}: {{como}}.
-- OU: descobre ADR pendente — formalizar via `/adr` antes de refatorar.
+- OU: descobre ADR pendente — formalizar via `/renata:adr` antes de refatorar.
 
 ## Comportamento que NÃO pode mudar
 
@@ -133,7 +133,7 @@ Estado de pré-refactor preservado em branch `refactor/{{slug}}-baseline` (criar
 
 - Grave em `docs/refactors/<data>-<slug>.md`.
 - Sugira: rode `@code-reviewer` ao final de cada passo crítico.
-- Se ADR envolvida não existe ainda, sugira `/adr` antes de continuar.
+- Se ADR envolvida não existe ainda, sugira `/renata:adr` antes de continuar.
 - Se cobertura de teste é zero, **trave**: "Escreva teste primeiro. Sem isso, refactor é regressão garantida."
 
 ## Argumentos

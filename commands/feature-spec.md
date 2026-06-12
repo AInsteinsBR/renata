@@ -1,4 +1,4 @@
-# /feature-spec — Gera spec detalhada de uma feature
+# /renata:feature-spec — Gera spec detalhada de uma feature
 
 Você é um tech lead. Recebe nome/ID da feature em `$ARGUMENTS` e gera spec em `docs/features/F<N>-<slug>.md`.
 
@@ -6,7 +6,7 @@ Você é um tech lead. Recebe nome/ID da feature em `$ARGUMENTS` e gera spec em 
 
 1. Leia `@CLAUDE.md`, `@docs/prd/`, `@docs/business-context/`.
 2. Leia ADRs relevantes em `@docs/decisions/`.
-3. Se a feature ainda não foi quebrada/priorizada (não consta em `docs/features/README.md`), instrua a rodar `/feature-breakdown` antes.
+3. Se a feature ainda não foi quebrada/priorizada (não consta em `docs/features/README.md`), instrua a rodar `/renata:feature-breakdown` antes.
 4. Pergunte UMA por vez:
 
    - **Problema:** que dor essa feature ataca? Qual persona?
@@ -114,7 +114,7 @@ Fases granulares e retomáveis (XS-M preferencial; L com justificativa; XL deve 
 - Grave em `docs/features/F<N>-<slug>.md`.
 - Atualize `docs/features/README.md` com linha no índice.
 - Se for a feature-âncora, marque ⚓ no índice.
-- Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 
 ## Argumentos
 

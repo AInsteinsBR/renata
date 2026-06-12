@@ -1,4 +1,4 @@
-# /plan-phase — Gera plano detalhado de execução respeitando o método
+# /renata:plan-phase — Gera plano detalhado de execução respeitando o método
 
 Você é um tech lead. Envolve o `superpowers:writing-plans` com guardrails do **RENATA** para garantir que o plano gerado:
 
@@ -16,9 +16,9 @@ Você é um tech lead. Envolve o `superpowers:writing-plans` com guardrails do *
 
 **NÃO use** para:
 
-- Decisão estrutural pontual → `/adr`.
-- Spec de feature → `/feature-spec`.
-- Investigação técnica → `/spike`.
+- Decisão estrutural pontual → `/renata:adr`.
+- Spec de feature → `/renata:feature-spec`.
+- Investigação técnica → `/renata:spike`.
 
 ## Pré-flight (passo 1 — validação de pré-requisitos)
 
@@ -35,20 +35,20 @@ Antes de invocar `writing-plans`, você DEVE validar os 10 pré-requisitos abaix
 | 7 | Fase ativa tem arquivo em `docs/roadmap/` | `docs/roadmap/fase-N-*.md` da fase a planejar existe |
 | 8 | `.claude/rules.yaml` existe e está válido | `bash .claude/hooks/rules-violation.sh` roda sem erro fatal |
 | 9 | Não há plano anterior **ativo** sobreposto | `docs/superpowers/specs/` não tem plano `running` da mesma fase |
-| 10 | Se fase tem capacidade de UI: design existe em `docs/design/` | Se feature-spec da fase menciona telas/UI mas `docs/design/inventory.md` não existe → aborte e sugira `/screens` |
+| 10 | Se fase tem capacidade de UI: design existe em `docs/design/` | Se feature-spec da fase menciona telas/UI mas `docs/design/inventory.md` não existe → aborte e sugira `/renata:screens` |
 
 Se falhar:
 
 - **#1** → "Volte à Etapa 1 do GETTING-STARTED e preencha CLAUDE.md básico."
-- **#2** → "Rode `/prd <ideia>` antes."
-- **#3** → "Rode `/persona <nome>` para estruturar ao menos a persona-âncora antes."
-- **#4** → "Rode `/metrics` para definir as métricas (Camadas 1-3) antes."
-- **#5** → "Rode `/adr` para formalizar pelo menos uma decisão estrutural antes."
-- **#6** → "Rode `/feature-spec F1` antes."
+- **#2** → "Rode `/renata:prd <ideia>` antes."
+- **#3** → "Rode `/renata:persona <nome>` para estruturar ao menos a persona-âncora antes."
+- **#4** → "Rode `/renata:metrics` para definir as métricas (Camadas 1-3) antes."
+- **#5** → "Rode `/renata:adr` para formalizar pelo menos uma decisão estrutural antes."
+- **#6** → "Rode `/renata:feature-spec F1` antes."
 - **#7** → "Defina a fase em `docs/roadmap/fase-N-<nome>.md` manualmente antes."
-- **#8** → "Rode `/adr` em modo refine para popular `rules.yaml` corretamente."
+- **#8** → "Rode `/renata:adr` em modo refine para popular `rules.yaml` corretamente."
 - **#9** → "Termine ou abandone o plano anterior antes."
-- **#10** → "Rode `/screens` para gerar o design das telas antes (a feature-spec desta fase tem UI)."
+- **#10** → "Rode `/renata:screens` para gerar o design das telas antes (a feature-spec desta fase tem UI)."
 
 ## Passo 2 — Coletar contexto essencial
 
@@ -56,7 +56,7 @@ Pergunte ao usuário UMA por vez:
 
 - **Fase a planejar:** número (`0`, `1`, ...) ou nome (`Spike Técnico`, `MVP single-tenant`).
 - **Confirmação de feature-spec a usar:** se há mais de uma feature na fase, qual é a âncora?
-- **Decisões emergentes desde a feature-spec:** algo mudou desde a spec? Se sim, rodar `/adr` primeiro.
+- **Decisões emergentes desde a feature-spec:** algo mudou desde a spec? Se sim, rodar `/renata:adr` primeiro.
 
 ## Passo 3 — Listar artefatos do método relevantes
 
@@ -155,7 +155,7 @@ Se `@architect` retornar **bloqueadores**, instrua o usuário a:
 
 1. Refinar o plano manualmente OU
 2. Re-invocar `writing-plans` com instrução adicional para corrigir o ponto OU
-3. Abrir nova ADR via `/adr` se a decisão estrutural precisa mudar.
+3. Abrir nova ADR via `/renata:adr` se a decisão estrutural precisa mudar.
 
 **Não permita execução** enquanto houver bloqueadores não-resolvidos.
 
@@ -177,8 +177,8 @@ Próximos passos:
 3. Durante execução, lembre:
    - @code-reviewer revisa cada código pronto antes de PR
    - Hook bloqueia commits que violem rules.yaml
-   - /spike se aparecer risco técnico não-validado
-   - /adr se aparecer decisão estrutural nova
+   - /renata:spike se aparecer risco técnico não-validado
+   - /renata:adr se aparecer decisão estrutural nova
 ```
 
 ## Argumentos

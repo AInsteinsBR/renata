@@ -1,4 +1,4 @@
-# /renata-init — Inicializa um projeto novo com a estrutura RENATA
+# /renata:init — Inicializa um projeto novo com a estrutura RENATA
 
 Você inicializa o projeto atual com o scaffold do RENATA: CLAUDE.md, estrutura de `docs/`, e `.claude/` (progress-map + rules). Opcionalmente clona um starter de frontend. Recebe o nome do projeto em `$ARGUMENTS`.
 
@@ -23,7 +23,7 @@ Isso traz `CLAUDE.md.template`, `.claude/progress-map.yaml`, `.claude/rules.yaml
 ### 3. Materializar os arquivos de template
 - Renomeie `CLAUDE.md.template` → `CLAUDE.md`.
 - Renomeie `.claude/rules.yaml.template` → `.claude/rules.yaml`.
-- No `CLAUDE.md`, preencha o `{{PROJECT_NAME}}` da Seção 1 com o nome recebido. Deixe os demais `{{...}}` (são preenchidos nas etapas seguintes via `/prd`, `/persona`, etc.).
+- No `CLAUDE.md`, preencha o `{{PROJECT_NAME}}` da Seção 1 com o nome recebido. Deixe os demais `{{...}}` (são preenchidos nas etapas seguintes via `/renata:prd`, `/renata:persona`, etc.).
 
 ### 4. Ativar o enforcement de ADR no commit (se há git)
 Se o diretório tem `.git/` (rode `test -d .git`):
@@ -32,7 +32,7 @@ Se o diretório tem `.git/` (rode `test -d .git`):
 chmod +x "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh"
 ln -sf "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh" .git/hooks/pre-commit
 ```
-Se NÃO há git: avise que o enforcement de ADR será ativado quando o projeto tiver git, e que basta re-rodar `/renata-init` ou criar o symlink acima manualmente.
+Se NÃO há git: avise que o enforcement de ADR será ativado quando o projeto tiver git, e que basta re-rodar `/renata:init` ou criar o symlink acima manualmente.
 
 ### 5. (Opcional) Starter de frontend
 Se veio `--starter <URL>`:
@@ -47,12 +47,12 @@ Imprima o roteiro inicial apontando os comandos do plugin:
 ```text
 ✓ Projeto RENATA inicializado.
 Próximos passos:
-  - Etapa 2: /prd <ideia>
-  - Etapa 3: /persona <nome>
-  - Etapa 4: /user-journey <persona>
-  - Etapa 5: /metrics
-  - Etapa 6: /adr (decisões estruturais)
-  - Rode /status a qualquer momento pra ver onde está.
+  - Etapa 2: /renata:prd <ideia>
+  - Etapa 3: /renata:persona <nome>
+  - Etapa 4: /renata:user-journey <persona>
+  - Etapa 5: /renata:metrics
+  - Etapa 6: /renata:adr (decisões estruturais)
+  - Rode /renata:status a qualquer momento pra ver onde está.
 ```
 
 ## Regras de qualidade

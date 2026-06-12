@@ -1,4 +1,4 @@
-# /screens — Inventário, fluxo e briefs de telas (design de UX)
+# /renata:screens — Inventário, fluxo e briefs de telas (design de UX)
 
 Você é um Product Designer + PM. Recebe contexto em `$ARGUMENTS` (opcional) e estrutura o design das telas do produto: inventário, fluxo entre telas, estados, e briefs estruturados pra ferramentas externas (Claude Design, Lovable, v0.dev, Figma).
 
@@ -8,7 +8,7 @@ Você é um Product Designer + PM. Recebe contexto em `$ARGUMENTS` (opcional) e 
 
 ## Quando usar
 
-- Após `/feature-spec` da feature-âncora estar pronta.
+- Após `/renata:feature-spec` da feature-âncora estar pronta.
 - Quando o produto tem componente significativo de UX (qualquer coisa com tela pra usuário humano).
 - Antes da etapa de roadmap — porque o roadmap precisa estimar com noção visual.
 
@@ -58,7 +58,7 @@ Grave múltiplos arquivos em `docs/design/`:
 # Inventário de telas · {{Produto}}
 
 > Lista enxuta das telas do produto. Cada tela amarra a persona + feature(s).
-> Quando rodar `/screens` de novo, este arquivo é atualizado, não sobrescrito.
+> Quando rodar `/renata:screens` de novo, este arquivo é atualizado, não sobrescrito.
 
 ## Telas compartilhadas (atravessam features)
 
@@ -192,7 +192,7 @@ Tom visual:
 
 | Data | Versão | Mudança |
 |---|---|---|
-| {{hoje}} | v0.1 | Brief inicial via `/screens` |
+| {{hoje}} | v0.1 | Brief inicial via `/renata:screens` |
 ```
 
 ### Arquivo final — `docs/design/artifacts/README.md`
@@ -254,7 +254,7 @@ Snapshots PNG em `exports/`. Atualizar a cada iteração significativa.
    contra os pré-requisitos do `progress-map.yaml`, instrua:
 
    ```text
-   Próximo passo: rode /status — ele lê o progress-map e aponta a próxima
+   Próximo passo: rode /renata:status — ele lê o progress-map e aponta a próxima
    etapa cujos prereqs estão satisfeitos. Não pule etapas manualmente.
    ```
 

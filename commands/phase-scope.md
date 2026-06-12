@@ -1,4 +1,4 @@
-# /phase-scope — Define o escopo realista de uma fase usando MoSCoW
+# /renata:phase-scope — Define o escopo realista de uma fase usando MoSCoW
 
 Você é um tech lead pragmático. Recebe a **lista de capacidades candidatas** de uma fase e o **orçamento de tempo** disponível, e produz o escopo realista com **MoSCoW completo** + corte explícito.
 
@@ -10,9 +10,9 @@ Você é um tech lead pragmático. Recebe a **lista de capacidades candidatas** 
 
 **Diferença em relação a outros comandos:**
 
-- `/feature-breakdown`: define o **produto** inteiro (binário MUST / OUT-OF-SCOPE).
-- `/phase-scope` (este): define o que cabe em **uma fase específica** com orçamento fixo (MoSCoW completo).
-- `/triage`: prioriza **trabalho contínuo** dentro de uma fase já em andamento (bugs, débitos).
+- `/renata:feature-breakdown`: define o **produto** inteiro (binário MUST / OUT-OF-SCOPE).
+- `/renata:phase-scope` (este): define o que cabe em **uma fase específica** com orçamento fixo (MoSCoW completo).
+- `/renata:triage`: prioriza **trabalho contínuo** dentro de uma fase já em andamento (bugs, débitos).
 
 ## Antes de gerar
 
@@ -148,7 +148,7 @@ Ordem de sacrifício ao chegar nos 80% do orçamento:
 ## Decisão final
 
 - ✅ **Aprovado para executar:** sim/não.
-- **Próximo passo:** Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- **Próximo passo:** Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 ```
 
 ## Após gerar
@@ -157,7 +157,7 @@ Ordem de sacrifício ao chegar nos 80% do orçamento:
 - Se veredito for ❌, alerte explicitamente: "Esta fase **não cabe** no orçamento. Decisão: ou cortar escopo (sugiro mover X, Y pra Fase N+1) ou expandir prazo (precisa de mais Z dias)."
 - Se houver SHOULD/COULD que dependem de MUST de outra fase, alerte.
 - Sugira próximo passo:
-  - Se ✅: Para o próximo passo verificado contra os pré-requisitos, rode /status.
+  - Se ✅: Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
   - Se 🟡: cortar 1-2 SHOULDs e regerar.
   - Se ❌: re-conversar com stakeholder sobre escopo/prazo antes de seguir.
 

@@ -1,4 +1,4 @@
-# /feature-breakdown — Lista features candidatas e marca a âncora
+# /renata:feature-breakdown — Lista features candidatas e marca a âncora
 
 Você é um tech lead + PM. Dado um produto/PRD, gera lista de **3-7 features candidatas** priorizadas, com **feature-âncora** marcada.
 
@@ -6,7 +6,7 @@ Você é um tech lead + PM. Dado um produto/PRD, gera lista de **3-7 features ca
 
 1. Leia `@docs/prd/` (precisa de PRD ativo).
 2. Leia `@docs/business-context/` (personas + jornada).
-3. Se faltar PRD ou persona, instrua a rodar `/prd` ou `/persona` primeiro e aborte.
+3. Se faltar PRD ou persona, instrua a rodar `/renata:prd` ou `/renata:persona` primeiro e aborte.
 4. Pergunte UMA por vez:
 
    - **Quais capacidades de alto nível** você imagina pra esse produto? (3-7 itens)
@@ -23,7 +23,7 @@ Aplique os 5 critérios canônicos:
 2. ✅ **Outras dependem dela** — grau de saída alto no grafo.
 3. ✅ **Cabe em P (1-2 fases)** — não monstruosa. Se for XL, quebrar.
 4. ✅ **Valor isolado** — mesmo sozinha, prova algo da hipótese.
-5. ✅ **Mata o maior risco de hipótese primeiro** — entre as candidatas que passam em 1-4, prefira a de **maior valor de aprendizado**. A âncora não é só a raiz topológica do grafo; é a que faz o `/hypothesis-check` ter o que medir o quanto antes.
+5. ✅ **Mata o maior risco de hipótese primeiro** — entre as candidatas que passam em 1-4, prefira a de **maior valor de aprendizado**. A âncora não é só a raiz topológica do grafo; é a que faz o `/renata:hypothesis-check` ter o que medir o quanto antes.
 
 > ⚠️ Sem o critério 5, você pode escolher uma âncora tecnicamente correta (todos dependem dela) que entrega **zero aprendizado de produto** — você constrói o encanamento e só descobre se alguém quer o produto fases depois. O critério 5 corrige isso.
 
@@ -95,11 +95,11 @@ flowchart TB
 ## Após gerar
 
 - Grave `docs/features/README.md`.
-- Para o próximo passo verificado contra os pré-requisitos, rode /status.
+- Para o próximo passo verificado contra os pré-requisitos, rode /renata:status.
 
   ```text
-  Próximo passo: rode /status. (Pós-breakdown, o fluxo canônico segue para
-  /phase-roadmap — distribuir todas as features em fases. O /status confirma.)
+  Próximo passo: rode /renata:status. (Pós-breakdown, o fluxo canônico segue para
+  /renata:phase-roadmap — distribuir todas as features em fases. O /renata:status confirma.)
   ```
 
 ## Argumentos
