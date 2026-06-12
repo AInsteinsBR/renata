@@ -1,0 +1,19 @@
+{
+  "name": "ainsteins",
+  "owner": {
+    "name": "Eric Luque / AInsteins",
+    "email": "contato@ainsteins.com.br"
+  },
+  "plugins": [
+    {
+      "name": "renata",
+      "source": "./",
+      "description": "RENATA — a product method that ties persona → metric → ADR → code. Record · Evidence · Name · Anchor · Test · Automate.",
+      "author": { "name": "Eric Luque", "url": "https://www.ainsteins.com.br" },
+      "homepage": "https://www.ainsteins.com.br",
+      "repository": "https://github.com/AInsteinsBR/renata",
+      "license": "MIT",
+      "keywords": ["product", "method", "adr", "prd", "tdd", "ainsteins"]
+    }
+  ]
+}

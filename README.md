@@ -20,7 +20,7 @@
 
 ```text
 /plugin marketplace add AInsteinsBR/renata
-/plugin install renata
+/plugin install renata@ainsteins
 ```
 
 ## Start a project

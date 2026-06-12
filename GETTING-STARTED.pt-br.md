@@ -442,7 +442,7 @@ O RENATA é um **plugin do Claude Code** — você instala uma vez e ele fica di
 
 ```text
 /plugin marketplace add AInsteinsBR/renata
-/plugin install renata
+/plugin install renata@ainsteins
 ```
 
 **b) Inicializar a estrutura no projeto novo:** abra o Claude Code no diretório do projeto e rode:
@@ -501,7 +501,7 @@ Abra `CLAUDE.md` no seu editor (VSCode, Sublime, etc). Você vai ver vários `{{
 
 ## Pegadinhas comuns
 
-- **`/renata-init` não aparece**: o plugin não está instalado/habilitado. Rode `/plugin install renata` e confira em `/plugin`.
+- **`/renata-init` não aparece**: o plugin não está instalado/habilitado. Rode `/plugin install renata@ainsteins` e confira em `/plugin`.
 - **CLAUDE.md já existia**: o `/renata-init` pergunta antes de sobrescrever — confirme só se for proposital.
 
 ---
