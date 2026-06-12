@@ -1,0 +1,136 @@
+# CLAUDE.md · {{PROJECT_NAME}}
+
+> Entrada de contexto modular. Cada camada referencia arquivos específicos via `@`.
+> Camadas: **org** (princípios) → **repo** (este projeto) → **feature** (escopo atual) → **session** (estado).
+
+> Este projeto segue o **RENATA**. Ver `_framework/METHOD.md` ou referência externa para os princípios do método.
+
+> **Placeholders `{{...}}`:** cada placeholder tem comentário `<!-- preenche na Etapa N -->` indicando qual etapa do `GETTING-STARTED.md` o preenche. Não preencha tudo de uma vez — preencha conforme avança nas etapas.
+
+---
+
+## 1 · Identidade do produto
+
+- **Nome:** {{PROJECT_NAME}} <!-- preenchido pelo init.sh -->
+- **Categoria:** {{PROJECT_CATEGORY}} <!-- preenche na Etapa 1 (manual) ou Etapa 2 (após /prd) -->
+- **Estágio:** {{STAGE}} <!-- preenche na Etapa 1 -->
+- **Time:** {{TEAM}} <!-- preenche na Etapa 1 -->
+- **Persona-âncora:** {{PRIMARY_PERSONA}} <!-- preenche na Etapa 3 (após /persona da primária) -->
+- **Hipóteses:** {{HYPOTHESES}} <!-- preenche na Etapa 2 (após /prd). 1 projeto = 1 PRD com 1+ hipóteses; liste cada uma em 1 linha (H1, H2…) -->
+<!-- Regra do método: este projeto tem exatamente UM PRD, que abriga N hipóteses. Não crie segundo PRD; aposta separável = outro projeto. Ver _framework/METHOD.md → "1 projeto = 1 PRD". -->
+
+---
+
+## 2 · Camada `org` (princípios do produto)
+
+@docs/business-context/personas.md
+@docs/business-context/metricas.md
+@docs/business-context/jornada.md
+
+**Princípios não-negociáveis:** <!-- preenche na Etapa 6 (após ADRs estabelecerem princípios) -->
+
+- {{PRINCIPLE_1}}
+- {{PRINCIPLE_2}}
+- {{PRINCIPLE_3}}
+
+---
+
+## 3 · Camada `repo` (este projeto)
+
+@docs/technical-context/stack.md
+@docs/technical-context/arquitetura.md
+@docs/decisions/
+@.mcp.json
+
+**Stack resumida:** {{STACK_SUMMARY}} <!-- preenche na Etapa 10 (após technical-context/stack.md) -->
+
+**Convenções:** <!-- preenche na Etapa 10 -->
+
+**Integrações MCP ativas:** {{MCP_INTEGRATIONS}} <!-- preenche quando /adr adota um MCP. Ver bloco integrations: em .claude/rules.yaml. Vazio = tudo local. -->
+
+- {{CONVENTION_1}}
+- {{CONVENTION_2}}
+
+---
+
+## 4 · Camada `feature` (escopo atual)
+
+@docs/prd/{{PRD_SLUG}}.md <!-- {{PRD_SLUG}} preenche na Etapa 2 — o PRD único do projeto -->
+@docs/roadmap/fases-overview.md
+@docs/features/{{ACTIVE_FEATURE}}.md <!-- {{ACTIVE_FEATURE}} preenche na Etapa 8 -->
+
+**PRD do projeto:** {{PRD_NAME}} <!-- preenche na Etapa 2. Há exatamente 1 PRD por projeto. -->
+**Fase ativa:** {{ACTIVE_PHASE}} <!-- preenche na Etapa 9 (após roadmap definido) -->
+**Feature-âncora:** {{ANCHOR_FEATURE}} <!-- preenche na Etapa 7 (após /feature-breakdown) -->
+
+---
+
+## 5 · Camada `session` (estado da sessão)
+
+Ao iniciar trabalho, criar `.claude/sessions/<data>-<fase>-<descrição>.md` com estado retomável.
+
+---
+
+## 6 · Decisões já tomadas (ADRs)
+
+Ver `docs/decisions/README.md` para índice atualizado. <!-- ADRs populadas na Etapa 6 -->
+
+---
+
+## 7 · Como pedir coisas neste projeto
+
+### Slash commands de planejamento (definir o quê)
+
+- `/prd <ideia>` — Micro PRD vivo
+- `/persona <nome>` — extrai persona estruturada
+- `/user-journey <persona>` — mapeia antes/durante/depois
+- `/metrics` — define métricas em 4 camadas
+- `/adr <decisão>` — formaliza ADR
+- `/feature-spec <nome>` — gera spec de feature
+- `/feature-breakdown` — categoriza features (binário MUST/OUT) e sequencia os MUSTs por valor×esforço, marcando a âncora
+
+### Slash commands de validação de produto (Measure-Learn — fecha o loop)
+
+- `/assumption-test <premissa>` — testa risco de valor/viabilidade **antes** de construir (4 riscos de Cagan)
+- `/hypothesis-check [hipótese]` — confronta a hipótese do PRD com o dado real **depois** de construir (✅/❌/🤔 + ação + sunset)
+
+### Slash commands de desenvolvimento (operar dentro de uma fase)
+
+- `/spike <pergunta>` — investigação técnica de risco antes de comprometer
+- `/phase-scope <fase>` — define o que cabe na fase atual com MoSCoW completo
+- `/triage <contexto>` — triagem MoSCoW de backlog (bugs, débitos, requests)
+- `/todo <add|sync|list|done>` — backlog de pendências (marcador inline no doc + sync central em `docs/backlog/todos.md`)
+- `/refactor <alvo>` — guia refactor disciplinado com plano de rollback
+- `/retro [fase]` — retrospectiva ao fim de fase
+
+### Subagents
+
+- `@architect` — revisa **decisão/proposta** contra ADRs (antes de codar)
+- `@code-reviewer` — revisa **código pronto** (diff, antes de PR)
+- `@perf-auditor` — análise profunda de performance / hot paths
+- `@security-reviewer` — revisão de segurança leve (OWASP top 10 prático)
+
+### Skills do superpowers (carregadas automaticamente)
+
+- `superpowers:brainstorming` — antes de qualquer feature nova
+- `superpowers:writing-plans` — após design aprovado
+- `superpowers:test-driven-development` — durante implementação
+- `superpowers:systematic-debugging` — quando aparecer bug
+- `superpowers:verification-before-completion` — antes de declarar pronto
+
+---
+
+## 8 · Anti-padrões deste projeto
+
+<!-- Preenche na Etapa 6 conforme ADRs forem aceitas + Etapa 10 (após stack/arquitetura). Cada anti-padrão amarra a uma ADR ou convenção. -->
+
+- {{ANTI_PATTERN_1}}
+- {{ANTI_PATTERN_2}}
+
+---
+
+## 9 · Próximos passos
+
+<!-- Atualiza ao fim de cada etapa do GETTING-STARTED -->
+
+{{NEXT_STEPS}}

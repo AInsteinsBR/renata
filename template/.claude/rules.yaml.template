@@ -1,0 +1,64 @@
+# Rules · Regras declarativas de ADR
+#
+# Este arquivo é lido pelo hook `.claude/hooks/rules-violation.sh`
+# para validar commits contra as ADRs aceitas do projeto.
+#
+# ⚠️ NÃO edite manualmente. Use `/adr` (modo CRIAR ou REFINAR) — ele mantém
+# este arquivo sincronizado com `docs/decisions/ADR-*.md`.
+#
+# ─────────────────────────────────────────────────────────────────────
+# Referência de sintaxe (não edite, copie e cole no fim de `adrs:`):
+# ─────────────────────────────────────────────────────────────────────
+#
+# Bloco básico (forbid_pattern):
+#
+#   - id: ADR-NNN
+#     title: "título humano da ADR"
+#     enforce:
+#       - kind: forbid_pattern
+#         pattern: "regex"
+#         scope: "path/glob"          # opcional, default: todo o repo
+#         exclude: "path/glob"        # opcional
+#         message: "msg ao desenvolvedor que violar"
+#
+# Bloco require_pattern (validar que algo EXISTE em escopo):
+#
+#   - id: ADR-NNN
+#     title: "..."
+#     enforce:
+#       - kind: require_pattern
+#         pattern: "tenant_id"
+#         scope: "backend/app/repositories"
+#         message: "Toda query precisa filtrar por tenant_id (ADR-NNN)."
+#
+# Kinds suportados (v0.1):
+#   - forbid_pattern   → busca regex; falha se encontrar
+#   - require_pattern  → busca regex em escopo; falha se NÃO encontrar
+#
+# Kinds futuros (v0.2+):
+#   - require_nearby   → pattern1 exige pattern2 próximo
+#   - max_file_size    → limite de tamanho de arquivo
+#   - require_test     → arquivo X exige test Y correspondente
+# ─────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────
+# Bloco de integrações MCP (opcional) — mapeia capacidade → servidor MCP.
+# Cada entrada NASCE de uma ADR (via /adr). Vazio/ausente = tudo local.
+# Local é sempre a fonte de verdade; MCP é espelho confirmado.
+#
+#   integrations:
+#     tarefas: { mcp: jira,     adr: ADR-NNN, espelho: true }   # /todo, /triage espelham no Jira após confirmar
+#     pr:      { mcp: github,   adr: ADR-NNN, espelho: true }   # ações de PR/issue
+#     db:      { mcp: postgres, adr: ADR-NNN, espelho: false }  # só leitura/ação, local não espelha
+#
+# Campos:
+#   mcp     → nome do servidor como declarado em .mcp.json
+#   adr     → ADR que decidiu adotar (obrigatório; rastreabilidade)
+#   espelho → true: escreve local e oferece push pro MCP após confirmar
+#             false: MCP só pra leitura/ação pontual; local é única verdade de escrita
+# Capacidades canônicas: tarefas · pr · db (extensível)
+# ─────────────────────────────────────────────────────────────────────
+
+integrations: {}
+
+adrs: []

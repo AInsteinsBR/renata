@@ -1,0 +1,211 @@
+# progress-map.yaml — Fonte única da verdade do detector de progresso (/status).
+#
+# Lido por:
+#   - .claude/commands/status.md  (comando interpretado pelo Claude)
+#   - .claude/hooks/method-status-line.sh  (hook SessionStart, via yq)
+#
+# Cada etapa:
+#   num            número da etapa (string p/ suportar "8.5")
+#   nome           rótulo humano
+#   comando        o que o usuário roda pra produzir o artefato
+#   artefato_glob  glob que detecta existência do artefato
+#   nao_vazio_se   substring que, se presente no artefato, indica conteúdo real
+#                  (heurística anti-placeholder; vazio = só existência basta)
+#   opcional       true se a etapa pode ser pulada sem bloquear o fluxo
+#   prereq         lista de num de etapas que são pré-requisito REAL
+#   validacao      3-5 critérios-chave (checklist leve) extraídos do GETTING-STARTED
+
+etapas:
+  - num: "1"
+    nome: "Criar o projeto"
+    comando: "(manual) preencher CLAUDE.md seção 1 + init.sh"
+    artefato_glob: "CLAUDE.md"
+    nao_vazio_se: "## 1 · Identidade do produto"
+    opcional: false
+    prereq: []
+    validacao:
+      - "CLAUDE.md tem PROJECT_CATEGORY preenchido (sem {{...}})"
+      - "CLAUDE.md tem STAGE preenchido"
+      - "CLAUDE.md tem TEAM preenchido"
+
+  - num: "2"
+    nome: "Definir o produto (PRD)"
+    comando: "/prd <ideia>"
+    artefato_glob: "docs/prd/*.md"
+    nao_vazio_se: "##"
+    opcional: false
+    prereq: ["1"]
+    validacao:
+      - "Problema tem número (não 'muito tempo perdido')"
+      - "Hipótese falsificável no formato 'Se X, então Y sai de Z pra W'"
+      - "Escopo IN e OUT ambos claros"
+      - "Métrica decisiva tem baseline + meta + fórmula + fonte"
+
+  - num: "3"
+    nome: "Mapear personas"
+    comando: "/persona <nome>"
+    artefato_glob: "docs/business-context/personas.md"
+    nao_vazio_se: "##"
+    opcional: false
+    prereq: ["2"]
+    validacao:
+      - "Persona primária com nome próprio (não cargo genérico)"
+      - "Dor com número"
+      - "Critério de sucesso em citação > \"...\""
+      - "Seção 'Quem NÃO é persona' com 3+ itens (anti-personas)"
+
+  - num: "4"
+    nome: "Mapear jornadas"
+    comando: "/user-journey <persona>"
+    artefato_glob: "docs/business-context/jornada.md"
+    nao_vazio_se: "journey"
+    opcional: false
+    prereq: ["3"]
+    validacao:
+      - "1+ jornada com 'mermaid journey'"
+      - "Pontos críticos amarrados a requisitos"
+      - "Anti-jornadas listadas (2-4)"
+      - "Métricas mapeadas em tabela"
+
+  - num: "5"
+    nome: "Definir métricas"
+    comando: "/metrics"
+    artefato_glob: "docs/business-context/metricas.md"
+    nao_vazio_se: "##"
+    opcional: false
+    prereq: ["2"]
+    validacao:
+      - "3 camadas mínimas preenchidas (adoção, engajamento, valor)"
+      - "Cada métrica decisiva amarra com uma hipótese do PRD (N hipóteses → N métricas)"
+      - "Toda métrica tem baseline + meta + fórmula + fonte"
+      - "Anti-métricas listadas (3+)"
+
+  - num: "6"
+    nome: "Decisões técnicas (ADRs)"
+    comando: "/adr <decisão>"
+    artefato_glob: "docs/decisions/ADR-*.md"
+    nao_vazio_se: "Status"
+    opcional: false
+    prereq: ["2"]
+    validacao:
+      - "≥5 ADRs com Status: accepted (típico)"
+      - "rules.yaml tem regra pra cada ADR com enforcement por hook"
+      - "Cada ADR tem gatilho de revisão explícito"
+      - "Hook testado: import que viola ADR falha no commit"
+
+  - num: "7"
+    nome: "Priorizar features"
+    comando: "/feature-breakdown"
+    artefato_glob: "docs/features/README.md"
+    nao_vazio_se: "MUST"
+    opcional: false
+    prereq: ["2", "6"]
+    validacao:
+      - "3-7 features listadas"
+      - "Feature-âncora marcada com ⚓ + 4 critérios"
+      - "Diagrama de dependências claro"
+      - "Anti-features listadas"
+
+  - num: "7.5"
+    nome: "Fasear o sistema"
+    comando: "/phase-roadmap"
+    artefato_glob: "docs/roadmap/fases-overview.md"
+    nao_vazio_se: "Fase 0"
+    opcional: false
+    prereq: ["7"]
+    validacao:
+      - "TODAS as features do breakdown aparecem em alguma fase (nenhuma órfã)"
+      - "Cada fase tem tempo aproximado (t-shirt ou semanas)"
+      - "Fase 0 = conjunto-âncora (slice vertical mínimo que entrega valor)"
+      - "Fases têm ordem por dependência (Fase N+1 não depende de feature não-faseada)"
+
+  - num: "8"
+    nome: "Spec da feature-âncora"
+    comando: "/feature-spec F1"
+    artefato_glob: "docs/features/F1-*.md"
+    nao_vazio_se: "##"
+    opcional: false
+    prereq: ["7.5"]
+    validacao:
+      - "Todas as features da Fase 0 (conjunto-âncora) têm spec, não só F1"
+      - "Cada spec tem todas as seções preenchidas"
+      - "Plano em fases de cada feature tem critério verificável"
+
+  - num: "8.5"
+    nome: "Design de telas (opcional)"
+    comando: "/screens"
+    artefato_glob: "docs/design/inventory.md"
+    nao_vazio_se: "##"
+    opcional: true
+    prereq: ["8"]
+    validacao:
+      - "inventory.md lista 3-15 telas com persona+feature"
+      - "flow.md tem mermaid claro"
+      - "Briefs gerados para todas as telas MUST"
+      - "Anti-telas listadas"
+
+  - num: "9"
+    nome: "Roadmap macro"
+    comando: "(manual) criar docs/roadmap/"
+    artefato_glob: "docs/roadmap/fases-overview.md"
+    nao_vazio_se: "gantt"
+    opcional: false
+    prereq: ["8"]
+    validacao:
+      - "fases-overview.md (criado na 7.5) ganhou gate explícito por fase"
+      - "1 arquivo fase-N-<nome>.md por fase com critério de gate objetivo"
+      - "Anti-roadmap listado"
+      - "Cada gate é verificável (teste passa / métrica observável)"
+
+  - num: "10"
+    nome: "Arquitetura técnica"
+    comando: "(manual) criar docs/technical-context/"
+    artefato_glob: "docs/technical-context/arquitetura.md"
+    nao_vazio_se: "C4"
+    opcional: false
+    prereq: ["6", "9"]
+    validacao:
+      - "stack.md tem cada componente com restrição amarrada"
+      - "arquitetura.md tem C4 Nível 1 e 2"
+      - "Decisões refletidas como ADRs"
+      - "'O que NÃO está nesta stack' listado"
+
+  - num: "11"
+    nome: "Plano de execução"
+    comando: "/plan-phase <fase>"
+    artefato_glob: "docs/superpowers/specs/*-fase-*-plan.md"
+    nao_vazio_se: "##"
+    opcional: false
+    prereq: ["8", "10"]
+    validacao:
+      - "Plano passou pela revisão do @architect"
+      - "Plano tem TDD em cada passo"
+      - "Plano tem ≥3 checkpoints com usuário"
+      - "Plano cita ADRs onde se aplicam"
+
+  - num: "12"
+    nome: "Executar"
+    comando: "/execute <fase>"
+    # Etapa 12 produz CÓDIGO, não um doc próprio. Detectamos pela existência de um
+    # plano de execução marcado como em andamento (Status: running) — artefato distinto
+    # do retro da Etapa 13, evitando dupla contagem.
+    artefato_glob: "docs/superpowers/specs/*-fase-*-plan.md"
+    nao_vazio_se: "running"
+    opcional: false
+    prereq: ["11"]
+    validacao:
+      - "Cada commit passa pelo hook sem aviso"
+      - "Testes em verde antes de prosseguir"
+      - "Sessão atualizada antes de pausar"
+
+  - num: "13"
+    nome: "Retro da fase"
+    comando: "/retro <fase>"
+    artefato_glob: "docs/roadmap/fase-*-retro.md"
+    nao_vazio_se: "Decisão final"
+    opcional: false
+    prereq: ["12"]
+    validacao:
+      - "fase-N-retro.md existe com decisão explícita"
+      - "PRD/ADRs atualizadas se necessário"
+      - "Próxima fase clara ou pivot decidido"
