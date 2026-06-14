@@ -2,3 +2,8 @@
 *.zip
 *.log
 .vscode/
+
+# marketing/launch assets — não fazem parte do plugin
+_preview/
+banner-*.svg
+banner-*.png
