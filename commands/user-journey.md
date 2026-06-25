@@ -11,7 +11,8 @@ Respond to the user and generate content in the user's language (the language th
 
 1. Read `@docs/business-context/personas.md` — the persona must exist.
 2. Read `@CLAUDE.md` to understand the product.
-3. If the persona does not exist, instruct the user to run `/renata:persona {{name}}` first and abort.
+3. **If `docs/discovery/*.md` exists,** read the "How they solve it today" seed as a starting point for the *before* of the journey — but still map the full before/during/after with the dedicated rigor. The seed is a starting point, not a substitute.
+4. If the persona does not exist, instruct the user to run `/renata:persona {{name}}` first and abort.
 
 ## Journey structure
 

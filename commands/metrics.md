@@ -12,10 +12,11 @@ Respond to the user and generate document content in the user's language (the la
 
 1. **If `docs/business-context/metricas.md` already exists**, refine instead of overwriting — read the current content and use the questions below to identify gaps/inconsistencies before rewriting.
 2. Read `@docs/prd/` — the decisive metric must tie to a PRD hypothesis.
-3. Read `@docs/business-context/personas.md` — metrics serve specific personas.
-4. Read `@docs/business-context/jornada.md` if it exists — critical points in the journey generate metrics.
-5. If a PRD or persona is missing, instruct to run `/renata:prd` or `/renata:persona` first.
-6. Ask ONE at a time:
+3. **If `docs/discovery/*.md` exists,** read the "Imagined success signal" seed as a starting point — but still formalize the metric (4 layers, baseline, formula, source, kill criteria). The seed is a starting point, not a substitute.
+4. Read `@docs/business-context/personas.md` — metrics serve specific personas.
+5. Read `@docs/business-context/jornada.md` if it exists — critical points in the journey generate metrics.
+6. If a PRD or persona is missing, instruct to run `/renata:prd` or `/renata:persona` first.
+7. Ask ONE at a time:
 
    **Layer 1 — Adoption (does anyone use it?):**
    - What is the minimum signal of use? How to measure it? Initial goal and prod goal?

@@ -11,8 +11,9 @@ Respond to the user and generate document content in the user's language (the la
 ## Before generating
 
 1. Read `@CLAUDE.md` for the product context.
-2. Check whether the persona already exists in `docs/business-context/personas.md`. If so, refine it.
-3. Ask in up to 4 turns (not all at once):
+2. **If `docs/discovery/*.md` exists,** read the "Persona candidate" seed as a starting draft — but still formalize the full persona here (name, quantified pain, anchor phrase, anti-persona). The seed is a starting point, not a substitute.
+3. Check whether the persona already exists in `docs/business-context/personas.md`. If so, refine it.
+4. Ask in up to 4 turns (not all at once):
 
    **Turn 1 — Role and context:**
    - What position does this person hold? In what type of company? What size?
