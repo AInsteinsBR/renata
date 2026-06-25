@@ -106,6 +106,7 @@ A resposta exige entender que **"definir o produto" tem múltiplos níveis de gr
 | Contexto | 3-5. Personas/Jornadas/Métricas | POR QUÊ e PRA QUEM    | Restrições amarradas               |
 | Macro    | 6. ADRs                          | COMO em alto nível    | Stack + estratégia                  |
 | Médio   | 7. Feature breakdown             | O QUE em médio nível | Capacidades atômicas                |
+| Médio   | 7.7. Comportamento da feature (opcional) | O QUE o usuário observa | Comportamento observável por feature (sem técnico) |
 | Médio   | 7.5. Fasear o sistema            | QUANDO cada feature    | Todas as features em fases por tempo |
 | Médio   | 8. Feature spec (por fase)       | COMO em médio nível  | Plano por feature da fase corrente   |
 | Visual   | 8.5. Design de telas (opcional)  | COMO o usuário vê    | Inventário + fluxo + briefs         |
@@ -262,6 +263,7 @@ docs/
 | `/renata:adr <decisão>`      | Quando se identifica decisão estrutural                           | `docs/decisions/ADR-NNN-<slug>.md`            |
 | `/renata:feature-spec <nome>` | Antes de implementar feature                                       | `docs/features/F<N>-<slug>.md`                |
 | `/renata:feature-breakdown`   | Quando há 3+ features candidatas                                  | `docs/features/README.md` (binário MUST/OUT) |
+| `/renata:feature-behavior`    | (Opcional) refina a feature como comportamento observável antes da spec técnica — quando Produto é separado de Engenharia ou as regras de negócio são densas | `docs/features/F<N>-<slug>.behavior.md` |
 | `/renata:phase-roadmap`              | Após breakdown — distribuir todas as features em fases por tempo | `docs/roadmap/fases-overview.md`              |
 
 ### Design (entre planejamento e execução)

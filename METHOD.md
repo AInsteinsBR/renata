@@ -106,6 +106,7 @@ The answer requires understanding that **"defining the product" has multiple lev
 | Context  | 3-5. Personas/Journeys/Metrics   | WHY and FOR WHOM       | Anchored constraints                 |
 | Macro    | 6. ADRs                          | HOW at a high level    | Stack + strategy                     |
 | Mid      | 7. Feature breakdown             | WHAT at a mid level    | Atomic capabilities                  |
+| Mid      | 7.7. Feature behavior (optional) | WHAT the user observes | Observable behavior per feature (no technical) |
 | Mid      | 7.5. Phase the system            | WHEN each feature      | All features in phases by time       |
 | Mid      | 8. Feature spec (per phase)      | HOW at a mid level     | Plan per feature of the current phase|
 | Visual   | 8.5. Screen design (optional)    | HOW the user sees      | Inventory + flow + briefs            |
@@ -262,6 +263,7 @@ docs/
 | `/renata:adr <decision>`      | When a structural decision is identified                          | `docs/decisions/ADR-NNN-<slug>.md`            |
 | `/renata:feature-spec <name>` | Before implementing a feature                                      | `docs/features/F<N>-<slug>.md`                |
 | `/renata:feature-breakdown`   | When there are 3+ candidate features                              | `docs/features/README.md` (binary MUST/OUT)  |
+| `/renata:feature-behavior`    | (Optional) refine a feature as observable behavior before the technical spec — when Product is separate from Engineering or business rules are dense | `docs/features/F<N>-<slug>.behavior.md` |
 | `/renata:phase-roadmap`              | After breakdown — distribute all features into phases by time    | `docs/roadmap/fases-overview.md`              |
 
 ### Design (between planning and execution)
