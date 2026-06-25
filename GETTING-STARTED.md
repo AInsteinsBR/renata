@@ -994,6 +994,20 @@ The command fires the `@pattern-mapper` agent, which scans the repo across 4 axe
 
 ---
 
+# 🔭 Step 6.5 — Competitive research (optional): find your differentiation gaps
+
+**Want to know what's already out there before you commit to features?** After the PRD, map the landscape:
+
+```text
+/renata:landscape
+```
+
+It researches similar solutions **anchored on your PRD** (via a Perplexity MCP if you have one configured, otherwise native web search), and **dumps everything with sources** into `docs/research/<date>-landscape.md` for you to read at your own pace. Then run it again and it **curates with you** — block by block, proposing angles you might not have seen; you keep, cut, or add with your domain knowledge. The output: prioritized **differentiation gaps** that become candidate features for `/renata:feature-breakdown`.
+
+Every competitor claim carries a source — no source, not a fact. The point isn't to copy or to "have everything": it's to find the gap that's yours.
+
+---
+
 # 🎯 Step 7 — Prioritize features (1h)
 
 **Goal:** break the product into 3-7 features and mark which ones make up the **anchor set** (the minimal slice that delivers end-to-end value — it becomes Phase 0).

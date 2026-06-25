@@ -994,6 +994,20 @@ O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arqui
 
 ---
 
+# 🔭 Etapa 6.5 — Pesquisa competitiva (opcional): ache seus gaps de diferenciação
+
+**Quer saber o que já existe lá fora antes de comprometer features?** Depois do PRD, mapeie o território:
+
+```text
+/renata:landscape
+```
+
+Ele pesquisa soluções similares **ancorado no seu PRD** (via um MCP do Perplexity se você tiver configurado, senão busca web nativa), e **salva tudo com fontes** em `docs/research/<data>-landscape.md` pra você ler no seu tempo. Depois você roda de novo e ele **cura junto com você** — bloco a bloco, propondo ângulos que você pode não ter visto; você mantém, corta ou adiciona com seu conhecimento de domínio. A saída: **gaps de diferenciação** priorizados que viram features candidatas pro `/renata:feature-breakdown`.
+
+Toda afirmação sobre concorrente vem com fonte — sem fonte, não é fato. O ponto não é copiar nem "ter tudo": é achar o gap que é seu.
+
+---
+
 # 🎯 Etapa 7 — Priorizar features (1h)
 
 **Objetivo:** quebrar o produto em 3-7 features e marcar quais compõem o **conjunto-âncora** (o slice mínimo que entrega valor de ponta a ponta — vira a Fase 0).
