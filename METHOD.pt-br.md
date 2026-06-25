@@ -70,6 +70,8 @@ Documentação não é descritiva — é **opinativa**. "O sistema usa Postgres"
 - Histórico no fim das docs vivas (PRD principalmente) mostra evolução.
 - Markdown only. Diagramas mermaid embutidos. Sem dependência de ferramenta externa.
 
+**Versionar a evolução (dogfood do Princípio 7).** Todo release do RENATA atualiza o `CHANGELOG.md` com o "O que há de novo" daquela versão, cria a git tag `vX.Y.Z` e publica o GitHub Release. O changelog é o "Histórico vivo" que o Princípio 7 prega — aplicado ao próprio plugin. Um produto que prega doc viva não pode esconder a própria evolução. **Sequência de release:** mover `Unreleased`→a versão no CHANGELOG · bump do `plugin.json` · commit · push · `git tag -a vX.Y.Z` + push das tags · publicar o GitHub Release · atualizar o marketplace clonado + reinstalar.
+
 ---
 
 ## O loop fecha — Evidência reabre decisão

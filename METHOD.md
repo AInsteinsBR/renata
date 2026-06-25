@@ -70,6 +70,8 @@ Documentation is not descriptive — it is **opinionated**. "The system uses Pos
 - A history at the end of living docs (the PRD especially) shows the evolution.
 - Markdown only. Embedded mermaid diagrams. No dependency on external tools.
 
+**Versioning the evolution (dogfood of Principle 7).** Every RENATA release updates `CHANGELOG.md` with that version's "What's new", creates the git tag `vX.Y.Z`, and publishes the GitHub Release. The changelog is the "living History" Principle 7 preaches — applied to the plugin itself. A product that preaches living docs can't hide its own evolution. **Release sequence:** move `Unreleased`→the version in the CHANGELOG · bump `plugin.json` · commit · push · `git tag -a vX.Y.Z` + push tags · publish the GitHub Release · update the cloned marketplace + reinstall.
+
 ---
 
 ## The loop closes — Evidence reopens the decision
