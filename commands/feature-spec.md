@@ -13,7 +13,10 @@ Respond to the user and generate document content in the user's language (the la
 1. Read `@CLAUDE.md`, `@docs/prd/`, `@docs/business-context/`.
 2. Read relevant ADRs in `@docs/decisions/`.
 3. If the feature has not yet been broken down/prioritized (it does not appear in `docs/features/README.md`), instruct to run `/renata:feature-breakdown` first.
-4. Ask ONE at a time:
+4. **Detect the behavior spec:** check whether `docs/features/F<N>-<slug>.behavior.md` exists.
+   - **If it exists:** read it as the source of the "what" (capabilities, scenarios, business rules, acceptance). Add it to the spec's "Links" section and add this note near the top of the generated spec: *"Observable behavior is in `F<N>-<slug>.behavior.md` — this spec covers only the technical how."* Derive the technical acceptance criteria FROM the behavior's Gherkin scenarios. **Do NOT copy** the behavior content into the spec (no duplication).
+   - **If it does not exist:** proceed normally (the behavior spec is optional; the feature-spec stands alone).
+5. Ask ONE at a time:
 
    - **Problem:** what pain does this feature attack? Which persona?
    - **Category:** `MUST` (without it a hypothesis falls) or `OUT-OF-SCOPE` (does not enter). Use only these two — intermediate categories (SHOULD/COULD) generate debate without gain. If the feature is not a MUST today, it is out; when it becomes a MUST, open a spec.
