@@ -24,7 +24,7 @@ Before any question, identify the mode:
 - **REFINE mode**: `$ARGUMENTS` contains "refine ADR-NNN" or similar → load the existing ADR, validate each section, fill gaps, and sync with `rules.yaml`.
 - **ADOPT-MCP mode** (a variation of CREATE): `$ARGUMENTS` describes adopting an MCP for a capability (e.g., "use Jira for tasks"). Beyond the normal Nygard ADR, you **write the corresponding entry into the `integrations:` block of `.claude/rules.yaml`**:
   - Form: `<capability>: { mcp: <name-in-.mcp.json>, adr: ADR-NNN, espelho: <true|false> }`.
-  - Canonical capabilities: `tarefas`, `pr`, `db` (extensible).
+  - Canonical capabilities: `tarefas`, `pr`, `db`, `research` (extensible). (`research` = web search source for `/renata:landscape`, e.g. a Perplexity MCP.)
   - `espelho: true` when the MCP receives a mirrored write after confirmation; `false` when it is read/action only.
   - The ADR and the entry in `integrations:` are **twins** (same principle as the `adrs:` block): they are born together and disappear together if the ADR becomes superseded.
   - Confirm the `<name-in-.mcp.json>` with the user (it must match the server declared in `.mcp.json`).

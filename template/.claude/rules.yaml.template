@@ -50,13 +50,14 @@
 #     tarefas: { mcp: jira,     adr: ADR-NNN, espelho: true }   # /todo, /triage espelham no Jira após confirmar
 #     pr:      { mcp: github,   adr: ADR-NNN, espelho: true }   # ações de PR/issue
 #     db:      { mcp: postgres, adr: ADR-NNN, espelho: false }  # só leitura/ação, local não espelha
+#     research: { mcp: perplexity, adr: ADR-NNN }                # fonte de pesquisa pro /renata:landscape (fallback: WebSearch nativo)
 #
 # Campos:
 #   mcp     → nome do servidor como declarado em .mcp.json
 #   adr     → ADR que decidiu adotar (obrigatório; rastreabilidade)
 #   espelho → true: escreve local e oferece push pro MCP após confirmar
 #             false: MCP só pra leitura/ação pontual; local é única verdade de escrita
-# Capacidades canônicas: tarefas · pr · db (extensível)
+# Capacidades canônicas: tarefas · pr · db · research (extensível)
 # ─────────────────────────────────────────────────────────────────────
 
 integrations: {}
