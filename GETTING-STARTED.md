@@ -1032,6 +1032,18 @@ Criteria for the anchor set:
 
 3-5 things that could be confused but are out.
 
+## 7.7. (Optional) Refine the behavior before the technical detail
+
+Do you have a Product discipline separate from Engineering, or dense business rules? Before the technical spec, refine each feature **purely as observable user behavior**:
+
+```text
+/renata:feature-behavior F1
+```
+
+This generates `docs/features/F1-<slug>.behavior.md` with user stories, Gherkin scenarios for the critical points, explicit business rules, observable acceptance criteria, and the anti-behavior ("what it does NOT do") — **with zero technical detail**. It's the clean Product→Engineering handoff.
+
+Then `/renata:feature-spec` reads this behavior, links to it, and covers only the technical *how* (no duplication). A solo dev who is both Product and Engineering can skip this and go straight to `/renata:feature-spec`.
+
 ## Step 7 validation
 
 - [ ] `docs/features/README.md` lists 3-7 features

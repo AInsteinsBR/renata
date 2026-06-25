@@ -1032,6 +1032,18 @@ Critérios pro conjunto-âncora:
 
 3-5 coisas que poderiam ser confundidas mas estão fora.
 
+## 7.7. (Opcional) Refinar o comportamento antes do detalhe técnico
+
+Tem uma disciplina de Produto separada de Engenharia, ou regras de negócio densas? Antes da spec técnica, refine cada feature **só como comportamento observável pelo usuário**:
+
+```text
+/renata:feature-behavior F1
+```
+
+Isso gera `docs/features/F1-<slug>.behavior.md` com user stories, cenários Gherkin nos pontos críticos, regras de negócio explícitas, critérios de aceite observáveis, e o anti-comportamento ("o que NÃO faz") — **com zero técnico**. É o handoff limpo Produto→Engenharia.
+
+Depois o `/renata:feature-spec` lê esse comportamento, linka pra ele, e trata só do *como* técnico (sem duplicar). Um solo dev que é Produto e Engenharia ao mesmo tempo pode pular e ir direto pro `/renata:feature-spec`.
+
 ## Validação da Etapa 7
 
 - [ ] `docs/features/README.md` lista 3-7 features
