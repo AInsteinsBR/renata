@@ -119,6 +119,19 @@ etapas:
       - "Fase 0 = conjunto-âncora (slice vertical mínimo que entrega valor)"
       - "Fases têm ordem por dependência (Fase N+1 não depende de feature não-faseada)"
 
+  - num: "7.7"
+    nome: "Comportamento da feature (opcional)"
+    comando: "/feature-behavior <F<N>>"
+    artefato_glob: "docs/features/*.behavior.md"
+    nao_vazio_se: "Behavior"
+    opcional: true
+    prereq: ["7"]
+    validacao:
+      - "Feature expressa como comportamento observável, sem técnico"
+      - "User story + cenários Gherkin nos pontos críticos"
+      - "Critérios de aceite observáveis (não técnicos)"
+      - "Anti-comportamento listado"
+
   - num: "8"
     nome: "Spec da feature-âncora"
     comando: "/feature-spec F1"
