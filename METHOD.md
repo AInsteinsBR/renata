@@ -268,6 +268,7 @@ docs/
 | `/renata:metrics`            | After PRD + personas, before features                             | `docs/business-context/metricas.md`           |
 | `/renata:adr <decision>`      | When a structural decision is identified                          | `docs/decisions/ADR-NNN-<slug>.md`            |
 | `/renata:feature-spec <name>` | Before implementing a feature                                      | `docs/features/F<N>-<slug>.md`                |
+| `/renata:landscape`           | (Optional, post-PRD) Competitive research → differentiation gaps; co-curated, sources mandatory; feeds the breakdown | `docs/research/<date>-landscape.md`          |
 | `/renata:feature-breakdown`   | When there are 3+ candidate features                              | `docs/features/README.md` (binary MUST/OUT)  |
 | `/renata:feature-behavior`    | (Optional) refine a feature as observable behavior before the technical spec — when Product is separate from Engineering or business rules are dense | `docs/features/F<N>-<slug>.behavior.md` |
 | `/renata:phase-roadmap`              | After breakdown — distribute all features into phases by time    | `docs/roadmap/fases-overview.md`              |
