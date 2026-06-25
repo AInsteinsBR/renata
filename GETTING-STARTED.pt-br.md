@@ -506,6 +506,20 @@ Abra `CLAUDE.md` no seu editor (VSCode, Sublime, etc). Você vai ver vários `{{
 
 ---
 
+# 🌫️ Etapa 1.5 — Discovery (opcional): da ideia ao problema, antes do PRD
+
+**Ainda não sabe o que quer construir?** Antes do PRD, rode o discovery — ele converge uma intuição vaga num problema claro, e te ensina os frameworks enquanto conduz:
+
+```text
+/renata:discovery algo pra ajudar freelancers a controlar tarefas
+```
+
+Ele te leva pelos **5 porquês** (cavar a dor real), pelo **job-to-be-done** (que progresso a pessoa contrata o produto pra fazer), e pelo **por que agora** — e força enquadrar o problema de **2-3 formas diferentes** antes de comprometer, pra você não cristalizar na primeira ideia. A saída (`docs/discovery/<data>-<slug>.md`) vira o ponto de partida do `/renata:prd`, e semeia pistas pra persona, jornada e métricas.
+
+**Já chega com o problema claro?** Pule e vá direto pra Etapa 2.
+
+---
+
 # 📋 Etapa 2 — Definir o produto (1-2h)
 
 **Objetivo:** escrever o Micro PRD — o documento mais importante do projeto. Tudo depois amarra nele.
