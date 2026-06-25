@@ -28,6 +28,19 @@ etapas:
       - "CLAUDE.md tem STAGE preenchido"
       - "CLAUDE.md tem TEAM preenchido"
 
+  - num: "1.5"
+    nome: "Discovery (opcional)"
+    comando: "/discovery <ideia>"
+    artefato_glob: "docs/discovery/*.md"
+    nao_vazio_se: "aposta escolhida"
+    opcional: true
+    prereq: ["1"]
+    validacao:
+      - "Da intuição ao problema claro (5 porquês até a causa real)"
+      - "Job-to-be-done identificado"
+      - "2-3 enquadramentos explorados antes de convergir"
+      - "Sementes pra persona/jornada/métrica registradas"
+
   - num: "2"
     nome: "Definir o produto (PRD)"
     comando: "/prd <ideia>"
