@@ -8,6 +8,14 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 _Nada ainda._
 
+## [0.1.6] — 2026-06-25
+
+**O que há de novo:** pesquisa competitiva que acha seus gaps de diferenciação.
+
+### Adicionado
+- `/renata:landscape` — pesquisa competitiva pós-PRD: mapeia soluções similares ancorado no PRD (MCP do Perplexity se disponível, senão busca web nativa; fontes obrigatórias), salva tudo pra você ler, depois cura junto com você pra achar os gaps de diferenciação que viram features candidatas.
+- Nova capacidade de integração `research` (fonte de busca web pro landscape).
+
 ## [0.1.5] — 2026-06-25
 
 **O que há de novo:** a etapa de ideação antes do PRD — pra quando você ainda não sabe o que quer.
