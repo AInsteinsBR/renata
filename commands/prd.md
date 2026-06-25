@@ -10,10 +10,13 @@ Respond to the user and generate content in the user's language (the language th
 ## Before generating
 
 1. Check whether a PRD already exists in `docs/prd/`. **If so, refine it instead of creating from scratch.**
-2. Read `@CLAUDE.md` to understand the product context:
+2. **Detect a discovery doc:** check whether `docs/discovery/*.md` exists.
+   - **If it exists:** read "The chosen bet" (problem + audience + direction) as your starting point — do NOT ask from scratch. Link to the discovery doc as the PRD's origin. Do NOT copy its content (link, don't repeat).
+   - **If it does NOT exist and the user seems unclear** (vague intuition, no defined problem/audience): suggest running `/renata:discovery` first. Do NOT block (someone who arrives clear goes straight to the PRD).
+3. Read `@CLAUDE.md` to understand the product context:
    - **If CLAUDE.md has its identity filled in** (not just placeholders `{{...}}`), use it as context.
    - **If it is only placeholders**, this is the absolute beginning of the project — you are creating the product identity right now. Do not try to extract empty context.
-3. Ask ONE question at a time (not many at once):
+4. Ask ONE question at a time (not many at once):
 
    - **Problem:** what numeric pain does this idea attack? (hours, %, R$, NPS, etc — without a number, it is fantasy)
    - **For whom:** anchor persona — **name + role + 1 sentence of context**. If `personas.md` already exists, reference it. Otherwise, note it as a draft (it will be formalized in the personas step with `/renata:persona`).
