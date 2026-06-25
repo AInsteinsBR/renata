@@ -106,6 +106,20 @@ etapas:
       - "Cada ADR tem gatilho de revisão explícito"
       - "Hook testado: import que viola ADR falha no commit"
 
+  - num: "6.5"
+    nome: "Pesquisa competitiva (opcional)"
+    comando: "/landscape"
+    artefato_glob: "docs/research/*-landscape.md"
+    nao_vazio_se: "Soluções encontradas"
+    opcional: true
+    prereq: ["2"]
+    validacao:
+      - "Pesquisa ancorada no problema/hipótese do PRD"
+      - "Cada solução com fonte (URL) verificável"
+      - "Matriz distingue table stakes de gaps de diferenciação"
+      - "Curadoria conjunta feita (status por item)"
+      - "Gaps priorizados viram features candidatas"
+
   - num: "7"
     nome: "Priorizar features"
     comando: "/feature-breakdown"
