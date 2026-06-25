@@ -38,7 +38,7 @@ Cria `CLAUDE.md`, `docs/` e `.claude/` no projeto, e ativa o enforcement de ADR 
 - **3 skills auto-ativáveis** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — gate de etapas, status na sessão, enforcement de ADR no commit.
 
-Para a filosofia, veja `METHOD.pt-br.md`. Para o passo a passo, `GETTING-STARTED.pt-br.md`.
+Para a filosofia, veja `METHOD.pt-br.md`. Para o passo a passo, `GETTING-STARTED.pt-br.md`. Pra ver o que há de novo em cada versão, veja [`CHANGELOG.pt-br.md`](CHANGELOG.pt-br.md).
 
 ---
 

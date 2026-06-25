@@ -38,7 +38,7 @@ Creates `CLAUDE.md`, `docs/` and `.claude/` in the project, and activates ADR-vi
 - **3 auto-activating skills** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — stage gate, in-session status, ADR-violation blocking on commit.
 
-> **Note:** the method content (commands, docs) is currently written in Portuguese; identifiers (commands, agents, files) are in English. Full English localization is on the roadmap. For the philosophy, see `METHOD.md`; for the step-by-step, `GETTING-STARTED.md`.
+> **Note:** the method content (commands, docs) is currently written in Portuguese; identifiers (commands, agents, files) are in English. Full English localization is on the roadmap. For the philosophy, see `METHOD.md`; for the step-by-step, `GETTING-STARTED.md`. For what's new in each version, see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
