@@ -102,6 +102,7 @@ A resposta exige entender que **"definir o produto" tem múltiplos níveis de gr
 
 | Nível   | Etapa                            | Pergunta               | Resultado                            |
 | -------- | -------------------------------- | ---------------------- | ------------------------------------ |
+| Névoa    | 1.5. Discovery (opcional)        | QUE problema, de fato  | Problema claro + público + sementes  |
 | Macro    | 2. PRD                           | O QUE em alto nível   | Tese + escopo IN + métrica decisiva |
 | Contexto | 3-5. Personas/Jornadas/Métricas | POR QUÊ e PRA QUEM    | Restrições amarradas               |
 | Macro    | 6. ADRs                          | COMO em alto nível    | Stack + estratégia                  |
@@ -252,10 +253,13 @@ docs/
 
 ## Slash commands canônicos
 
+**Padrão didático — o comando ensina enquanto conduz.** Comandos que usam frameworks nomeados (ex: `/renata:discovery` com 5 porquês / JTBD) dão uma explicação de 1 linha de cada framework no momento do uso. O método atende quem ainda não sabe "fazer produto" (como o README promete) — então o conhecimento chega no fluxo, não como aula pré-requisito.
+
 ### Planejamento (definir o quê)
 
 | Comando                  | Quando usar                                                        | O que gera                                      |
 | ------------------------ | ------------------------------------------------------------------ | ----------------------------------------------- |
+| `/renata:discovery <ideia>`   | (Opcional, Etapa 0) Da intuição vaga ao problema claro — antes do PRD. Ensina os frameworks de discovery enquanto conduz | `docs/discovery/<data>-<slug>.md` |
 | `/renata:prd <ideia>`         | Início de novo produto/feature grande                             | `docs/prd/<slug>.md`                          |
 | `/renata:persona <nome>`      | Antes de qualquer feature focada em usuário                       | `docs/business-context/personas.md` (append)  |
 | `/renata:user-journey <persona>`   | Após persona, antes de feature                                    | `docs/business-context/jornada.md` (append)   |

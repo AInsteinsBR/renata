@@ -102,6 +102,7 @@ The answer requires understanding that **"defining the product" has multiple lev
 
 | Level    | Step                             | Question               | Result                               |
 | -------- | -------------------------------- | ---------------------- | ------------------------------------ |
+| Fog      | 1.5. Discovery (optional)        | WHAT problem, really   | Clear problem + audience + seeds     |
 | Macro    | 2. PRD                           | WHAT at a high level   | Thesis + scope IN + decisive metric  |
 | Context  | 3-5. Personas/Journeys/Metrics   | WHY and FOR WHOM       | Anchored constraints                 |
 | Macro    | 6. ADRs                          | HOW at a high level    | Stack + strategy                     |
@@ -252,10 +253,13 @@ docs/
 
 ## Canonical slash commands
 
+**Teaching pattern — a command teaches as it conducts.** Commands that use named frameworks (e.g. `/renata:discovery` with 5-whys / JTBD) give a one-line explanation of each framework at the moment of use. The method serves people who don't yet know "how to do product" (per the README's promise) — so the knowledge arrives in the flow, not as a prerequisite lesson.
+
 ### Planning (defining the what)
 
 | Command                  | When to use                                                        | What it generates                               |
 | ------------------------ | ------------------------------------------------------------------ | ----------------------------------------------- |
+| `/renata:discovery <idea>`    | (Optional, Step 0) From a vague intuition to a clear problem — before the PRD. Teaches the discovery frameworks as it goes | `docs/discovery/<date>-<slug>.md` |
 | `/renata:prd <idea>`          | Start of a new product/large feature                              | `docs/prd/<slug>.md`                          |
 | `/renata:persona <name>`      | Before any user-focused feature                                   | `docs/business-context/personas.md` (append)  |
 | `/renata:user-journey <persona>`   | After persona, before feature                                     | `docs/business-context/jornada.md` (append)   |
