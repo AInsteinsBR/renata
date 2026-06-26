@@ -80,6 +80,27 @@ flowchart TD
 
 ---
 
+## 🧭 Sua bússola: `/renata:status`
+
+Antes das etapas, conheça o comando que você vai rodar mais que qualquer outro. **`/renata:status` é o navegador** — ele responde "onde estou e qual o próximo passo?" sem nunca fazer a etapa por você.
+
+```text
+/renata:status
+```
+
+O que ele faz, toda vez que você roda:
+
+1. **Lê o `.claude/progress-map.yaml`** (a única fonte da verdade — não uma lista chumbada) e varre o seu `docs/` pra ver quais artefatos existem e têm conteúdo real.
+2. **Imprime o mapa visual** de todas as etapas, cada uma marcada ⬜ pendente · 🔄 em andamento · ✅ verificada por você.
+3. **Aponta o próximo passo** — a etapa pendente mais baixa cujos pré-requisitos estão satisfeitos (respeita `prereq`, não só a ordem numérica, então um projeto técnico que faz ADRs antes das personas não se perde).
+4. **Roda o gate humano** na etapa em andamento: confere o checklist de qualidade daquela etapa contra os seus arquivos reais, mostra o resultado e — só se **você** confirmar — carimba `> ✅ Verified by you on <data>` no topo do artefato. Ele nunca marca uma etapa como feita por conta própria.
+
+Use sempre que estiver em dúvida sobre o que vem a seguir, depois de editar um doc (`/renata:status <N>` revalida a etapa N), ou quando sentir vontade de pular adiante — é exatamente aí que o gate prova seu valor. Todo `⛔ GATE` que você vai ver neste tutorial é só um lembrete pra rodá-lo.
+
+> É um **navegador read-only**: informa e sugere, nunca roda `/renata:prd`, `/renata:persona`, etc. por você. O fazer continua sendo seu.
+
+---
+
 ## 🔭 As 4 visões do método
 
 O mapa acima é a **visão de fluxo** — como o processo anda no tempo. Mas o mesmo método tem outras 3 leituras úteis. Cada uma responde uma pergunta diferente:
@@ -1647,6 +1668,17 @@ Skills carregam sozinhas pelo contexto — você não precisa invocar:
 | Premissa de negócio não-testada antes de construir ("alguém quer? paga?") | `/renata:assumption-test <premissa>` |
 | Fase entregou feature mensurável — a hipótese se confirmou? | `/renata:hypothesis-check [hipótese]` |
 | Feature entregue não moveu a métrica — remover? | `/renata:hypothesis-check` (decide sunset) |
+
+### `/renata:refactor` — um refactor disciplinado, não uma faxina
+
+Desses, o `/renata:refactor <alvo>` merece uma palavra, porque é o mais sujeito a mau uso. No RENATA um refactor **não** é "arrumar o código que eu não gostei". É uma mudança de escopo controlado, que preserva comportamento, com objetivo concreto — e o comando força essa disciplina:
+
+- Ele **recusa** um refactor sem dor concreta ("deixar mais limpo" não é motivo) — pede uma capacidade nova mensurável no lugar.
+- Ele **exige teste antes**: sem cobertura no código-alvo → ele bloqueia, porque refactor sem teste é regressão garantida.
+- Ele **separa** refactor de feature (PRs diferentes) e quebra um esforço L+ em pedaços menores.
+- Ele gera `docs/refactors/<data>-<slug>.md` com os invariantes preservados, um plano passo a passo (um commit por passo), riscos e rollback — ancorado no ADR que implementa (ou te manda abrir um via `/renata:adr` antes).
+
+Use quando um ADR está sendo violado, um arquivo/função cresceu demais, a duplicação bateu a regra de 3, ou uma auditoria de perf apontou um hot path. Não num release crítico, nem por capricho.
 
 ## 12.7. Mudanças de escopo durante execução
 
