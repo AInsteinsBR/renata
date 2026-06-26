@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="assets/logoRenata.svg" alt="RENATA" width="560">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/AInsteinsBR/renata/main/assets/logoRenata-dark.svg">
+    <img src="assets/logoRenata.svg" alt="RENATA" width="560">
+  </picture>
 </p>
 
 <p align="center">
