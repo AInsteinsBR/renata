@@ -1696,6 +1696,18 @@ Every scope change:
 - [ ] Tests green before proceeding
 - [ ] Session updated before pausing
 
+## 12.8. Measure-Learn: the two commands that close the loop
+
+The PRD opens hypotheses; metrics make them falsifiable. But a hypothesis that's never confronted with reality is just an opinion in a doc. Two commands close that loop — they are the method's product-validation backbone (the principle **"Evidence reopens decisions"**), and they're easy to forget precisely because they're not automatic gates. You invoke them on purpose.
+
+**`/renata:assumption-test <assumption>` — *before* building.**
+Takes the PRD and surfaces the **riskiest business assumption** (not the technical one — the Cagan risks: value, viability, usability, feasibility) and designs the **cheapest test that could kill it**. The point is to find out a bet is wrong *before* spending phases on it, not after. Use it when the PRD rests on an untested "someone wants this / will pay for this" — the diamond in the map (Step 8 → "value/viability assumption tested?") is exactly this moment. If the assumption fails, evidence sends you back to the PRD.
+
+**`/renata:hypothesis-check [hypothesis]` — *after* measuring.**
+Takes **each** PRD hypothesis (never aggregated — N hypotheses, N verdicts) and confronts it with the **real measured number**, forcing an explicit verdict (✅ confirmed · ❌ failed · 🤔 inconclusive) and, for each, a concrete action. If you don't have real data yet, it **stops** and tells you to instrument the metric first — it won't invent a verdict. A failed hypothesis can trigger **sunset** (remove the feature that didn't move the metric) or reopen the PRD/an ADR. This is the arrow that loops back on the map after a measurable feature ships.
+
+Together: `assumption-test` keeps you from building the wrong thing; `hypothesis-check` keeps you from *keeping* the wrong thing. Skipping them is how a "falsifiable hypothesis" quietly becomes a permanent assumption nobody ever checked.
+
 ---
 
 # 🔁 Step 13 — Phase retro (1h)

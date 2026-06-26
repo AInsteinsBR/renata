@@ -1696,6 +1696,18 @@ Toda mudança de escopo:
 - [ ] Testes em verde antes de prosseguir
 - [ ] Sessão atualizada antes de pausar
 
+## 12.8. Measure-Learn: os dois comandos que fecham o loop
+
+O PRD abre hipóteses; as métricas as tornam falsificáveis. Mas uma hipótese que nunca é confrontada com a realidade é só uma opinião num doc. Dois comandos fecham esse loop — são a espinha dorsal de validação de produto do método (o princípio **"Evidência reabre decisões"**), e são fáceis de esquecer justamente por não serem gates automáticos. Você os invoca de propósito.
+
+**`/renata:assumption-test <suposição>` — *antes* de construir.**
+Pega o PRD e expõe a **suposição de negócio mais arriscada** (não a técnica — os riscos de Cagan: valor, viabilidade, usabilidade, exequibilidade) e desenha o **teste mais barato capaz de matá-la**. O ponto é descobrir que uma aposta está errada *antes* de gastar fases nela, não depois. Use quando o PRD se apoia num "alguém quer isso / vai pagar por isso" não testado — o losango no mapa (Etapa 8 → "suposição de valor/viabilidade testada?") é exatamente esse momento. Se a suposição falha, a evidência te manda de volta pro PRD.
+
+**`/renata:hypothesis-check [hipótese]` — *depois* de medir.**
+Pega **cada** hipótese do PRD (nunca agregada — N hipóteses, N veredictos) e a confronta com o **número real medido**, forçando um veredicto explícito (✅ confirmada · ❌ falhou · 🤔 inconclusiva) e, pra cada um, uma ação concreta. Se você ainda não tem dado real, ele **para** e te manda instrumentar a métrica antes — não inventa veredicto. Uma hipótese que falha pode disparar **sunset** (remover a feature que não moveu a métrica) ou reabrir o PRD/um ADR. É a seta que volta no mapa depois que uma feature mensurável é entregue.
+
+Juntos: o `assumption-test` te impede de construir a coisa errada; o `hypothesis-check` te impede de *manter* a coisa errada. Pulá-los é como uma "hipótese falsificável" vira silenciosamente uma suposição permanente que ninguém nunca checou.
+
 ---
 
 # 🔁 Etapa 13 — Retro da fase (1h)

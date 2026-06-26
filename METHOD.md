@@ -24,7 +24,7 @@ Every product hypothesis is falsifiable by a **decisive metric** with a baseline
 
 - "Let's improve the UX" is not a hypothesis. "Contained rate goes from 32% to 65%" is.
 - A metric without a baseline = fantasy. Always estimate the baseline (even approximately) before building.
-- 4 layers: **adoption** (does anyone use it?) · **engagement** (do they use it correctly?) · **value** (does it deliver a result?) · **quality** (product-specific).
+- 3 canonical layers: **adoption** (does anyone use it?) · **engagement** (do they use it correctly?) · **value** (does it deliver a result?) — plus an optional 4th, **quality** (product-specific), when the product depends on it.
 
 ### 3. ADR before code
 

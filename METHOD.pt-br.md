@@ -24,7 +24,7 @@ Toda hipótese de produto é falseável por uma **métrica decisiva** com baseli
 
 - "Vamos melhorar a UX" não é hipótese. "Contained rate sobe de 32% para 65%" é.
 - Métrica sem baseline = fantasia. Sempre estimar baseline (mesmo aproximado) antes de construir.
-- 4 camadas: **adoção** (alguém usa?) · **engajamento** (usa direito?) · **valor** (entrega resultado?) · **qualidade** (específica do produto).
+- 3 camadas canônicas: **adoção** (alguém usa?) · **engajamento** (usa direito?) · **valor** (entrega resultado?) — mais uma 4ª opcional, **qualidade** (específica do produto), quando o produto depende dela.
 
 ### 3. ADR antes de código
 
