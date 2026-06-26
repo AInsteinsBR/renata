@@ -340,6 +340,8 @@ docs/
 | Latency/throughput below target     | `@perf-auditor`      | Deep hot paths                              |
 | Touched auth/sensitive data         | `@security-reviewer` | OWASP top 10                                |
 
+> `@pattern-mapper` is not in the table because you don't call it directly — it runs **inside** `/renata:extract-pattern`, mapping the repo's pattern (4 axes) that the command turns into ADRs + a loadable doc.
+
 ---
 
 ## Canonical skills (auto-activatable)

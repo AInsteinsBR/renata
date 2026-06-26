@@ -174,18 +174,22 @@ flowchart LR
         direction TB
         F1["13 Retro +<br/>hypothesis-check"]
     end
-    AG(["🤖 Agents<br/>respecting-adrs · TDD ·<br/>@code-reviewer · @architect ·<br/>@qa-tester · keeping-docs-alive"])
+    AG(["🤖 Agents (you call with @)<br/>@architect · @code-reviewer · @qa-tester"])
+    SK(["✨ Skills (auto-activate)<br/>respecting-adrs · keeping-docs-alive ·<br/>detecting-scope-creep"])
 
     PM --> JUNTO --> TECH --> FECHA
     AG -.act inside.-> TECH
+    SK -.act inside.-> TECH
 
     classDef pm    fill:#e1f5ff,stroke:#3399cc,color:#000
     classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
     classDef agent fill:#ede7f6,stroke:#8e6fc4,color:#000
+    classDef skill fill:#e8f5e9,stroke:#43a047,color:#000
 
     class PM pm
     class TECH tech
     class AG agent
+    class SK skill
 ```
 
 **Translation:** you (non-technical) operate alone from Step 0 to 5. From Step 6 on, you bring in someone technical. From 10 onward, the techie leads and you follow along the checkpoints. The agents are arms of the execution — they don't decide product, they execute discipline.
@@ -1843,19 +1847,25 @@ For when you've done the tutorial once and want a quick reference.
 
 ## Subagents (call them when in doubt)
 
-| When | Agent |
-|---|---|
-| Before coding, an architectural question | `@architect` |
-| Code finished, before a PR | `@code-reviewer` |
-| Before marking a feature as done (Playwright/manual) | `@qa-tester` |
-| Latency/throughput below target | `@perf-auditor` |
-| Touched auth/permission/sensitive data | `@security-reviewer` |
+You invoke these with `@` when you want a focused second opinion. Each one reads the relevant docs/diff and returns a structured verdict — none of them write product code.
 
-## Framework skills (auto-activatable)
+| When | Agent | What it gives back |
+|---|---|---|
+| Before coding, an architectural question | `@architect` | Reviews a proposal/diff against CLAUDE.md + ADRs; decides and justifies (doesn't code) |
+| Code finished, before a PR | `@code-reviewer` | Reads the diff: bugs, violated patterns, missing tests, naming, ADRs not honored in code |
+| Before marking a feature as done | `@qa-tester` | Runs the real app (Playwright/manual) against the PRD + feature acceptance criteria, reports findings |
+| Latency/throughput below the PRD target | `@perf-auditor` | Deep performance audit: hot paths, N+1, memory leaks, missing cache, sync I/O on an async path |
+| Touched auth / permissions / sensitive data | `@security-reviewer` | Practical OWASP top-10, leaked secrets, input validation, cross-tenant authz, basic LGPD |
 
-- `respecting-adrs` — activates on "I'm going to code X", forces reading the ADRs
-- `keeping-docs-alive` — activates on "I finished a task" / "I'm going to pause", updates CLAUDE.md + sessions/
-- `detecting-scope-creep` — activates on "I'll also add Y", forces a conscious decision
+> **`@pattern-mapper` is the exception — you don't call it directly.** It maps a repo's pattern (4 axes, with evidence strength) and runs **inside** `/renata:extract-pattern`, which turns its map into ADRs + a loadable doc. If you want a pattern mapped, run the command, not the agent.
+
+## Framework skills (auto-activatable — you don't invoke them)
+
+These three fire on their own when the conversation hits a trigger. You don't call them; they watch for the moment and step in.
+
+- `respecting-adrs` — fires on "I'm going to implement X / which lib / let's refactor". Forces reading the accepted ADRs and validating the proposal against them **before** coding.
+- `keeping-docs-alive` — fires on "I finished / I'm going to pause / phase done". Updates CLAUDE.md + `.claude/sessions/` + the active plan, so the docs never drift from the code.
+- `detecting-scope-creep` — fires on "while I'm here / it'd also be easy to…". Compares the new idea against the active feature's IN/OUT scope and **offers three options** (do it now / park it as a TODO / open an ADR), forcing a conscious decision instead of silent scope growth.
 
 ## Superpowers skills (automatic)
 
