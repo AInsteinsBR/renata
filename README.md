@@ -3,7 +3,10 @@
 </p>
 
 <p align="center">
-  <sub>by</sub>&nbsp;&nbsp;<img src="assets/ainsteins-logo.png" alt="AInsteins" height="22" valign="middle">
+  <sub>by</sub>&nbsp;&nbsp;<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/AInsteinsBR/renata/main/assets/ainsteins-logo-dark.png">
+    <img src="assets/ainsteins-logo.png" alt="AInsteins" height="22" valign="middle">
+  </picture>
 </p>
 
 > 🇧🇷 [Versão em português](README.pt-br.md)
