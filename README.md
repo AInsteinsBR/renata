@@ -20,6 +20,17 @@
 
 > Created by **Eric Luque** · **AInsteins** — https://www.ainsteins.com.br
 
+## Why RENATA exists
+
+RENATA lives at an intersection nobody else occupies:
+
+1. **Product frameworks** (Cagan, Torres, Lean) teach you to decide what to build — but stop at the code's border. The decision becomes a slide; the code is born orphaned from its why.
+2. **AI coding / vibe-coding tools** generate code fast — but with no method: no persona, no metric, no recorded decision. Speed accruing interest.
+3. **RENATA is the bridge, with enforcement:** the product method reaches *inside* the code — the ADR blocks the commit that violates it, the hook collects the gate, the hypothesis comes back to be falsified. The why survives the implementation.
+
+**Who it's for:** a solo founder or a small PM+dev team building with AI, who wants product rigor without a product org.
+**What it is NOT:** not project management (it doesn't replace your team's Scrum/kanban), not a code generator, not a product course — it's the method between your idea and your AI-written code.
+
 ---
 
 ## Install
@@ -39,7 +50,7 @@ Creates `CLAUDE.md`, `docs/` and `.claude/` in the project, and activates ADR-vi
 
 ## What's in the plugin
 
-- **25 commands** — planning (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validation (`/renata:assumption-test`, `/renata:hypothesis-check`), development (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), navigation (`/renata:status`), and the scaffold (`/renata:init`).
+- **27 commands** — planning (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validation (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), development (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), navigation (`/renata:status`), and the scaffold (`/renata:init`).
 - **6 agents** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 auto-activating skills** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — stage gate, in-session status, ADR-violation blocking on commit.
