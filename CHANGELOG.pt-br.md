@@ -8,6 +8,16 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 _Nada ainda._
 
+## [0.1.8] — 2026-07-03
+
+**O que há de novo:** schema YAML em inglês — identificadores em inglês, antecipando a localização completa.
+
+### Alterado (⚠️ breaking para projetos criados até a 0.1.7)
+- Chaves do schema do `progress-map.yaml` renomeadas para inglês: `etapas`→`steps` · `nome`→`name` · `comando`→`command` · `artefato_glob`→`artifact_glob` · `nao_vazio_se`→`non_empty_if` · `opcional`→`optional` · `validacao`→`validation`. Os valores (rótulos das etapas, critérios de validação) continuam em português — são conteúdo, cobertos pela futura onda de localização.
+- Bloco de integrações do `rules.yaml`: `espelho`→`mirror`; capacidade canônica `tarefas`→`tasks`.
+- Hooks (`method-status-line.sh`, `etapa-gate.sh`) e comandos (`/renata:status`, `/renata:adr`, `/renata:todo`, `/renata:triage`) atualizados para o novo schema; ambos os hooks testados funcionalmente contra ele.
+- **Migração para projetos existentes:** renomeie as chaves acima no seu `.claude/progress-map.yaml` e `.claude/rules.yaml`. Não há camada de compatibilidade.
+
 ## [0.1.7] — 2026-07-03
 
 **O que há de novo:** sair de dentro do prédio — o loop de entrevista e os selos de evidência.

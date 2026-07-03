@@ -8,6 +8,16 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 _Nothing yet._
 
+## [0.1.8] — 2026-07-03
+
+**What's new:** English YAML schema — identifiers in English, ahead of the full localization.
+
+### Changed (⚠️ breaking for projects scaffolded ≤0.1.7)
+- `progress-map.yaml` schema keys renamed to English: `etapas`→`steps` · `nome`→`name` · `comando`→`command` · `artefato_glob`→`artifact_glob` · `nao_vazio_se`→`non_empty_if` · `opcional`→`optional` · `validacao`→`validation`. Values (step labels, validation criteria) stay in Portuguese — they are content, covered by the future localization wave.
+- `rules.yaml` integrations block: `espelho`→`mirror`; canonical capability `tarefas`→`tasks`.
+- Hooks (`method-status-line.sh`, `etapa-gate.sh`) and commands (`/renata:status`, `/renata:adr`, `/renata:todo`, `/renata:triage`) updated to the new schema; both hooks functionally tested against it.
+- **Migration for existing projects:** rename the keys above in your `.claude/progress-map.yaml` and `.claude/rules.yaml`. No compatibility shim is shipped.
+
 ## [0.1.7] — 2026-07-03
 
 **What's new:** get out of the building — the interview loop and evidence seals.
