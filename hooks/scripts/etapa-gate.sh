@@ -28,13 +28,13 @@ INPUT=$(cat)
 # O comando pode chegar de formas diferentes; tentamos o campo de prompt/command.
 INVOKED=$(echo "$INPUT" | jq -r '.tool_input.command // .tool_input.prompt // .prompt // empty' 2>/dev/null)
 
-# 2) Mapear o command invocado → num da etapa (via campo `comando` do mapa).
+# 2) Mapear o command invocado → num da etapa (via campo `command` do mapa).
 #    Casamos por substring do nome do slash command (ex: "/plan-phase").
 TARGET_NUM=""
-NUMS=$(yq -r '.etapas[].num' "$MAP")
+NUMS=$(yq -r '.steps[].num' "$MAP")
 for n in $NUMS; do
-  cmd=$(yq -r ".etapas[] | select(.num == \"$n\") | .comando" "$MAP")
-  # Só consideramos etapas cujo `comando` COMEÇA com um slash command real
+  cmd=$(yq -r ".steps[] | select(.num == \"$n\") | .command" "$MAP")
+  # Só consideramos etapas cujo `command` COMEÇA com um slash command real
   # (ignora "(manual) ..." e "superpowers:..."). Extrai o slash do início.
   slash=$(echo "$cmd" | grep -oE '^/[a-z][a-z0-9-]*' | head -1)
   [[ -z "$slash" ]] && continue
@@ -50,15 +50,15 @@ done
 [[ -z "$TARGET_NUM" ]] && exit 0
 
 # 3) Pegar os prereq da etapa-alvo.
-PREREQS=$(yq -r ".etapas[] | select(.num == \"$TARGET_NUM\") | .prereq[]" "$MAP" 2>/dev/null)
+PREREQS=$(yq -r ".steps[] | select(.num == \"$TARGET_NUM\") | .prereq[]" "$MAP" 2>/dev/null)
 [[ -z "$PREREQS" ]] && exit 0  # sem prereq, libera
 
 # 4) Para cada prereq, checar artefato presente + não-placeholder.
 MISSING=()
 for p in $PREREQS; do
-  glob=$(yq -r ".etapas[] | select(.num == \"$p\") | .artefato_glob" "$MAP")
-  needle=$(yq -r ".etapas[] | select(.num == \"$p\") | .nao_vazio_se" "$MAP")
-  nome=$(yq -r ".etapas[] | select(.num == \"$p\") | .nome" "$MAP")
+  glob=$(yq -r ".steps[] | select(.num == \"$p\") | .artifact_glob" "$MAP")
+  needle=$(yq -r ".steps[] | select(.num == \"$p\") | .non_empty_if" "$MAP")
+  nome=$(yq -r ".steps[] | select(.num == \"$p\") | .name" "$MAP")
 
   # existe algum arquivo que casa o glob?
   # Detecta existência de forma robusta p/ glob COM wildcard e caminho literal.
@@ -82,7 +82,7 @@ done
 
 # 5) Veredito
 if [[ ${#MISSING[@]} -gt 0 ]]; then
-  alvo_nome=$(yq -r ".etapas[] | select(.num == \"$TARGET_NUM\") | .nome" "$MAP")
+  alvo_nome=$(yq -r ".steps[] | select(.num == \"$TARGET_NUM\") | .name" "$MAP")
   {
     echo "⛔ Gate de etapa: você está tentando a Etapa $TARGET_NUM ($alvo_nome),"
     echo "   mas pré-requisitos canônicos não estão satisfeitos:"

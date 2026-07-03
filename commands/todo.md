@@ -13,15 +13,15 @@ The flow has two sides that reconcile:
 
 ## Step 0 — Resolve integration (before saving)
 
-The capability for this operation is **`tarefas`**. Before any write:
+The capability for this operation is **`tasks`**. Before any write:
 
-1. Read `integrations:` in `.claude/rules.yaml`. Does the `tarefas` capability have an entry?
+1. Read `integrations:` in `.claude/rules.yaml`. Does the `tasks` capability have an entry?
 2. **No entry** → operate 100% locally in `docs/backlog/todos.md` (default behavior). Skip to the normal flow.
-3. **Has an entry, but the tools of the declared MCP are NOT available in the session** → warn ("MCP `<name>` declared for `tarefas` but unavailable — saving locally only") and operate locally.
+3. **Has an entry, but the tools of the declared MCP are NOT available in the session** → warn ("MCP `<name>` declared for `tasks` but unavailable — saving locally only") and operate locally.
 4. **Has an entry and the tools are available:**
    a. Save FIRST locally (`docs/backlog/todos.md` + inline marker). Local is the truth.
-   b. If `espelho: true` → **ASK**: "Mirror this TODO in `<MCP>` (create/update a card)?". If confirmed → push via MCP, note the external id (e.g. `JIRA-123`) next to the local item. If declined → it stays local only; mirror later.
-   c. If `espelho: false` → do not push a write.
+   b. If `mirror: true` → **ASK**: "Mirror this TODO in `<MCP>` (create/update a card)?". If confirmed → push via MCP, note the external id (e.g. `JIRA-123`) next to the local item. If declined → it stays local only; mirror later.
+   c. If `mirror: false` → do not push a write.
 
 > Degradation pattern identical to `etapa-gate.sh` (tool absent → warn, never block). Without an MCP, `/renata:todo` works entirely locally.
 

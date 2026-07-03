@@ -20,12 +20,12 @@ Respond to the user and generate content in the user's language (the language th
 
 ## Step 0 — Resolve integration (before saving the triage)
 
-The capability is **`tarefas`**. Before saving the triage result:
+The capability is **`tasks`**. Before saving the triage result:
 
-1. Read `integrations:` in `.claude/rules.yaml`. Does the `tarefas` capability have an entry?
+1. Read `integrations:` in `.claude/rules.yaml`. Does the `tasks` capability have an entry?
 2. **No entry** → save the triage locally only (default behavior).
 3. **Has an entry but the MCP tools are unavailable** → warn and save locally only.
-4. **Has an entry and the tools are available:** save locally first; if `espelho: true`, **ask** before mirroring the prioritized items to `<MCP>` (e.g. create Jira cards for the MUSTs). If confirmed → push + note the ids. If declined → local only.
+4. **Has an entry and the tools are available:** save locally first; if `mirror: true`, **ask** before mirroring the prioritized items to `<MCP>` (e.g. create Jira cards for the MUSTs). If confirmed → push + note the ids. If declined → local only.
 
 > Degradation identical to `etapa-gate.sh`: without an MCP, it operates 100% locally.
 

@@ -978,12 +978,12 @@ Quer que o projeto use MCP — Jira pra tarefas, GitHub pra PRs, Postgres pra co
 
 ```yaml
 integrations:
-  tarefas: { mcp: jira, adr: ADR-009, espelho: true }
+  tasks: { mcp: jira, adr: ADR-009, mirror: true }
 ```
 
 **Como funciona depois:** ao rodar `/renata:todo` ou `/renata:triage`, o command grava **primeiro no local** (`docs/backlog/todos.md`) e então **pergunta** se quer espelhar no Jira. Você confirma → vira card. Sem confirmar → fica só local. Se o MCP não estiver disponível na sessão, opera 100% local e avisa. Nada quebra por falta de MCP.
 
-**`espelho: true` vs `false`:** `true` = escreve no local e oferece push (tarefas). `false` = MCP só pra leitura/ação pontual, sem espelhar escrita (típico de `db`).
+**`mirror: true` vs `false`:** `true` = escreve no local e oferece push (tarefas). `false` = MCP só pra leitura/ação pontual, sem espelhar escrita (típico de `db`).
 
 ## 6.7. (Opcional) Destilar o padrão de um boilerplate/repo
 
