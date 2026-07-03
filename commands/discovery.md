@@ -30,11 +30,16 @@ Say one line first: *"Before we commit, let's frame the problem 2-3 different wa
 ### 6. Converge
 Record the chosen bet: clear problem + audience + direction, ready for the PRD.
 
-### 7. Seed (clues, NOT artifacts)
+### 7. Stamp the evidence (teach it)
+
+Say one line first: *"Everything we just produced is hypothesis, not fact — let's stamp each piece with its real evidence level, so nobody mistakes conviction for confirmation."* Stamp the real pain, the JTBD and the why-now with the evidence seal (see `METHOD.md` › "The evidence seals"): 🔴 belief (founder only) · 🟡 anecdote (1-2 informal reports) · 🟢 interviewed (pattern heard in N≥3 interviews) · ✅ measured. The seal does NOT block converging — it forces honesty about what the bet stands on.
+
+### 8. Seed (clues, NOT artifacts)
 Record clues for the next steps — but do NOT formalize them (that's the dedicated commands' job):
 - **Persona candidate** (clue for `/renata:persona`)
 - **How they solve it today** (clue for `/renata:user-journey`)
 - **Imagined success signal** (clue for `/renata:metrics`)
+- **Riskiest assumption** (clue for `/renata:assumption-test` / `/renata:interview-kit` — the cheapest way to move a 🔴 seal is to get out of the building)
 
 ## Structure to generate
 
@@ -47,12 +52,18 @@ Record clues for the next steps — but do NOT formalize them (that's the dedica
 {{what you brought, raw}}
 
 ## The real pain (5 whys)
+> Evidence: {{🔴 belief | 🟡 anecdote | 🟢 interviewed | ✅ measured}}
+
 {{the chain of whys down to the root cause}}
 
 ## The job-to-be-done
+> Evidence: {{🔴 belief | 🟡 anecdote | 🟢 interviewed | ✅ measured}}
+
 {{what job the person "hires" the product to do}}
 
 ## Why now
+> Evidence: {{🔴 belief | 🟡 anecdote | 🟢 interviewed | ✅ measured}}
+
 {{the signal that justifies investing today}}
 
 ## Framings explored (anti-funneling)
@@ -61,12 +72,15 @@ Record clues for the next steps — but do NOT formalize them (that's the dedica
 {{2-3 different ways of seeing the problem}}
 
 ## The chosen bet
+> Evidence level of this bet: {{worst seal among pain/JTBD/why-now}} {{if 🔴/🟡: "— consider /renata:interview-kit before the PRD"}}
+
 {{the clear problem + audience + direction — ready for the PRD}}
 
 ## 🌱 Seeds for the next steps
 - **Persona candidate:** {{who suffers — clue for /renata:persona}}
 - **How they solve it today:** {{clue for /renata:user-journey}}
 - **Imagined success signal:** {{clue for /renata:metrics}}
+- **Riskiest assumption:** {{what must be true for the bet to work — clue for /renata:assumption-test or /renata:interview-kit}}
 ```
 
 ## Quality rules (what you refuse)
@@ -75,6 +89,7 @@ Record clues for the next steps — but do NOT formalize them (that's the dedica
 - ❌ Stopping at the symptom (not digging the real cause) → require the 5 whys for real.
 - ❌ A vague "why now" ("it's a good idea") → require a concrete signal.
 - ❌ Creating a formal persona/journey/metric here → refuse; these are seeds, the dedicated commands formalize them.
+- ❌ A chosen bet without a declared evidence seal → require the stamp; 🔴 is a valid answer, hiding it is not.
 
 ## After generating
 
