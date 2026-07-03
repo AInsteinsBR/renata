@@ -978,12 +978,12 @@ Want the project to use MCP — Jira for tasks, GitHub for PRs, Postgres to quer
 
 ```yaml
 integrations:
-  tarefas: { mcp: jira, adr: ADR-009, espelho: true }
+  tasks: { mcp: jira, adr: ADR-009, mirror: true }
 ```
 
 **How it works afterward:** when you run `/renata:todo` or `/renata:triage`, the command writes **to the local copy first** (`docs/backlog/todos.md`) and then **asks** if you want to mirror it to Jira. You confirm → it becomes a card. Without confirming → it stays local only. If the MCP isn't available in the session, it operates 100% locally and warns you. Nothing breaks for lack of an MCP.
 
-**`espelho: true` vs `false`:** `true` = writes locally and offers a push (tasks). `false` = MCP only for reads/one-off actions, without mirroring writes (typical of `db`).
+**`mirror: true` vs `false`:** `true` = writes locally and offers a push (tasks). `false` = MCP only for reads/one-off actions, without mirroring writes (typical of `db`).
 
 ## 6.7. (Optional) Distill the pattern of a boilerplate/repo
 

@@ -434,11 +434,11 @@ The method supports **MCP** (Model Context Protocol) servers — git, Jira, data
 
 - **Local is always the source of truth.** A versioned doc (Principle 7) is the primary truth; the MCP is a **mirror**, never a blind source.
 - **Write local first, mirror after confirming.** Nothing goes to Jira/Git before it exists and is correct locally, and the push only happens with explicit confirmation. This protects the external system from provisional data.
-- **MCP as a one-off action/read** (open a PR, read an issue, query a database) → low friction, `espelho: false`, doesn't compete with anything.
+- **MCP as a one-off action/read** (open a PR, read an issue, query a database) → low friction, `mirror: false`, doesn't compete with anything.
 - **MCP as a mirrored source** (Jira receives the tasks) → **a structural decision: requires `/renata:adr`**, because it changes where the truth mirrors to and can retire a native flow. `/renata:adr` writes the `integrations:` block in `rules.yaml` (the ADR's twin).
 - **Graceful fallback mandatory.** Every use of MCP degrades to local if the server is absent/unavailable — identical to `etapa-gate.sh` with `yq`. **With no MCP at all, the framework works in full.**
 
-Configuration in two places: `.mcp.json` (project root) declares the servers; the `integrations:` block in `.claude/rules.yaml` maps capability → MCP. Canonical capabilities: `tarefas` · `pr` · `db` (extensible).
+Configuration in two places: `.mcp.json` (project root) declares the servers; the `integrations:` block in `.claude/rules.yaml` maps capability → MCP. Canonical capabilities: `tasks` · `pr` · `db` (extensible).
 
 ---
 

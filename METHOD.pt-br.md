@@ -434,11 +434,11 @@ O método suporta servidores **MCP** (Model Context Protocol) — git, Jira, ban
 
 - **Local é sempre a fonte de verdade.** Doc versionado (Princípio 7) é a verdade primária; o MCP é um **espelho**, nunca fonte cega.
 - **Escreve local primeiro, espelha após confirmar.** Nada vai pro Jira/Git antes de existir e estar certo no local, e o push só acontece com confirmação explícita. Protege o sistema externo de dado provisório.
-- **MCP como ação/leitura pontual** (abrir PR, ler issue, consultar banco) → baixo atrito, `espelho: false`, não compete com nada.
+- **MCP como ação/leitura pontual** (abrir PR, ler issue, consultar banco) → baixo atrito, `mirror: false`, não compete com nada.
 - **MCP como fonte espelhada** (Jira recebe as tarefas) → **decisão estrutural: exige `/renata:adr`**, porque muda onde a verdade espelha e pode aposentar fluxo nativo. O `/renata:adr` escreve o bloco `integrations:` no `rules.yaml` (gêmeo da ADR).
 - **Fallback gracioso obrigatório.** Todo uso de MCP degrada pra local se o servidor estiver ausente/indisponível — idêntico ao `etapa-gate.sh` com `yq`. **Sem nenhum MCP, o framework funciona inteiro.**
 
-Configuração em dois lugares: `.mcp.json` (raiz do projeto) declara os servidores; o bloco `integrations:` em `.claude/rules.yaml` mapeia capacidade → MCP. Capacidades canônicas: `tarefas` · `pr` · `db` (extensível).
+Configuração em dois lugares: `.mcp.json` (raiz do projeto) declara os servidores; o bloco `integrations:` em `.claude/rules.yaml` mapeia capacidade → MCP. Capacidades canônicas: `tasks` · `pr` · `db` (extensível).
 
 ---
 
