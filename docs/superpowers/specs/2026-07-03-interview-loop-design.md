@@ -39,7 +39,7 @@ Regra de uso: o selo **não bloqueia** o avanço — força honestidade ("você 
 Roteiro de campo de uma página, gerado a partir da assunção mais arriscada.
 
 - **Lê:** `docs/assumptions/*.md` (preferido) ou `docs/discovery/*.md` (fallback). `$ARGUMENTS` pode dar a assunção direto.
-- **Gera:** `docs/interviews/kits/<YYYY-MM-DD>-<slug>.md`
+- **Gera:** `docs/interviews/kits/<YYYY-MM-DD>-<slug>.md` — **cria as pastas se não existirem** (mesmo padrão do `assumption-test`; cobre projetos criados antes desta versão, cujo scaffold não tem `docs/interviews/`)
 - **Formato:** UMA página, mobile-first — listas curtas, sem tabelas largas. É para ler no celular a caminho da entrevista.
 - **Estrutura do kit:**
   1. Assunção-alvo + sinal de falsificação (topo, 2 linhas)
@@ -65,7 +65,7 @@ Processa a transcrição: insights por assunção + selos de evidência + coachi
   1. **Extração por assunção** — cada sinal é uma **citação verbatim** classificada: 🥇 espontânea (a pessoa trouxe sem ser provocada) · 🥈 provocada (respondeu à pergunta — evidência fraca) · 🚫 contaminada (veio depois de um pitch/pergunta indutora — descartada como evidência).
   2. **Atualização de evidência** — grava o debrief individual, atualiza o board agregado (`docs/interviews/README.md`) e promove/rebaixa os selos nos docs de discovery/assumption de origem (🔴→🟡→🟢).
   3. **Coaching obrigatório** — critica as perguntas do entrevistador contra as regras Mom Test: "na pergunta X você pitcheou a solução; a resposta seguinte está contaminada". Roda mesmo em entrevista limpa (reforço positivo do que funcionou).
-- **Gera:** `docs/interviews/<YYYY-MM-DD>-<slug>.md` (1 por entrevista) + atualiza `docs/interviews/README.md` (board) + edita selos nos docs de origem.
+- **Gera:** `docs/interviews/<YYYY-MM-DD>-<slug>.md` (1 por entrevista) + atualiza `docs/interviews/README.md` (board; cria pasta e board se não existirem) + edita selos nos docs de origem.
 - **Board agregado (`docs/interviews/README.md`):** por assunção — nº de entrevistas, saldo de sinais ouro vs contra, selo atual, link dos debriefs.
 - **Quality rules (o que recusa):**
   - ❌ Veredicto sobre a assunção com 1 entrevista → veredicto é do `assumption-test`, e com N≥3
@@ -81,7 +81,7 @@ Processa a transcrição: insights por assunção + selos de evidência + coachi
 
 ## Fluxo ponta a ponta
 
-```
+```text
 /discovery (marca 🔴) → /interview-kit (roteiro no celular) → [campo: gravar]
 → /interview-debrief ×N (board evolui 🔴→🟢, coaching melhora o entrevistador)
 → /assumption-test (veredicto citando o board) → /prd (hipótese com lastro)
