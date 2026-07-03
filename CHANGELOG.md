@@ -8,6 +8,22 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 _Nothing yet._
 
+## [0.1.7] — 2026-07-03
+
+**What's new:** get out of the building — the interview loop and evidence seals.
+
+### Added
+- `/renata:interview-kit` — one-page Mom Test field guide for problem interviews (past-and-behavior questions, NEVER-ask list, signals to listen for), made to be read on your phone. 1 kit = 1 assumption.
+- `/renata:interview-debrief` — processes a ready transcript (transcript only — audio integration is a future evolution): verbatim quotes per assumption graded 🥇 spontaneous / 🥈 prompted / 🚫 contaminated, aggregate evidence board (`docs/interviews/README.md`), seal promotion/demotion in source docs, and mandatory interviewer coaching.
+- **Evidence seals** (🔴 belief · 🟡 anecdote · 🟢 interviewed · ✅ measured) — documented once in METHOD.md; stamped by `/renata:discovery`, moved by `/renata:interview-debrief`, cashed in by `/renata:assumption-test` / `/renata:hypothesis-check`. Seals never block — they force honesty.
+- Positioning section in README ("Why RENATA exists") and intellectual lineage in METHOD (Cagan, Torres, Blank, Fitzpatrick, Nygard, Ries).
+- `docs/interviews/` (kits + debriefs + board) in the project scaffold.
+
+### Changed
+- `/renata:discovery` — stamps evidence seals and seeds the riskiest assumption (4th seed).
+- `/renata:assumption-test` — accepts pre-PRD discovery input; the problem-interview catalog row plugs into the interview loop; results cite the evidence board.
+- `/renata:status` — suggests `/renata:interview-kit` when the chosen bet carries a weak seal.
+
 ## [0.1.6] — 2026-06-25
 
 **What's new:** competitive research that finds your differentiation gaps.

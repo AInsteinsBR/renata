@@ -8,6 +8,22 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 _Nada ainda._
 
+## [0.1.7] — 2026-07-03
+
+**O que há de novo:** sair de dentro do prédio — o loop de entrevista e os selos de evidência.
+
+### Adicionado
+- `/renata:interview-kit` — guia de campo de uma página no estilo Mom Test pra entrevistas de problema (perguntas sobre passado e comportamento, lista do NUNCA perguntar, sinais pra prestar atenção), feito pra ler no celular. 1 kit = 1 premissa.
+- `/renata:interview-debrief` — processa uma transcrição já pronta (só transcrição — integração com áudio é evolução futura): citações literais por premissa, graduadas 🥇 espontânea / 🥈 induzida / 🚫 contaminada, board de evidência agregado (`docs/interviews/README.md`), promoção/rebaixamento de selo nos docs de origem, e coaching obrigatório do entrevistador.
+- **Selos de evidência** (🔴 crença · 🟡 anedota · 🟢 entrevistado · ✅ medido) — documentados uma vez no METHOD.md; carimbados pelo `/renata:discovery`, movidos pelo `/renata:interview-debrief`, sacados pelo `/renata:assumption-test` / `/renata:hypothesis-check`. Selos nunca bloqueiam — eles forçam honestidade.
+- Seção de posicionamento no README ("Por que o RENATA existe") e linhagem intelectual no METHOD (Cagan, Torres, Blank, Fitzpatrick, Nygard, Ries).
+- `docs/interviews/` (kits + debriefs + board) no scaffold do projeto.
+
+### Mudado
+- `/renata:discovery` — carimba selos de evidência e semeia a premissa mais arriscada (4ª semente).
+- `/renata:assumption-test` — aceita input do discovery pré-PRD; a linha do catálogo de entrevista de problema se conecta ao loop de entrevista; resultados citam o board de evidência.
+- `/renata:status` — sugere `/renata:interview-kit` quando a aposta escolhida carrega um selo fraco.
+
 ## [0.1.6] — 2026-06-25
 
 **O que há de novo:** pesquisa competitiva que acha seus gaps de diferenciação.
