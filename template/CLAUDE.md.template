@@ -92,6 +92,8 @@ Ver `docs/decisions/README.md` para índice atualizado. <!-- ADRs populadas na E
 ### Slash commands de validação de produto (Measure-Learn — fecha o loop)
 
 - `/assumption-test <premissa>` — testa risco de valor/viabilidade **antes** de construir (4 riscos de Cagan)
+- `/interview-kit [premissa]` — roteiro Mom Test de 1 página pra entrevista de problema (lido no celular a caminho)
+- `/interview-debrief <transcrição>` — processa a transcrição: evidência verbatim por premissa + board + coaching do entrevistador
 - `/hypothesis-check [hipótese]` — confronta a hipótese do PRD com o dado real **depois** de construir (✅/❌/🤔 + ação + sunset)
 
 ### Slash commands de desenvolvimento (operar dentro de uma fase)

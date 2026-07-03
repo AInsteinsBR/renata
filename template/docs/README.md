@@ -29,6 +29,7 @@ flowchart LR
 | `architecture/` | Diagramas detalhados (C4, sequence, ER). | Durante implementação. |
 | `features/` | F1..Fn + plano em fases. | Ao iniciar feature ou priorizar. |
 | `roadmap/` | Fase 0..N — escopo, dependências, riscos. | Planejamento macro. |
+| `interviews/` | Kits de entrevista (roteiros Mom Test) + debriefs + board de evidência. | Antes de sair pra campo e ao voltar de uma entrevista. |
 | `decisions/` | ADRs numeradas (Nygard). | Decisões estruturais ou "por que diabos foi assim". |
 
 ---
