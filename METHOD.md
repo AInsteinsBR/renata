@@ -257,6 +257,7 @@ docs/
 ├── architecture/           ← detailed diagrams (C4, sequence, ER)
 ├── features/               ← F1..Fn with phased plan
 ├── roadmap/                ← macro phases (Phase 0..N)
+├── interviews/             ← interview kits + debriefs + evidence board
 └── decisions/              ← numbered ADRs (Nygard)
 ```
 

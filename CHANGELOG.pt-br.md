@@ -13,8 +13,8 @@ _Nada ainda._
 **O que há de novo:** sair de dentro do prédio — o loop de entrevista e os selos de evidência.
 
 ### Adicionado
-- `/renata:interview-kit` — guia de campo de uma página no estilo Mom Test pra entrevistas de problema (perguntas sobre passado e comportamento, lista do NUNCA perguntar, sinais pra prestar atenção), feito pra ler no celular. 1 kit = 1 premissa.
-- `/renata:interview-debrief` — processa uma transcrição já pronta (só transcrição — integração com áudio é evolução futura): citações literais por premissa, graduadas 🥇 espontânea / 🥈 induzida / 🚫 contaminada, board de evidência agregado (`docs/interviews/README.md`), promoção/rebaixamento de selo nos docs de origem, e coaching obrigatório do entrevistador.
+- `/renata:interview-kit` — roteiro de campo Mom Test de 1 página pra entrevistas de problema (perguntas sobre passado e comportamento, lista do NUNCA perguntar, sinais pra prestar atenção), feito pra ler no celular. 1 kit = 1 premissa.
+- `/renata:interview-debrief` — processa uma transcrição já pronta (só transcrição — integração com áudio é evolução futura): citações literais por premissa, graduadas 🥇 espontânea / 🥈 provocada / 🚫 contaminada, board de evidência agregado (`docs/interviews/README.md`), promoção/rebaixamento de selo nos docs de origem, e coaching obrigatório do entrevistador.
 - **Selos de evidência** (🔴 crença · 🟡 anedota · 🟢 entrevistado · ✅ medido) — documentados uma vez no METHOD.md; carimbados pelo `/renata:discovery`, movidos pelo `/renata:interview-debrief`, sacados pelo `/renata:assumption-test` / `/renata:hypothesis-check`. Selos nunca bloqueiam — eles forçam honestidade.
 - Seção de posicionamento no README ("Por que o RENATA existe") e linhagem intelectual no METHOD (Cagan, Torres, Blank, Fitzpatrick, Nygard, Ries).
 - `docs/interviews/` (kits + debriefs + board) no scaffold do projeto.
