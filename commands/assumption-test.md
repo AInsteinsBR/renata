@@ -23,6 +23,7 @@ This command attacks the **first two** — the ones the framework did not cover 
 
 ## When to use
 
+- **Pre-PRD:** the discovery's chosen bet carries a 🔴/🟡 evidence seal and you want to test it before writing the PRD (get out of the building first).
 - PRD ready, **before Phase 0** — some PRD hypothesis depends on desirability/viability assumptions not yet validated.
 - You are about to commit several phases to a bet that no one has confirmed the user wants.
 - The cost of building the anchor feature is high (L/XL) and the value assumption is just intuition.
@@ -34,7 +35,7 @@ This command attacks the **first two** — the ones the framework did not cover 
 
 ## Before generating
 
-1. Read `@docs/prd/` — the hypotheses (each one and its falsification signal), IN scope, anchor persona.
+1. Read `@docs/prd/` — the hypotheses (each one and its falsification signal), IN scope, anchor persona. **If there is no PRD yet** (pre-PRD validation), read `@docs/discovery/*.md` instead — the chosen bet, its evidence seals and the "riskiest assumption" seed.
 2. Read `@docs/business-context/personas.md` and `jornada.md` — the pain that justifies the value.
 3. Read `@docs/features/README.md` if it exists — which feature carries the value bet.
 4. Ask ONE at a time:
@@ -54,7 +55,7 @@ Test the assumption with the **highest product (risk × cost-of-being-wrong)**, 
 
 | Test | Which risk it kills | Cost | Signal |
 |---|---|---|---|
-| Problem interview (5-8 people) | Value (does the pain exist?) | XS | Do they describe the pain without you suggesting it? |
+| Problem interview (5-8 people) — script via `/renata:interview-kit`, each transcript via `/renata:interview-debrief` | Value (does the pain exist?) | XS | Do they describe the pain without you suggesting it? (🥇 spontaneous signals on the board) |
 | Landing / fake door + traffic | Value (do they want the solution?) | S | Click/signup rate above floor |
 | Wizard of Oz (manual delivery behind the scenes) | Value + usability | M | Do they use it again? Would they pay? |
 | Pre-sale / letter of intent | Viability (do they pay?) | S-M | Real commitment (money/signature) |
@@ -99,7 +100,7 @@ Write to `docs/assumptions/<YYYY-MM-DD>-<slug>.md` (create the folder if it does
 
 ## Result (filled in after running)
 
-- **Evidence:** {{what actually happened}}
+- **Evidence:** {{what actually happened — for interviews, cite the evidence board `docs/interviews/README.md` (N interviews, 🥇 balance)}}
 - **Verdict:** {{✅ assumption holds | ❌ assumption fell | 🤔 inconclusive}}
 - **Decision:** {{proceed to build | reopen PRD/pivot | redesign feature | one more test}}
 ```

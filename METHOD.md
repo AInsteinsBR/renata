@@ -90,6 +90,31 @@ Documentation is not descriptive — it is **opinionated**. "The system uses Pos
 
 > **In one sentence:** the 7 principles prepare the decision; this one keeps it honest after the world has answered.
 
+### The evidence seals
+
+Every product claim in the method (a pain, a JTBD, a why-now, an assumption) carries a seal stating what it stands on:
+
+| Seal | Level | Meaning |
+|---|---|---|
+| 🔴 | belief | Founder conviction — zero external evidence |
+| 🟡 | anecdote | 1-2 informal reports, unstructured |
+| 🟢 | interviewed | Pattern heard spontaneously in N≥3 interviews |
+| ✅ | measured | Real measured number (instrumentation/data) |
+
+The seal **never blocks** progress — it forces honesty ("you are betting on 🔴 — declare it and move, or test it for XS now"). Seals are stamped in `/renata:discovery`, promoted by `/renata:interview-debrief` (verbatim evidence only), and cashed in by `/renata:assumption-test` (verdict) and `/renata:hypothesis-check` (✅ measured). It is the **E of RENATA — Evidence — made visible.**
+
+### On whose shoulders (lineage)
+
+RENATA does not invent its parts — it assembles proven ones and adds enforcement:
+
+- **Marty Cagan** (SVPG, *Inspired*) — the 4 product risks (value, usability, viability, feasibility) that `/renata:assumption-test` and `/renata:spike` split between them.
+- **Teresa Torres** (*Continuous Discovery Habits*) — discovery as a weekly habit, not a phase; the school behind `/renata:discovery` and `/renata:persona`.
+- **Steve Blank** (Customer Development) & **Rob Fitzpatrick** (*The Mom Test*) — "get out of the building" and how to interview without poisoning the answers; operationalized by `/renata:interview-kit` + `/renata:interview-debrief`.
+- **Michael Nygard** — the ADR format that `/renata:adr` enforces down to the commit hook.
+- **Eric Ries / Lean Startup** — build-measure-learn; the loop `/renata:hypothesis-check` closes.
+
+**RENATA's own contribution:** the binding with automated enforcement — persona → metric → ADR → code in a single AI-operated flow, where the *why* survives into the implementation because hooks and gates refuse to let it die.
+
 ---
 
 ---
@@ -232,6 +257,7 @@ docs/
 ├── architecture/           ← detailed diagrams (C4, sequence, ER)
 ├── features/               ← F1..Fn with phased plan
 ├── roadmap/                ← macro phases (Phase 0..N)
+├── interviews/             ← interview kits + debriefs + evidence board
 └── decisions/              ← numbered ADRs (Nygard)
 ```
 
@@ -304,6 +330,8 @@ docs/
 | Command                           | When to use                                                              | What it generates                                                        |
 | --------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | `/renata:assumption-test <assumption>`   | **Before** building: untested value/viability risk                | `docs/assumptions/<date>-<slug>.md`                                    |
+| `/renata:interview-kit [assumption]`      | **Before an interview:** one-page Mom Test field guide (read on the phone) | `docs/interviews/kits/<date>-<slug>.md`                              |
+| `/renata:interview-debrief <transcript>`  | **After an interview:** verbatim signals per assumption + evidence board + interviewer coaching | `docs/interviews/<date>-<slug>.md` + `docs/interviews/README.md` (board) + seal updates |
 | `/renata:hypothesis-check [hypothesis]` | **After** building: confront the PRD's hypothesis with real data  | `docs/hypothesis-checks/<date>-<slug>.md` + a line in the PRD's History |
 
 > These two materialize the **"Evidence reopens the decision"** principle (see "The loop closes"). `/renata:assumption-test` kills the wrong bet before the cost; `/renata:hypothesis-check` issues the verdict (✅/❌/🤔) and triggers action — including the **sunset** of a feature that didn't move the metric.

@@ -39,7 +39,8 @@ etapas:
       - "Da intuição ao problema claro (5 porquês até a causa real)"
       - "Job-to-be-done identificado"
       - "2-3 enquadramentos explorados antes de convergir"
-      - "Sementes pra persona/jornada/métrica registradas"
+      - "Sementes pra persona/jornada/métrica + premissa mais arriscada registradas"
+      - "Aposta escolhida tem selo de evidência declarado (🔴/🟡/🟢/✅)"
 
   - num: "2"
     nome: "Definir o produto (PRD)"

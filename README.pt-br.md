@@ -20,6 +20,17 @@
 
 > Criado por **Eric Luque** · **AInsteins** — https://www.ainsteins.com.br
 
+## Por que o RENATA existe
+
+O RENATA vive numa interseção que ninguém mais ocupa:
+
+1. **Frameworks de produto** (Cagan, Torres, Lean) ensinam a decidir o que construir — mas param na fronteira do código. A decisão vira slide; o código nasce órfão do porquê.
+2. **Ferramentas de AI coding / vibe-coding** geram código rápido — mas sem método: sem persona, sem métrica, sem decisão registrada. Velocidade acumulando juros.
+3. **O RENATA é a ponte, com enforcement:** o método de produto vai *até dentro* do código — a ADR bloqueia o commit que a viola, o hook cobra o gate, a hipótese volta pra ser falsificada. O porquê sobrevive à implementação.
+
+**Pra quem é:** founder solo ou time pequeno PM+dev construindo com IA, que quer rigor de produto sem ter uma organização de produto.
+**O que NÃO é:** não é gestão de projeto (não substitui o Scrum/kanban do time), não é gerador de código, não é curso de produto — é o método entre a sua ideia e o código que a IA escreve.
+
 ---
 
 ## Instalação
@@ -39,7 +50,7 @@ Cria `CLAUDE.md`, `docs/` e `.claude/` no projeto, e ativa o enforcement de ADR 
 
 ## O que vem no plugin
 
-- **25 comandos** — planejamento (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), navegação (`/renata:status`), e o scaffold (`/renata:init`).
+- **27 comandos** — planejamento (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), navegação (`/renata:status`), e o scaffold (`/renata:init`).
 - **6 agentes** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 skills auto-ativáveis** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — gate de etapas, status na sessão, enforcement de ADR no commit.

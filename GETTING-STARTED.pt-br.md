@@ -541,6 +541,8 @@ Abra `CLAUDE.md` no seu editor (VSCode, Sublime, etc). Você vai ver vários `{{
 
 Ele te leva pelos **5 porquês** (cavar a dor real), pelo **job-to-be-done** (que progresso a pessoa contrata o produto pra fazer), e pelo **por que agora** — e força enquadrar o problema de **2-3 formas diferentes** antes de comprometer, pra você não cristalizar na primeira ideia. A saída (`docs/discovery/<data>-<slug>.md`) vira o ponto de partida do `/renata:prd`, e semeia pistas pra persona, jornada e métricas.
 
+O discovery também **carimba cada afirmação com um selo de evidência** (🔴 crença · 🟡 anedota · 🟢 entrevistado · ✅ medido). Uma aposta carimbada 🔴 é permitida — mas o movimento honesto é sair do prédio antes: `/renata:interview-kit` gera um roteiro Mom Test de 1 página (leia no celular a caminho), você grava a conversa, e `/renata:interview-debrief` transforma cada transcrição em evidência graduada — movendo o selo de verdade.
+
 **Já chega com o problema claro?** Pule e vá direto pra Etapa 2.
 
 ---
@@ -1707,6 +1709,9 @@ O PRD abre hipóteses; as métricas as tornam falsificáveis. Mas uma hipótese 
 **`/renata:assumption-test <suposição>` — *antes* de construir.**
 Pega o PRD e expõe a **suposição de negócio mais arriscada** (não a técnica — os riscos de Cagan: valor, viabilidade, usabilidade, exequibilidade) e desenha o **teste mais barato capaz de matá-la**. O ponto é descobrir que uma aposta está errada *antes* de gastar fases nela, não depois. Use quando o PRD se apoia num "alguém quer isso / vai pagar por isso" não testado — o losango no mapa (Etapa 8 → "suposição de valor/viabilidade testada?") é exatamente esse momento. Se a suposição falha, a evidência te manda de volta pro PRD.
 
+**`/renata:interview-kit` + `/renata:interview-debrief` — o loop de entrevista dentro do teste mais barato.**
+Quando o teste mais barato é uma entrevista de problema, esses dois a carregam: o **kit** é um roteiro de campo Mom Test de 1 página (perguntas de passado-e-comportamento, lista do que NUNCA perguntar, sinais pra escutar) feito pra ler no celular — porque você não vai estar no computador. Você grava a conversa (seu gravador/Meet já transcreve). De volta, o **debrief** pega a transcrição e extrai citações **verbatim** por premissa — espontânea 🥇 conta, provocada 🥈 conta pouco, contaminada 🚫 (dita depois de você pitchear) não conta —, atualiza o board de evidência e **critica as suas perguntas** pra próxima entrevista ser melhor. Depois de N≥3 com padrão claro, o `assumption-test` dá o veredicto.
+
 **`/renata:hypothesis-check [hipótese]` — *depois* de medir.**
 Pega **cada** hipótese do PRD (nunca agregada — N hipóteses, N veredictos) e a confronta com o **número real medido**, forçando um veredicto explícito (✅ confirmada · ❌ falhou · 🤔 inconclusiva) e, pra cada um, uma ação concreta. Se você ainda não tem dado real, ele **para** e te manda instrumentar a métrica antes — não inventa veredicto. Uma hipótese que falha pode disparar **sunset** (remover a feature que não moveu a métrica) ou reabrir o PRD/um ADR. É a seta que volta no mapa depois que uma feature mensurável é entregue.
 
@@ -1834,6 +1839,8 @@ Pra quando você já fez o tutorial uma vez e quer consultar rápido.
 | 8 | `/renata:feature-spec <id>` | Detalha feature + plano em fases |
 | 8.5 | `/renata:screens` | Inventário + fluxo + briefs de telas (opcional) |
 | gate | `/renata:assumption-test <premissa>` | Testar risco de valor/viabilidade antes de construir (loop Measure-Learn) |
+| gate | `/renata:interview-kit [premissa]` | Roteiro Mom Test de 1 página antes de uma entrevista de problema |
+| gate | `/renata:interview-debrief <transcrição>` | Transcrição → evidência verbatim + board + coaching do entrevistador |
 | 9 | manual | Roadmap macro (fases + gates) |
 | 11 | `/renata:plan-phase <fase>` | Plano blindado (writing-plans + @architect) |
 | 12 | `/renata:spike <pergunta>` | Investigação de risco |

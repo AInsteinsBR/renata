@@ -90,6 +90,7 @@ End with 1-2 lines: how many steps are ✅ out of how many mandatory ones, and t
 **Product-validation reminder (cross-cutting — not a step in the map):** if the state signals a Measure-Learn moment, mention the right command without inventing a step:
 
 - PRD ready but with an untested business assumption → suggest `/renata:assumption-test` before committing to phases.
+- Discovery's chosen bet carries a 🔴 belief / 🟡 anecdote seal → suggest `/renata:interview-kit` (get out of the building) before or right after the PRD; each transcript comes back through `/renata:interview-debrief`.
 - A phase delivered a measurable feature (the decisive metric has real data) → suggest `/renata:hypothesis-check` to issue the verdict for each affected hypothesis (and decide on sunset).
 - These do not block the next step in the map; they are the arrow that closes the loop (the "Evidence reopens a decision" principle).
 

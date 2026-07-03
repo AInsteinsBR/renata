@@ -541,6 +541,8 @@ Open `CLAUDE.md` in your editor (VSCode, Sublime, etc). You'll see several `{{PL
 
 It walks you through the **5 whys** (dig the real pain), the **job-to-be-done** (what progress the person is hiring the product for), and **why now** — and forces you to frame the problem **2-3 different ways** before committing, so you don't crystallize on the first idea. The output (`docs/discovery/<date>-<slug>.md`) becomes the starting point for `/renata:prd`, and seeds clues for persona, journey and metrics.
 
+The discovery also **stamps every claim with an evidence seal** (🔴 belief · 🟡 anecdote · 🟢 interviewed · ✅ measured). A bet stamped 🔴 is allowed — but the honest move is to get out of the building first: `/renata:interview-kit` generates a one-page Mom Test script (read it on your phone on the way), you record the conversation, and `/renata:interview-debrief` turns each transcript into graded evidence — moving the seal for real.
+
 **Already arrive with a clear problem?** Skip this and go straight to Step 2.
 
 ---
@@ -1707,6 +1709,9 @@ The PRD opens hypotheses; metrics make them falsifiable. But a hypothesis that's
 **`/renata:assumption-test <assumption>` — *before* building.**
 Takes the PRD and surfaces the **riskiest business assumption** (not the technical one — the Cagan risks: value, viability, usability, feasibility) and designs the **cheapest test that could kill it**. The point is to find out a bet is wrong *before* spending phases on it, not after. Use it when the PRD rests on an untested "someone wants this / will pay for this" — the diamond in the map (Step 8 → "value/viability assumption tested?") is exactly this moment. If the assumption fails, evidence sends you back to the PRD.
 
+**`/renata:interview-kit` + `/renata:interview-debrief` — the interview loop inside the cheapest test.**
+When the cheapest test is a problem interview, these two carry it: the **kit** is a one-page Mom Test field guide (past-and-behavior questions, a NEVER-ask list, signals to listen for) made to be read on your phone — because you won't be at the computer. You record the conversation (your recorder/Meet already transcribes). Back home, the **debrief** takes the transcript and extracts **verbatim** quotes per assumption — spontaneous 🥇 counts, prompted 🥈 barely counts, contaminated 🚫 (said after you pitched) doesn't count — updates the evidence board, and **coaches your questions** so the next interview is better. After N≥3 with a clear pattern, `assumption-test` issues the verdict.
+
 **`/renata:hypothesis-check [hypothesis]` — *after* measuring.**
 Takes **each** PRD hypothesis (never aggregated — N hypotheses, N verdicts) and confronts it with the **real measured number**, forcing an explicit verdict (✅ confirmed · ❌ failed · 🤔 inconclusive) and, for each, a concrete action. If you don't have real data yet, it **stops** and tells you to instrument the metric first — it won't invent a verdict. A failed hypothesis can trigger **sunset** (remove the feature that didn't move the metric) or reopen the PRD/an ADR. This is the arrow that loops back on the map after a measurable feature ships.
 
@@ -1834,6 +1839,8 @@ For when you've done the tutorial once and want a quick reference.
 | 8 | `/renata:feature-spec <id>` | Details a feature + phased plan |
 | 8.5 | `/renata:screens` | Inventory + flow + screen briefs (optional) |
 | gate | `/renata:assumption-test <assumption>` | Test a value/viability risk before building (Measure-Learn loop) |
+| gate | `/renata:interview-kit [assumption]` | One-page Mom Test field guide before a problem interview |
+| gate | `/renata:interview-debrief <transcript>` | Transcript → verbatim evidence + board + interviewer coaching |
 | 9 | manual | Macro roadmap (phases + gates) |
 | 11 | `/renata:plan-phase <phase>` | Armored plan (writing-plans + @architect) |
 | 12 | `/renata:spike <question>` | Risk investigation |
