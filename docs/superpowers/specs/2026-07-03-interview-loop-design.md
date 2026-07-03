@@ -79,6 +79,18 @@ Processa a transcrição: insights por assunção + selos de evidência + coachi
 - **`commands/assumption-test.md`:** linha "Problem interview" do catálogo referencia `/renata:interview-kit`; seção Resultado aceita debriefs/board como fonte de evidência; passa a **aceitar o doc de discovery como input quando não há PRD** (destrava validação pré-PRD).
 - **`commands/status.md`:** sugestão contextual — aposta escolhida com selo 🔴 → sugerir `interview-kit` antes do PRD.
 
+## Componente 4 · Posicionamento do RENATA (README + METHOD)
+
+Aprovado no brainstorm de 2026-07-03. Hoje o README diz *o que* é e o METHOD diz *como* pensa; nenhum lugar diz *contra o quê* o RENATA se posiciona.
+
+- **`README.md` + `README.pt-br.md`** — seção curta de **posicionamento**, logo após o parágrafo de abertura. A moldura (aprovada por Eric):
+  1. **Frameworks de produto** (Cagan, Torres, Lean) ensinam a decidir o que construir — mas param na fronteira do código; a decisão vira slide, o código nasce órfão do porquê.
+  2. **Ferramentas de AI coding / vibe-coding** geram código rápido — mas sem método: sem persona, sem métrica, sem decisão registrada.
+  3. **RENATA é a ponte com enforcement:** o método de produto vai até dentro do código — a ADR bloqueia o commit que a viola, o hook cobra o gate, a hipótese volta pra ser falsificada.
+  - Dogfooding do Princípio 5: **para quem é** (founder solo / PM+dev pequeno construindo com IA) e **o que NÃO é** (não é gestão de projeto/Scrum, não é gerador de código, não é curso de produto).
+- **`METHOD.md` + `METHOD.pt-br.md`** — seção curta de **linhagem intelectual** ("sobre os ombros de quem"): personas/discovery de Marty Cagan (SVPG, *Inspired*) & Teresa Torres (*Continuous Discovery Habits*), validação de Steve Blank (Customer Development) / Mom Test (Rob Fitzpatrick) — que o interview loop deste spec torna operacional —, ADRs de Michael Nygard, loop build-measure-learn do Lean Startup. Contribuição original do RENATA: a **amarração com enforcement automatizado** num fluxo único operado com IA.
+- **GETTING-STARTED:** sem mudança de posicionamento (é tutorial; quem chegou lá já foi convencido).
+
 ## Fluxo ponta a ponta
 
 ```text
@@ -108,8 +120,8 @@ Processa a transcrição: insights por assunção + selos de evidência + coachi
 | `commands/discovery.md` | Selos de evidência + 4ª seed + quality rule |
 | `commands/assumption-test.md` | Catálogo → kit; debrief como evidência; aceita discovery sem PRD |
 | `commands/status.md` | Sugestão contextual (selo 🔴 → interview-kit) |
-| `METHOD.md` + `METHOD.pt-br.md` | Escala de selos (seção única, ancorada no E de Evidence) + 2 comandos na lista |
-| `README.md` + `README.pt-br.md` | Tabela de comandos: 24 → 26 |
+| `METHOD.md` + `METHOD.pt-br.md` | Escala de selos (seção única, ancorada no E de Evidence) + 2 comandos na lista + seção de linhagem intelectual (Componente 4) |
+| `README.md` + `README.pt-br.md` | Lista de comandos: 25 → 27 + seção de posicionamento (Componente 4) |
 | `GETTING-STARTED.md` + `GETTING-STARTED.pt-br.md` | Inserir o loop de entrevista no walkthrough (hoje só menciona assumption-test) |
 | `template/CLAUDE.md.template` | Lista de comandos (~linha 94): adicionar interview-kit e interview-debrief |
 | `template/docs/README.md` | Tabela de pastas ganha `interviews/`; avaliar mapa mermaid |
