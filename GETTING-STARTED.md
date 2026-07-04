@@ -16,7 +16,10 @@
 flowchart TD
     A["💡 I have an idea"] --> B["0. Pre-flight<br/>10min"]
     B --> C["1. Create project<br/>5min"]
-    C --> D["2. PRD<br/>1-2h · /renata:prd"]
+    C --> CD{"Problem already clear?"}
+    CD -->|yes| D["2. PRD<br/>1-2h · /renata:prd"]
+    CD -->|"no, just a hunch"| C15["1.5. Discovery<br/>/renata:discovery"]
+    C15 --> D
     D --> E{"PRD approved?"}
     E -->|no| D
     E -->|yes| F["3. Personas<br/>30min · /renata:persona"]
@@ -24,7 +27,11 @@ flowchart TD
     G --> H["5. Metrics<br/>45min · /renata:metrics"]
     H --> I["6. ADRs<br/>2-4h · /renata:adr<br/>🛠 tech team joins"]
     I --> J["7. Features<br/>1h · /renata:feature-breakdown"]
+    I -."optional: competitive gaps".-> I65["6.5. Landscape<br/>/renata:landscape"]
+    I65 -.-> J
     J --> J5["7.5. Phasing<br/>/renata:phase-roadmap"]
+    J -."optional: dense rules".-> J77["7.7. Feature behavior<br/>/renata:feature-behavior"]
+    J77 -.-> J5
     J5 --> K["8. Spec per phase<br/>1-2h · /renata:feature-spec"]
     K --> K2{"Does the product have<br/>meaningful UI?"}
     K2 -->|no| KA{"Value/viability<br/>assumption tested?"}
@@ -60,7 +67,7 @@ flowchart TD
     class A start
     class T done
     class I,M,P,Q tech
-    class K3 opt
+    class C15,I65,J77,K3 opt
     class KT,HC val
     class HCB back
 ```
@@ -68,7 +75,7 @@ flowchart TD
 **How to read this map:**
 
 - 🟡 **Yellow** = step where the **technical team** joins in (you're no longer alone).
-- 🟣 **Purple** = optional step (screen design).
+- 🟣 **Purple** = optional steps (discovery, landscape, feature behavior, screen design).
 - 🔵 **Light blue** = product validation (Measure-Learn): test the assumption first, falsify the hypothesis later.
 - 🔴 **Red** = evidence reopens a decision already made (PRD/ADR/sunset) — the arrow that goes back.
 - ◇ **Diamond** = decision / gate. If "no", go back. If "yes", continue.
@@ -160,11 +167,11 @@ Who leads each step. The **PM/founder** (you) operates alone at the start; the *
 flowchart LR
     subgraph PM["🧑 PM / Founder leads"]
         direction TB
-        P1["0-1 Setup"] --> P2["2 PRD"] --> P3["3-5 Personas<br/>Journeys · Metrics"]
+        P1["0-1 Setup"] --> P2["1.5 Discovery (opt)<br/>+ 2 PRD"] --> P3["3-5 Personas<br/>Journeys · Metrics"]
     end
     subgraph JUNTO["🧑 + 🛠 Joint decision"]
         direction TB
-        J1["6 ADRs"] --> J2["7-8 Features<br/>+ spec"] --> J3["8.5 Screens<br/>(optional)"] --> J4["9 Roadmap"]
+        J1["6 ADRs +<br/>6.5 Landscape (opt)"] --> J2["7-8 Features<br/>+ behavior (opt) + spec"] --> J3["8.5 Screens<br/>(optional)"] --> J4["9 Roadmap"]
     end
     subgraph TECH["🛠 Technical team leads"]
         direction TB
@@ -202,7 +209,8 @@ Each step produces a document, and each document **feeds** the next ones. This i
 
 ```mermaid
 flowchart TD
-    PRD["📄 PRD<br/>docs/prd/"] --> PERS["📄 Personas<br/>business-context/"]
+    DISC["🌫 Discovery<br/>discovery/ (optional)"] -.-> PRD["📄 PRD<br/>docs/prd/"]
+    PRD --> PERS["📄 Personas<br/>business-context/"]
     PRD --> JOR["📄 Journeys"]
     PERS --> JOR
     JOR --> MET["📄 Metrics"]
@@ -210,8 +218,12 @@ flowchart TD
     PRD --> ADR["📐 ADRs<br/>decisions/ + rules.yaml"]
     MET --> FEAT["📄 Feature breakdown<br/>features/README"]
     PRD --> FEAT
+    PRD -.-> LAND["🔭 Landscape<br/>research/ (optional)"]
+    LAND -.-> FEAT
     ADR --> SPEC["📄 Feature-spec<br/>features/F1-*"]
     FEAT --> SPEC
+    FEAT -.-> BEH["📄 Behavior<br/>F&lt;N&gt;.behavior (optional)"]
+    BEH -.-> SPEC
     SPEC --> SCR["🎨 Screens<br/>design/ (optional)"]
     SPEC --> ROAD["🗺 Roadmap<br/>roadmap/fase-N"]
     ROAD --> ARQ["🛠 Architecture<br/>technical-context/"]
@@ -270,10 +282,14 @@ The natural question for anyone looking at the table of contents for the first t
 
 | Level | Step | Question | What it defines |
 |---|---|---|---|
+| Fog | 1.5. Discovery (optional) | WHAT problem, really | Clear problem + audience + seeds |
 | Macro | 2. PRD | WHAT at a high level | Thesis + scope + decisive metric |
 | Context | 3-5. Personas/Journeys/Metrics | WHY and FOR WHOM | Tied-down constraints |
 | Macro | 6. ADRs | HOW at a high level | Stack + strategy |
+| Market | 6.5. Landscape (optional) | WHAT the others do | Differentiation gaps → candidate features |
 | Medium | 7. Feature breakdown | WHAT at a medium level | Atomic capabilities |
+| Medium | 7.7. Feature behavior (optional) | WHAT the user observes | Observable behavior, zero technical detail |
+| Medium | 7.5. Phase the system | WHEN each feature | All features in time-boxed phases |
 | Medium | 8. Feature spec | HOW at a medium level | Plan per feature |
 | Visual | 8.5. Screen design (optional) | HOW the user sees it | Inventory + flow + briefs |
 | Low | 10. Architecture | HOW at a low level | Technical diagrams |
@@ -322,13 +338,17 @@ If this explanation is still confusing, open [`METHOD.md`](./METHOD.md#ordem-alt
 | 0 | Pre-flight | 10min | — | Environment ready |
 | 0.5 | Retrofit (only if you already have a project) | 15min | — | Framework applied to an existing project |
 | 1 | Create project | 5min | — | Initial structure |
+| **1.5** | **Discovery (optional)** | **30-60min** | **`/renata:discovery`** | **`docs/discovery/<date>-<slug>.md`** |
 | 2 | Define the product | 1-2h | `/renata:prd` | `docs/prd/<slug>.md` |
 | 3 | Map personas | 30min each | `/renata:persona` | `docs/business-context/personas.md` |
 | 4 | Map journeys | 30min | `/renata:user-journey` | `docs/business-context/jornada.md` |
 | 5 | Define metrics | 45min | `/renata:metrics` | `docs/business-context/metricas.md` |
 | 6 | Technical decisions (ADRs) | 2-4h | `/renata:adr` | `docs/decisions/ADR-*.md` |
+| **6.5** | **Competitive research (optional)** | **30-60min** | **`/renata:landscape`** | **`docs/research/<date>-landscape.md`** |
 | 7 | Prioritize features | 1h | `/renata:feature-breakdown` | `docs/features/README.md` |
-| 8 | Spec of the anchor feature | 1-2h | `/renata:feature-spec` | `docs/features/F1-*.md` |
+| 7.5 | Phase the system | 30-45min | `/renata:phase-roadmap` | `docs/roadmap/fases-overview.md` |
+| **7.7** | **Feature behavior (optional)** | **30min per feature** | **`/renata:feature-behavior`** | **`docs/features/F<N>-*.behavior.md`** |
+| 8 | Spec per phase (starts with Phase 0) | 1-2h | `/renata:feature-spec` | `docs/features/F1-*.md` |
 | **8.5** | **Screen design (optional)** | **1-2h** | **`/renata:screens`** | **`docs/design/`** |
 | 9 | Macro roadmap | 1h | manual | `docs/roadmap/` |
 | 10 | Technical architecture | 2-3h | manual | `docs/technical-context/` |
@@ -1830,12 +1850,17 @@ For when you've done the tutorial once and want a quick reference.
 
 | Step | Command | What it does |
 |---|---|---|
+| 1.5 | `/renata:discovery <idea>` | Vague intuition → clear problem (5 whys + JTBD + why-now) (optional) |
 | 2 | `/renata:prd <idea>` | Micro PRD in 9 questions |
 | 3 | `/renata:persona <name>` | Structured persona in 4 turns |
 | 4 | `/renata:user-journey <persona>` | Before/during/after |
 | 5 | `/renata:metrics` | 4 layers (adoption, engagement, value, quality) |
 | 6 | `/renata:adr <decision>` | Nygard ADR + updates `rules.yaml` |
+| 6 | `/renata:extract-pattern <repo>` | Distills an existing repo's pattern into ADRs + code-pattern doc |
+| 6.5 | `/renata:landscape` | Competitive research → differentiation gaps (optional) |
 | 7 | `/renata:feature-breakdown` | Lists features + identifies the anchor |
+| 7.5 | `/renata:phase-roadmap` | Distributes all features into sequential phases (Phase 0 = anchor set) |
+| 7.7 | `/renata:feature-behavior <id>` | Feature as observable behavior (stories + Gherkin) before the spec (optional) |
 | 8 | `/renata:feature-spec <id>` | Details a feature + phased plan |
 | 8.5 | `/renata:screens` | Inventory + flow + screen briefs (optional) |
 | gate | `/renata:assumption-test <assumption>` | Test a value/viability risk before building (Measure-Learn loop) |

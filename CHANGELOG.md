@@ -8,6 +8,13 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 _Nothing yet._
 
+## [0.1.9] — 2026-07-03
+
+**What's new:** the tutorial's bird's-eye view caught up with the method.
+
+### Fixed
+- GETTING-STARTED (en+pt): the orientation layer (tutorial mermaid map, "Summary of the steps" table, "Why this order?" table, Views C/D, Appendix E cheatsheet) was missing the optional steps added in 0.1.4-0.1.6 — **1.5 Discovery**, **6.5 Landscape**, **7.7 Feature behavior** — plus the **7.5 Phase the system** row and `/renata:extract-pattern` in the cheatsheet. The step-by-step body was already complete; only the overview artifacts had drifted. All mermaid diagrams render-validated with mmdc.
+
 ## [0.1.8] — 2026-07-03
 
 **What's new:** English YAML schema — identifiers in English, ahead of the full localization.
