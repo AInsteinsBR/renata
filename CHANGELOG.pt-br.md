@@ -8,6 +8,13 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 _Nada ainda._
 
+## [0.1.9] — 2026-07-03
+
+**O que há de novo:** a visão panorâmica do tutorial alcançou o método.
+
+### Corrigido
+- GETTING-STARTED (en+pt): a camada de orientação (mapa mermaid do tutorial, tabela "Sumário das etapas", tabela "Por que essa ordem?", Views C/D, cheatsheet do Apêndice E) não tinha as etapas opcionais adicionadas na 0.1.4-0.1.6 — **1.5 Discovery**, **6.5 Landscape**, **7.7 Comportamento da feature** — além da linha **7.5 Fasear o sistema** e do `/renata:extract-pattern` no cheatsheet. O corpo passo-a-passo já estava completo; só os artefatos de visão geral tinham derivado. Todos os diagramas mermaid validados com mmdc.
+
 ## [0.1.8] — 2026-07-03
 
 **O que há de novo:** schema YAML em inglês — identificadores em inglês, antecipando a localização completa.
