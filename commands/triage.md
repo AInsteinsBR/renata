@@ -17,6 +17,7 @@ Respond to the user and generate content in the user's language (the language th
 **Use `/renata:triage` (this one) to prioritize ongoing work (MoSCoW gradation).**
 **Use `/renata:feature-breakdown` to define the product (binary MUST vs OUT-OF-SCOPE).**
 **Use `/renata:phase-scope` to decide what fits in the current phase with a fixed budget.**
+**Use `/renata:bug-report` first to structure a single fresh production bug before it joins a triage round.**
 
 ## Step 0 — Resolve integration (before saving the triage)
 

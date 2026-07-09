@@ -56,6 +56,11 @@ flowchart TD
     HC -->|"✅ confirmed"| S
     S -->|yes| Q
     S -->|"no, project done"| T["🎉 Released"]
+    T -.->|"customer/support/you<br/>finds a problem"| U["14. Bug report<br/>/renata:bug-report"]
+    U -->|"small, isolated"| U1["/renata:todo add"]
+    U -->|"2+ critical signals<br/>or growing"| U2["14. Incident<br/>🛠 /renata:incident"]
+    U2 --> U3["Post-mortem<br/>/renata:retro"]
+    U3 -.-> HCB
 
     classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
     classDef done  fill:#d4edda,stroke:#28a745,color:#000
@@ -66,7 +71,7 @@ flowchart TD
 
     class A start
     class T done
-    class I,M,P,Q tech
+    class I,M,P,Q,U2 tech
     class C15,I65,J77,K3 opt
     class KT,HC val
     class HCB back
@@ -81,7 +86,7 @@ flowchart TD
 - ◇ **Diamond** = decision / gate. If "no", go back. If "yes", continue.
 - ⬜ **Rectangle** = step that produces a document or code.
 
-**You'll reach "🎉 Released" by following this path — there's no shortcut.** And even after that, the loop doesn't close by itself: a measurable feature delivered triggers `/renata:hypothesis-check`, and evidence can send you back to the PRD. Released is not the end of the arrow.
+**You'll reach "🎉 Released" by following this path — there's no shortcut.** And even after that, the loop doesn't close by itself: a measurable feature delivered triggers `/renata:hypothesis-check`, and evidence can send you back to the PRD. Released is not the end of the arrow — the dotted line out of "🎉 Released" is [Step 14](#-step-14--post-production-when-reality-finds-a-bug-cross-cutting): the first time a customer finds a bug, that's where you go.
 
 > 🔁 **The "12. Execute" node is a loop on the inside** (`↻ task-by-task`). This map shows it as a single box because it's the bird's-eye view. Its detailed cycle — grab task → test → code → review → checkpoint — is in [View B](#-view-b--the-execution-loop-step-12) and in Step 12 itself.
 
@@ -1785,6 +1790,67 @@ Explicit output of the retro: **does it go to Phase N+1, repeat Phase N, or pivo
 
 ---
 
+# 🚑 Step 14 — Post-production: when reality finds a bug (cross-cutting)
+
+> 🛠 **Whoever notices drives.** No PM/tech split here — this can start from a customer message, a support ticket, or you noticing something broken.
+
+**Goal:** the tutorial above ends at "phase retro → next phase or pivot," as if the story stopped there. It doesn't. Once code is running in production, a customer's real use will eventually surface a problem the plan never foresaw. This step is what to do when that happens — it isn't numbered into the 0-13 flow because it doesn't happen once per project; it recurs for as long as the product is alive.
+
+## 14.1. Start here: `/renata:bug-report`
+
+Every fresh production problem — a customer complaint, a support ticket, a bug you noticed yourself — starts as a single structured report:
+
+```text
+/renata:bug-report <paste the raw complaint or describe what you saw>
+```
+
+It asks what the user expected vs what actually happened, whether it reproduces, who/how many are affected, and whether any data is at risk — then classifies severity (🔴 Critical / 🟠 Significant / 🟡 Minor) and tells you the next move: fix it now, file it with `/renata:todo add`, wait for the next `/renata:triage` round, or escalate.
+
+## 14.2. Escalate to `/renata:incident` when it's bigger than one report
+
+Most production bugs stay at the `/renata:bug-report` level. Escalate when the report meets 2+ of: data loss/corruption, active security exposure, a growing or unclear blast radius, or a broken SLA/contract — or when several reports are clearly the same underlying event.
+
+```text
+/renata:incident <short description of the impact>
+```
+
+This opens a **live** timeline: what was tried, what was communicated externally, and a resolution checklist that requires more than "the errors stopped" before you call it done (a defined quiet window, an identified mitigation, no data still in a bad state, and comms sent if any were owed).
+
+## 14.3. Close the loop: `/renata:retro` does the post-mortem
+
+`/renata:incident` deliberately does **not** analyze root cause — that's `/renata:retro`'s job, once things are calm:
+
+```text
+/renata:retro <incident slug or phase>
+```
+
+If an incident file exists, the retro reads its timeline instead of re-asking you what happened. If the bug revealed a wrong product assumption, the retro may point onward to `/renata:hypothesis-check` (the hypothesis didn't hold) or `/renata:adr` (a structural decision needs to be superseded).
+
+## 14.4. The full path, at a glance
+
+```text
+customer/support/you notice something wrong
+        │
+        ▼
+/renata:bug-report  ──── small & isolated ────▶ /renata:todo add ──▶ fixed in the normal flow
+        │
+        └── 2+ critical signals / growing ──▶ /renata:incident (live coordination)
+                                                        │
+                                                        ▼
+                                                /renata:retro (post-mortem)
+                                                        │
+                                                        ▼
+                                    maybe /renata:hypothesis-check or /renata:adr
+```
+
+## Step 14 validation
+
+- [ ] Every fresh production report has a `docs/bugs/<date>-<slug>.md` — nothing stays only in someone's memory or a chat thread
+- [ ] An incident was only closed after all 4 resolution-checklist items were met, not just "symptoms stopped"
+- [ ] A resolved incident has a scheduled or completed `/renata:retro` — no incident closes without one
+
+---
+
 # 📎 Appendix A — When NOT to use this method
 
 RENATA is not the right way for everything. Don't use it if:
@@ -1875,6 +1941,8 @@ For when you've done the tutorial once and want a quick reference.
 | 12 | `/renata:refactor <target>` | Disciplined refactor |
 | 13 | `/renata:retro [phase]` | Retrospective (execution learning) |
 | 13 | `/renata:hypothesis-check [hypothesis]` | Hypothesis verdict vs real data (✅/❌/🤔 + sunset) |
+| 14 | `/renata:bug-report <raw description>` | A fresh production bug → structured, severity-classified, routed |
+| 14 | `/renata:incident <description>` | Live coordination of a larger production incident → hands off to `/renata:retro` |
 | — | `/renata:status [N]` | Where I am in the flow + the next step (validates the current step with a human gate) |
 
 ## Subagents (call them when in doubt)
@@ -1923,6 +1991,7 @@ These three fire on their own when the conversation hits a trigger. You don't ca
 | 11 Execution plan | A plan with TDD + ≥3 checkpoints |
 | 12 Execution | Commits pass the hook + green tests |
 | 13 Retro | An explicit decision: next phase / repeat / pivot |
+| 14 Post-production | Every fresh bug filed; incidents closed only after the resolution checklist; a retro scheduled |
 
 ---
 

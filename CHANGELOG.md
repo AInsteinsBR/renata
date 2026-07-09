@@ -6,7 +6,16 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 ## [Unreleased]
 
-_Nothing yet._
+**What's new:** two new commands close the post-production loop — `/renata:bug-report` structures a single fresh bug report from production; `/renata:incident` coordinates live response to a larger incident and hands off to `/renata:retro` for the post-mortem.
+
+### Added
+- `/renata:bug-report` — converts one raw production report (customer complaint, support ticket, self-found bug) into a structured, severity-classified item with a clear next step (hotfix, `/renata:todo`, `/renata:triage`, or escalate to `/renata:incident`).
+- `/renata:incident` — coordinates the live response to an active, larger production incident: declares it, keeps a timestamped timeline, tracks external communication, and enforces a resolution checklist before closing — then hands off to `/renata:retro` for the root-cause post-mortem.
+- GETTING-STARTED (en+pt): new **Step 14 — Post-production**, covering the cross-cutting loop that starts every time a customer/support/you finds a bug after release — the tutorial's step-by-step previously ended at the Step 13 retro with no path back for a post-release bug. Added to the tutorial map (mermaid), the "Summary of the steps," and the Appendix E cheatsheet.
+- METHOD (en+pt): new **Post-production** command category, separate from "Development (operating within a phase)" — bug-report/incident don't belong there since that section is about work still inside an unreleased phase.
+
+### Fixed
+- `/renata:bug-report` and `/renata:incident` had been placed in the Step 12 "useful commands during execution" table and under METHOD's "Development" category — both describe work on an unreleased phase, so a post-release bug had no correct home. Moved to the new Post-production section/category above.
 
 ## [0.1.9] — 2026-07-03
 

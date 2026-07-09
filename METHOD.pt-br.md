@@ -319,6 +319,17 @@ docs/
 | `/renata:refactor <alvo>`           | Guia refactor disciplinado                                                                                     | `docs/refactors/<data>-<slug>.md`                           |
 | `/renata:retro [fase]`              | Retrospectiva ao fim de fase                                                                                   | `docs/roadmap/fase-N-retro.md`                              |
 
+### Pós-produção (depois que já está no ar — fechando o loop com a realidade)
+
+O método não para na retro de fase. Uma vez que o código está rodando em produção, um cliente (ou o próprio uso) eventualmente vai revelar um problema que o plano não previu. Estes dois comandos são a porta de entrada para esse momento — eles não entram em "Desenvolvimento" acima porque aquela seção é sobre trabalho ainda dentro de uma fase não lançada; esta é sobre o que já foi ao ar.
+
+| Comando                                | Quando usar                                                                                                  | O que gera                          |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `/renata:bug-report <descrição bruta>` | Um cliente/suporte/você mesmo encontrou um problema em produção — estrutura o relato bruto em severidade + reprodução + impacto e roteia (hotfix / `/renata:todo` / `/renata:triage` / escalar) | `docs/bugs/<data>-<slug>.md`         |
+| `/renata:incident <descrição>`         | O relato (ou um conjunto deles) é grande o bastante para precisar de coordenação ativa — declara, mantém uma timeline ao vivo, exige um checklist de resolução, e então entrega pro `/renata:retro` fazer o post-mortem | `docs/incidents/<data>-<slug>.md`   |
+
+`/renata:bug-report` é a triagem de item único (como o acolhimento do pronto-socorro); `/renata:incident` é para quando já virou uma situação que precisa de um dono nomeado e atualizações de status. A maioria dos bugs de produção só precisa do primeiro.
+
 ### Navegação (transversal — em qualquer etapa)
 
 | Comando         | Quando usar                                                     | O que gera                                               |

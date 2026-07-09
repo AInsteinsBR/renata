@@ -56,6 +56,11 @@ flowchart TD
     HC -->|"✅ confirmada"| S
     S -->|sim| Q
     S -->|"não, projeto pronto"| T["🎉 Released"]
+    T -.->|"cliente/suporte/você<br/>acha um problema"| U["14. Bug report<br/>/renata:bug-report"]
+    U -->|"pequeno, isolado"| U1["/renata:todo add"]
+    U -->|"2+ sinais críticos<br/>ou crescendo"| U2["14. Incident<br/>🛠 /renata:incident"]
+    U2 --> U3["Post-mortem<br/>/renata:retro"]
+    U3 -.-> HCB
 
     classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
     classDef done  fill:#d4edda,stroke:#28a745,color:#000
@@ -66,7 +71,7 @@ flowchart TD
 
     class A start
     class T done
-    class I,M,P,Q tech
+    class I,M,P,Q,U2 tech
     class C15,I65,J77,K3 opt
     class KT,HC val
     class HCB back
@@ -81,7 +86,7 @@ flowchart TD
 - ◇ **Losango** = decisão / gate. Se "não", volta. Se "sim", segue.
 - ⬜ **Retângulo** = etapa que produz um documento ou código.
 
-**Você vai chegar até "🎉 Released" seguindo esse caminho — não tem atalho.** E mesmo depois, o loop não fecha sozinho: feature mensurável entregue dispara `/renata:hypothesis-check`, e evidência pode te mandar de volta pro PRD. Released não é o fim da seta.
+**Você vai chegar até "🎉 Released" seguindo esse caminho — não tem atalho.** E mesmo depois, o loop não fecha sozinho: feature mensurável entregue dispara `/renata:hypothesis-check`, e evidência pode te mandar de volta pro PRD. Released não é o fim da seta — a linha pontilhada saindo de "🎉 Released" é a [Etapa 14](#-etapa-14--pós-produção-quando-a-realidade-acha-um-bug-transversal): a primeira vez que um cliente acha um bug, é pra lá que você vai.
 
 > 🔁 **O nó "12. Executar" é um loop por dentro** (`↻ task-a-task`). Esse mapa o mostra como uma caixa só porque é a visão de pássaro. O ciclo detalhado dele — pegar task → teste → código → revisão → checkpoint — está na [Visão B](#visão-b-o-loop-de-execução-etapa-12) e na própria Etapa 12.
 
@@ -1785,6 +1790,67 @@ Output explícito da retro: **vai para Fase N+1, repete Fase N, ou pivot do prod
 
 ---
 
+# 🚑 Etapa 14 — Pós-produção: quando a realidade acha um bug (transversal)
+
+> 🛠 **Quem percebe, conduz.** Não há divisão PM/técnico aqui — pode começar por uma mensagem de cliente, um ticket de suporte, ou você mesmo notando algo quebrado.
+
+**Objetivo:** o tutorial acima termina em "retro da fase → próxima fase ou pivot", como se a história parasse ali. Não para. Uma vez que o código está rodando em produção, o uso real de um cliente eventualmente vai revelar um problema que o plano nunca previu. Esta etapa é o que fazer quando isso acontece — ela não entra numerada no fluxo 0-13 porque não acontece uma vez por projeto; ela se repete enquanto o produto estiver vivo.
+
+## 14.1. Comece aqui: `/renata:bug-report`
+
+Todo problema novo de produção — reclamação de cliente, ticket de suporte, bug que você mesmo notou — começa como um relato único estruturado:
+
+```text
+/renata:bug-report <cole a reclamação bruta ou descreva o que você viu>
+```
+
+Ele pergunta o que o usuário esperava vs o que aconteceu de fato, se reproduz, quem/quantos são afetados, e se algum dado está em risco — depois classifica severidade (🔴 Crítico / 🟠 Significativo / 🟡 Menor) e diz o próximo passo: consertar agora, registrar com `/renata:todo add`, esperar a próxima rodada de `/renata:triage`, ou escalar.
+
+## 14.2. Escale para `/renata:incident` quando for maior que um relato
+
+A maioria dos bugs de produção fica no nível do `/renata:bug-report`. Escale quando o relato atender 2+ destes: perda/corrupção de dado, exposição ativa de segurança, raio de impacto crescente ou incerto, ou quebra de SLA/contrato — ou quando vários relatos são claramente o mesmo evento subjacente.
+
+```text
+/renata:incident <descrição curta do impacto>
+```
+
+Isso abre uma timeline **ao vivo**: o que foi tentado, o que foi comunicado externamente, e um checklist de resolução que exige mais do que "os erros pararam" antes de você declarar encerrado (uma janela de silêncio definida, uma mitigação identificada, nenhum dado ainda em estado ruim, e comunicação enviada se alguma era devida).
+
+## 14.3. Feche o loop: `/renata:retro` faz o post-mortem
+
+`/renata:incident` deliberadamente **não** analisa causa raiz — isso é trabalho do `/renata:retro`, uma vez que a poeira baixou:
+
+```text
+/renata:retro <slug do incidente ou fase>
+```
+
+Se existe um arquivo de incidente, a retro lê a timeline dele em vez de te perguntar de novo o que aconteceu. Se o bug revelou uma premissa de produto errada, a retro pode apontar para `/renata:hypothesis-check` (a hipótese não se sustentou) ou `/renata:adr` (uma decisão estrutural precisa ser superseded).
+
+## 14.4. O caminho completo, de relance
+
+```text
+cliente/suporte/você percebe algo errado
+        │
+        ▼
+/renata:bug-report  ──── pequeno & isolado ────▶ /renata:todo add ──▶ conserta no fluxo normal
+        │
+        └── 2+ sinais críticos / crescendo ──▶ /renata:incident (coordenação ao vivo)
+                                                        │
+                                                        ▼
+                                                /renata:retro (post-mortem)
+                                                        │
+                                                        ▼
+                                    talvez /renata:hypothesis-check ou /renata:adr
+```
+
+## Validação da Etapa 14
+
+- [ ] Todo relato novo de produção tem um `docs/bugs/<data>-<slug>.md` — nada fica só na memória de alguém ou numa thread de chat
+- [ ] Um incidente só foi fechado depois que os 4 itens do checklist de resolução foram atendidos, não só "os sintomas pararam"
+- [ ] Um incidente resolvido tem uma `/renata:retro` agendada ou concluída — nenhum incidente fecha sem uma
+
+---
+
 # 📎 Apêndice A — Quando NÃO usar este método
 
 RENATA não é o jeito certo de tudo. Não use se:
@@ -1875,6 +1941,8 @@ Pra quando você já fez o tutorial uma vez e quer consultar rápido.
 | 12 | `/renata:refactor <alvo>` | Refactor disciplinado |
 | 13 | `/renata:retro [fase]` | Retrospectiva (aprendizado de execução) |
 | 13 | `/renata:hypothesis-check [hipótese]` | Veredito da hipótese vs dado real (✅/❌/🤔 + sunset) |
+| 14 | `/renata:bug-report <descrição bruta>` | Bug novo de produção → estruturado, classificado por severidade, roteado |
+| 14 | `/renata:incident <descrição>` | Coordenação ao vivo de incidente de produção maior → entrega pro `/renata:retro` |
 | — | `/renata:status [N]` | Onde estou no fluxo + próximo passo (valida etapa atual com gate humano) |
 
 ## Subagentes (chame quando bater dúvida)
@@ -1923,6 +1991,7 @@ Essas três disparam sozinhas quando a conversa bate num gatilho. Você não as 
 | 11 Plano execução | Plano com TDD + ≥3 checkpoints |
 | 12 Execução | Commits passam pelo hook + testes verdes |
 | 13 Retro | Decisão explícita: próxima fase / repete / pivot |
+| 14 Pós-produção | Todo bug novo registrado; incidentes só fecham após o checklist de resolução; uma retro agendada |
 
 ---
 

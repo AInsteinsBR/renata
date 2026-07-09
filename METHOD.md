@@ -319,6 +319,17 @@ docs/
 | `/renata:refactor <target>`           | Guide a disciplined refactor                                                                                   | `docs/refactors/<date>-<slug>.md`                           |
 | `/renata:retro [phase]`              | Retrospective at the end of a phase                                                                            | `docs/roadmap/fase-N-retro.md`                              |
 
+### Post-production (after it ships — closing the loop with reality)
+
+The method doesn't stop at the phase retro. Once code is running in production, a customer or your own use will eventually surface a problem the plan didn't foresee. These two commands are the entry points for that moment — they don't belong in "Development" above because that section is about work still inside an unreleased phase; this one is about what already shipped.
+
+| Command                                | When to use                                                                                                  | What it generates                    |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `/renata:bug-report <raw description>` | A customer/support/you-yourself found a problem in production — structure the raw report into severity + repro + impact and route it (hotfix / `/renata:todo` / `/renata:triage` / escalate) | `docs/bugs/<date>-<slug>.md`         |
+| `/renata:incident <description>`       | The report (or a cluster of them) is big enough to need active coordination — declares it, keeps a live timeline, enforces a resolution checklist, then hands off to `/renata:retro` for the post-mortem | `docs/incidents/<date>-<slug>.md`   |
+
+`/renata:bug-report` is the single-item triage (like a first-aid intake); `/renata:incident` is for when it's grown into a situation that needs a named owner and status updates. Most production bugs only need the first one.
+
 ### Navigation (cross-cutting — at any step)
 
 | Command         | When to use                                                     | What it generates                                        |

@@ -34,6 +34,7 @@ The capability for this operation is **`tasks`**. Before any write:
 
 **Use `/renata:todo` for the persistent record of pending items.**
 **Use `/renata:triage` when you need to prioritize a whole round in MoSCoW (the triage WON'Ts can become entries here).**
+**Use `/renata:bug-report` first for a fresh production bug — it structures the report and can route straight into `add` here.**
 
 ## Inline marker convention
 

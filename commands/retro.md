@@ -13,15 +13,18 @@ Respond to the user and generate content in the user's language (the language th
 
 - At the end of a roadmap phase (Phase 0, Phase 1, etc).
 - After a significant release.
-- After an important incident (a post-mortem is a technical retro).
+- After an important incident (a post-mortem is a technical retro) — if `/renata:incident` was used to coordinate the live response, this is its handoff: read that file for the timeline before facilitating the retro.
 - In a formal sprint review (if the team uses sprints).
+
+**Use `/renata:incident` first if the event is still active — it owns the live timeline and hands off here once resolved.**
 
 ## Before generating
 
 1. Read `@CLAUDE.md` and the phase doc: `@docs/roadmap/fase-<N>-<nome>.md`.
 2. Read `@docs/features/` for the features of that phase to understand what was scoped vs delivered.
 3. Read the phase's commits if possible (`git log` of the branch).
-4. Ask ONE question at a time:
+4. If this retro is a post-mortem, read the matching `@docs/incidents/<data>-<slug>.md` — its timeline and resolution checklist are the raw material for sections 1-4 below; do not re-ask the user for facts already logged there.
+5. Ask ONE question at a time:
 
    - **Which phase are you closing?** (or cycle, with start/end dates)
    - **Result vs gate:** was each gate criterion of the phase met? (yes/no/partial)
