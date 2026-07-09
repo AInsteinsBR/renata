@@ -6,6 +6,10 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 ## [Unreleased]
 
+_Nada ainda._
+
+## [0.1.10] — 2026-07-09
+
 **O que há de novo:** dois comandos novos fecham o loop pós-produção — `/renata:bug-report` estrutura um único bug report recém-chegado de produção; `/renata:incident` coordena a resposta ao vivo a um incidente maior e entrega pro `/renata:retro` para o post-mortem.
 
 ### Adicionado
