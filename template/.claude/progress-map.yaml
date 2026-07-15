@@ -14,6 +14,9 @@
 #   optional       true se a etapa pode ser pulada sem bloquear o fluxo
 #   prereq         lista de num de etapas que são pré-requisito REAL
 #   validation     3-5 critérios-chave (checklist leve) extraídos do GETTING-STARTED
+#
+# Brownfield: /renata:adopt pré-preenche as etapas 1, 2, 6, 7, 8 e 10 como 🔄
+# (artefatos as-built); verifique-as via /renata:status na ordem dos prereqs.
 
 steps:
   - num: "1"

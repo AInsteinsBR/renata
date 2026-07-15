@@ -48,14 +48,22 @@ RENATA lives at an intersection nobody else occupies:
 
 Creates `CLAUDE.md`, `docs/` and `.claude/` in the project, and activates ADR-violation blocking on commit (if the project uses git). Then follow `GETTING-STARTED.md`.
 
+## Existing project?
+
+```text
+/renata:adopt
+```
+
+Already have code? `/renata:adopt` reverse-engineers the technical pattern (ADRs + code-pattern docs), the feature inventory, as-built specs and a retroactive PRD — confirming every item with you. Guide: [`ADOPTION.md`](ADOPTION.md).
+
 ## What's in the plugin
 
-- **29 commands** — planning (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validation (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), development (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), post-production (`/renata:bug-report`, `/renata:incident`), navigation (`/renata:status`), and the scaffold (`/renata:init`).
+- **30 commands** — planning (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validation (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), development (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), post-production (`/renata:bug-report`, `/renata:incident`), navigation (`/renata:status`), and the scaffold (`/renata:init`, `/renata:adopt`).
 - **6 agents** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 auto-activating skills** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — stage gate, in-session status, ADR-violation blocking on commit.
 
-> **Note:** the method content (commands, docs) is currently written in Portuguese; identifiers (commands, agents, files) are in English. Full English localization is on the roadmap. For the philosophy, see `METHOD.md`; for the step-by-step, `GETTING-STARTED.md`. For what's new in each version, see [`CHANGELOG.md`](CHANGELOG.md).
+> **Note:** the method content (commands, docs) is currently written in Portuguese; identifiers (commands, agents, files) are in English. Full English localization is on the roadmap. For the philosophy, see `METHOD.md`; for the step-by-step, `GETTING-STARTED.md`; for adopting the method on an existing codebase, `ADOPTION.md`; for the appendices/cheatsheet, `REFERENCE.md`. For what's new in each version, see [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 

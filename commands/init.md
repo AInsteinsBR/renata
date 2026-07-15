@@ -11,7 +11,7 @@ Respond to the user, and write the "next steps" output, in the user's language (
 ## When to use
 
 - Right after installing the RENATA plugin, in a new project directory (empty or with initial code).
-- To "renata-ify" an existing project that does not yet have the structure.
+- To "renata-ify" an existing project that does not yet have the structure — in that case the closing output points to `/renata:adopt` (full brownfield adoption).
 
 ## Steps
 
@@ -19,19 +19,27 @@ Respond to the user, and write the "next steps" output, in the user's language (
 - `$ARGUMENTS` = project name (e.g., "TaskFlow"). If empty, ask.
 - Detect the optional `--starter <URL>` flag in `$ARGUMENTS`.
 
-### 2. Copy the scaffold to the current project
+### 2. Detect existing code (brownfield)
+Before copying, check whether the directory already contains real code — ignoring anything the scaffold itself brings (`docs/`, `.claude/`, `CLAUDE.md`):
+
+- A dependency manifest at the root or in a first-level subdirectory: `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile`, `pom.xml`, `composer.json`; OR
+- A code directory (`src/`, `app/`, `lib/`, `apps/`, `frontend/`, `backend/`) containing source files.
+
+If any match, mark the project as **brownfield** — this only changes the closing output (step 7); the scaffold is copied the same way.
+
+### 3. Copy the scaffold to the current project
 Use Bash to copy the plugin template to the current directory, including dotfiles:
 ```bash
 cp -R "${CLAUDE_PLUGIN_ROOT}/template/." .
 ```
 This brings `CLAUDE.md.template`, `.claude/progress-map.yaml`, `.claude/rules.yaml.template`, and the `docs/` tree.
 
-### 3. Materialize the template files
+### 4. Materialize the template files
 - Rename `CLAUDE.md.template` → `CLAUDE.md`.
 - Rename `.claude/rules.yaml.template` → `.claude/rules.yaml`.
 - In `CLAUDE.md`, fill in the `{{PROJECT_NAME}}` of Section 1 with the received name. Leave the other `{{...}}` (they are filled in the following steps via `/renata:prd`, `/renata:persona`, etc.).
 
-### 4. Activate ADR enforcement on commit (if there is git)
+### 5. Activate ADR enforcement on commit (if there is git)
 If the directory has `.git/` (run `test -d .git`):
 ```bash
 # Turns on the blocking of commits that violate an ADR (rules-violation), out of the box:
@@ -40,7 +48,7 @@ ln -sf "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh" .git/hooks/pre-c
 ```
 If there is NO git: warn that ADR enforcement will be activated when the project has git, and that it is enough to re-run `/renata:init` or create the symlink above manually.
 
-### 5. (Optional) Frontend starter
+### 6. (Optional) Frontend starter
 If `--starter <URL>` was provided:
 ```bash
 git clone <URL> frontend
@@ -48,8 +56,15 @@ rm -rf frontend/.git
 ```
 Then materialize `docs/decisions/ADR-001-frontend-starter.md` documenting that the frontend inherits the starter (Context, Decision, Alternatives, Trade-offs, Review trigger), and add it to the `docs/decisions/README.md` index.
 
-### 6. Next steps
-Print the initial roadmap pointing to the plugin commands:
+### 7. Next steps
+If the project was marked **brownfield** in step 2, print:
+```text
+✓ RENATA scaffold initialized — existing code detected.
+This looks like an existing project. Next step:
+  - /renata:adopt  (reverse-engineers the pattern, features and a retroactive PRD)
+  - Guide: ADOPTION.md in the plugin repo.
+```
+Otherwise (greenfield), print the initial roadmap pointing to the plugin commands:
 ```text
 ✓ RENATA project initialized.
 Next steps:

@@ -8,6 +8,24 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 _Nada ainda._
 
+## [0.1.11] — 2026-07-15
+
+**O que há de novo:** adoção brownfield — nascida de feedback de uso real: um dev fazendo engenharia reversa de um sistema existente rodou o `/renata:extract-pattern` e ficou sem resposta pra "onde moram as specs técnicas?". Agora existe um comando e um guia pro caminho inteiro.
+
+### Adicionado
+- `/renata:adopt` — o 30º comando: adota o RENATA sobre uma base de código existente em 6 estágios confirmados — padrão técnico (compõe com o `/renata:extract-pattern` por escopo), contexto técnico (`stack.md` + `arquitetura.md` C4), inventário de features por engenharia reversa, PRD retroativo, specs as-built seletivas, fechamento com o mapa de artefatos. Todo artefato nasce 🔄 com a marca de proveniência `> 🏗️ As-built`; só o humano verifica, via `/renata:status`.
+- `ADOPTION.md` (en+pt) — o guia brownfield: tabela estágio a estágio, **"Onde mora cada artefato"** (a tabela que responde a pergunta original), o que o `/renata:status` mostra depois de uma rodada, limpeza de ADRs pré-existentes, FAQ.
+- `REFERENCE.md` (en+pt) — os seis apêndices do GETTING-STARTED (quando NÃO usar, anti-padrões, ordens alternativas, tempos realistas, cheatsheet, evoluir o método), agora com uma ordem alternativa brownfield e `/renata:adopt` + `/renata:init` no cheatsheet.
+- O `/renata:init` detecta código existente (manifests de dependência / diretórios de código-fonte) e fecha apontando pro `/renata:adopt` em vez do fluxo greenfield da Etapa 2.
+
+### Mudado
+- GETTING-STARTED (en+pt) enxugado de ~2000 pra ~1550 linhas: o mermaid do mapa do tutorial, as 4 visões (loop de execução, responsabilidade, artefatos) e o ensaio "por que essa ordem?" foram pro METHOD.md (deduplicando o "Quem faz o quê" dentro da Visão C); os apêndices foram pro REFERENCE.md; o preâmbulo agora tem ~70 linhas com a bússola e o resumo das etapas.
+- METHOD.md (en+pt) ganha "O fluxo de relance", "As 4 visões do método", uma categoria de comando "Scaffold" (`/renata:init`, `/renata:adopt`) e a nuance brownfield no "quando NÃO usar".
+
+### Corrigido
+- A Etapa 0.5 "Retrofit" era legado pré-plugin — `cp -R $FW/template` manual de um framework clonado, com contagens de validação defasadas ("18 comandos / 5 agentes") e sem conexão com o `/renata:extract-pattern`. Substituída por um ponteiro pro `/renata:adopt` + `ADOPTION.md`; o conselho de limpeza de ADRs pré-existentes foi pro ADOPTION.md.
+- A Etapa 1 ordenava o `git init` (1.4) depois do `/renata:init` (1.2), então o hook de enforcement de ADR — que só ativa quando o git existe — nunca ativava na primeira rodada. O `git init` agora vem antes.
+
 ## [0.1.10] — 2026-07-09
 
 **O que há de novo:** dois comandos novos fecham o loop pós-produção — `/renata:bug-report` estrutura um único bug report recém-chegado de produção; `/renata:incident` coordena a resposta ao vivo a um incidente maior e entrega pro `/renata:retro` para o post-mortem.

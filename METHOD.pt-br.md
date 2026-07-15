@@ -117,6 +117,242 @@ O RENATA não inventa as suas partes — ele monta peças comprovadas e adiciona
 
 ---
 
+## O fluxo de relance
+
+O fluxo completo, do "tenho uma ideia" ao "released" (o guia operacional passo-a-passo é o [`GETTING-STARTED.pt-br.md`](GETTING-STARTED.pt-br.md)):
+
+```mermaid
+flowchart TD
+    A["💡 Tenho uma ideia"] --> B["0. Pré-flight<br/>10min"]
+    B --> C["1. Criar projeto<br/>5min"]
+    C --> CD{"Problema já está claro?"}
+    CD -->|sim| D["2. PRD<br/>1-2h · /renata:prd"]
+    CD -->|"não, é só um palpite"| C15["1.5. Discovery<br/>/renata:discovery"]
+    C15 --> D
+    D --> E{"PRD aprovado?"}
+    E -->|não| D
+    E -->|sim| F["3. Personas<br/>30min · /renata:persona"]
+    F --> G["4. Jornadas<br/>30min · /renata:user-journey"]
+    G --> H["5. Métricas<br/>45min · /renata:metrics"]
+    H --> I["6. ADRs<br/>2-4h · /renata:adr<br/>🛠 time tech entra"]
+    I --> J["7. Features<br/>1h · /renata:feature-breakdown"]
+    I -."opcional: gaps competitivos".-> I65["6.5. Landscape<br/>/renata:landscape"]
+    I65 -.-> J
+    J --> J5["7.5. Fasear<br/>/renata:phase-roadmap"]
+    J -."opcional: regras densas".-> J77["7.7. Comportamento da feature<br/>/renata:feature-behavior"]
+    J77 -.-> J5
+    J5 --> K["8. Spec por fase<br/>1-2h · /renata:feature-spec"]
+    K --> K2{"Produto tem UI<br/>significativa?"}
+    K2 -->|não| KA{"Premissa de valor/<br/>viabilidade testada?"}
+    K2 -->|sim| K3["8.5. Design de telas<br/>1-2h · /renata:screens"]
+    K3 --> KA
+    KA -->|"não, é só intuição"| KT["Testar premissa<br/>/renata:assumption-test"]
+    KT -->|premissa caiu| D
+    KT -->|premissa sustenta| L
+    KA -->|sim| L["9. Roadmap<br/>1h · manual"]
+    L --> M["10. Arquitetura<br/>2-3h · 🛠 manual"]
+    M --> N{"Tudo pronto<br/>pra codar?"}
+    N -->|não| O["Volta na etapa<br/>que falhou"]
+    O --> E
+    N -->|sim| P["11. Plano de execução<br/>15min · 🛠 /renata:plan-phase"]
+    P --> Q["12. Executar<br/>🛠 dias-semanas<br/>↻ loop task-a-task"]
+    Q --> R["13. Retro<br/>1h · /renata:retro"]
+    R --> RH{"Entregou feature<br/>mensurável?"}
+    RH -->|sim| HC["Veredito da hipótese<br/>/renata:hypothesis-check"]
+    RH -->|não| S{"Próxima fase?"}
+    HC -->|"❌ caiu / 🤔 inconclusiva"| HCB["Evidência reabre:<br/>PRD · ADR · sunset"]
+    HCB --> D
+    HC -->|"✅ confirmada"| S
+    S -->|sim| Q
+    S -->|"não, projeto pronto"| T["🎉 Released"]
+    T -.->|"cliente/suporte/você<br/>acha um problema"| U["14. Bug report<br/>/renata:bug-report"]
+    U -->|"pequeno, isolado"| U1["/renata:todo add"]
+    U -->|"2+ sinais críticos<br/>ou crescendo"| U2["14. Incident<br/>🛠 /renata:incident"]
+    U2 --> U3["Post-mortem<br/>/renata:retro"]
+    U3 -.-> HCB
+
+    classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef done  fill:#d4edda,stroke:#28a745,color:#000
+    classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef opt   fill:#e0d4f5,stroke:#8e6fc4,color:#000
+    classDef val   fill:#d1ecf1,stroke:#17a2b8,color:#000
+    classDef back  fill:#f8d7da,stroke:#dc3545,color:#000
+
+    class A start
+    class T done
+    class I,M,P,Q,U2 tech
+    class C15,I65,J77,K3 opt
+    class KT,HC val
+    class HCB back
+```
+
+**Como ler este mapa:**
+
+- 🟡 **Amarelo** = etapa onde o **time técnico** entra junto (você não está mais sozinho).
+- 🟣 **Roxo** = etapas opcionais (discovery, landscape, comportamento da feature, design de telas).
+- 🔵 **Azul claro** = validação de produto (Measure-Learn): testar premissa antes, falsear hipótese depois.
+- 🔴 **Vermelho** = evidência reabre uma decisão já tomada (PRD/ADR/sunset) — a seta que volta.
+- ◇ **Losango** = decisão / gate. Se "não", volta. Se "sim", segue.
+- ⬜ **Retângulo** = etapa que produz um documento ou código.
+
+**Você vai chegar até "🎉 Released" seguindo esse caminho — não tem atalho.** E mesmo depois, o loop não fecha sozinho: feature mensurável entregue dispara `/renata:hypothesis-check`, e evidência pode te mandar de volta pro PRD. Released não é o fim da seta — a linha pontilhada saindo de "🎉 Released" é a Etapa 14 do tutorial: a primeira vez que um cliente acha um bug, é pra lá que você vai.
+
+> 🧭 **Já tem uma base de código?** Este mapa assume greenfield. Para projeto existente, o ponto de entrada é `/renata:adopt` — veja [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md).
+>
+> 🔁 **O nó "12. Executar" é um loop por dentro** (`↻ task-a-task`). Esse mapa o mostra como uma caixa só porque é a visão de pássaro. O ciclo detalhado dele — pegar task → teste → código → revisão → checkpoint — está na [Visão B](#-visão-b--o-loop-de-execução-etapa-12) abaixo e na Etapa 12 do tutorial.
+
+---
+
+## As 4 visões do método
+
+O mapa acima é a **visão de fluxo** — como o processo anda no tempo. Mas o mesmo método tem outras 3 leituras úteis. Cada uma responde uma pergunta diferente:
+
+| Visão | Pergunta que responde | Onde está |
+|---|---|---|
+| **A · Fluxo** | Em que ordem eu faço as coisas? | O mapa acima ↑ |
+| **B · Loop de execução** | Como o "executar" roda por dentro? | [Aqui ↓](#-visão-b--o-loop-de-execução-etapa-12) e na Etapa 12 do tutorial |
+| **C · Responsabilidade** | Quem faz o quê (eu / tech / agentes)? | [Aqui ↓](#-visão-c--responsabilidade-quem-faz-o-quê) |
+| **D · Artefatos** | Que documento alimenta qual? | [Aqui ↓](#-visão-d--artefatos-o-que-alimenta-o-quê) |
+
+### 🔁 Visão B — O loop de execução (Etapa 12)
+
+Dentro do nó "12. Executar", a porta de entrada é o `/renata:execute` (que orquestra o `superpowers:executing-plans` por dentro). Para **cada task** do plano, este ciclo roda. 🤖 = loop conduz · 🧑 = você decide.
+
+```mermaid
+flowchart TD
+    START(["Plano aprovado<br/>Etapa 11"]) --> T1["🤖 Pega próxima task<br/>do plano"]
+    T1 --> T2["🤖 respecting-adrs<br/>injeta ADRs da task"]
+    T2 --> T3["🤖 Teste vermelho<br/>TDD: escreve teste, falha"]
+    T3 --> T4["🤖 Código verde<br/>implementa, teste passa"]
+    T4 --> T5["🤖 Verifica de verdade<br/>roda validação do plano"]
+    T5 --> T6{"🧑 @code-reviewer<br/>diff ok?"}
+    T6 -->|"não, ajustar"| T3
+    T6 -->|sim| T7["🤖 keeping-docs-alive<br/>fecha task + atualiza sessão"]
+    T7 --> CK{"Próximo item<br/>é checkpoint?"}
+    CK -->|"sim"| PAUSE["🧑 PAUSA<br/>você revisa e libera"]
+    PAUSE --> GATE{"Todas as tasks [x]<br/>E gate da fase ✅?"}
+    CK -->|"não"| GATE
+    GATE -->|"não"| T1
+    GATE -->|"sim"| DONE(["Fase pronta<br/>→ Etapa 13 Retro"])
+
+    SOS["⚠️ deu errado?<br/>systematic-debugging /<br/>/renata:adr / @architect"] -.-> T3
+
+    classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef done  fill:#d4edda,stroke:#28a745,color:#000
+    classDef pause fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef sos   fill:#f8d7da,stroke:#dc3545,color:#000
+
+    class START start
+    class DONE done
+    class PAUSE pause
+    class SOS sos
+```
+
+**Como ler:** o caminho feliz é T1→T7 girando até o gate fechar. `@code-reviewer` (T6) pode te jogar de volta pro teste. Checkpoints **pausam** e devolvem pra você. A caixa vermelha pontilhada é o "quando dá errado" (detalhado na Etapa 12.4 do tutorial) — ela reentra no ciclo pelo teste.
+
+### 👥 Visão C — Responsabilidade (quem faz o quê)
+
+Quem lidera cada etapa. O **PM/founder** (você) opera sozinho no começo; o **time técnico** entra na Etapa 6 e lidera da 10 em diante; os **agentes** (skills/subagents) atuam dentro da execução.
+
+```mermaid
+flowchart LR
+    subgraph PM["🧑 PM / Founder lidera"]
+        direction TB
+        P1["0-1 Setup"] --> P2["1.5 Discovery (opc)<br/>+ 2 PRD"] --> P3["3-5 Personas<br/>Jornadas · Métricas"]
+    end
+    subgraph JUNTO["🧑 + 🛠 Decisão conjunta"]
+        direction TB
+        J1["6 ADRs +<br/>6.5 Landscape (opc)"] --> J2["7-8 Features<br/>+ comportamento (opc) + spec"] --> J3["8.5 Telas<br/>(opcional)"] --> J4["9 Roadmap"]
+    end
+    subgraph TECH["🛠 Time técnico lidera"]
+        direction TB
+        T1b["10 Arquitetura"] --> T2b["11 Plano"] --> T3b["12 Executar"]
+    end
+    subgraph FECHA["🧑 + 🛠 Conjunto"]
+        direction TB
+        F1["13 Retro +<br/>hypothesis-check"]
+    end
+    AG(["🤖 Agentes (você chama com @)<br/>@architect · @code-reviewer · @qa-tester"])
+    SK(["✨ Skills (auto-ativam)<br/>respecting-adrs · keeping-docs-alive ·<br/>detecting-scope-creep"])
+
+    PM --> JUNTO --> TECH --> FECHA
+    AG -.atuam dentro de.-> TECH
+    SK -.atuam dentro de.-> TECH
+
+    classDef pm    fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef agent fill:#ede7f6,stroke:#8e6fc4,color:#000
+    classDef skill fill:#e8f5e9,stroke:#43a047,color:#000
+
+    class PM pm
+    class TECH tech
+    class AG agent
+    class SK skill
+```
+
+Etapa a etapa, quem é responsável:
+
+| Etapa                               | Quem lidera                   | Quem entra junto                        |
+| ----------------------------------- | ----------------------------- | --------------------------------------- |
+| 0-1 (preparação)                  | Você (PM/founder)            | —                                      |
+| 2 (PRD)                             | Você                         | —                                      |
+| 3-5 (personas, jornadas, métricas) | Você                         | (opcional) UX se tiver                  |
+| 6 (ADRs)                            | Você + 🛠**time tech** | Decisão conjunta                       |
+| 7-8 (features, spec)                | Você                         | 🛠 Tech valida viabilidade              |
+| 8.5 (design de telas)               | Você + (UX se tiver)         | 🛠 Tech valida com starter/restrições |
+| 9 (roadmap)                         | Você                         | 🛠 Tech estima                          |
+| 10 (arquitetura)                    | 🛠**Time tech**         | Você revisa                            |
+| 11-12 (planejamento e execução)   | 🛠**Time tech**         | Você acompanha checkpoints             |
+| 13 (retro)                          | Você + 🛠 time tech          | Conjunto                                |
+
+**Tradução:** você (não-técnico) opera sozinho da Etapa 0 à 5. A partir da 6, chama alguém técnico. Da 10 em diante, o técnico lidera e você acompanha checkpoints. Os agentes são braços da execução — não decidem produto, executam disciplina.
+
+### 📦 Visão D — Artefatos (o que alimenta o quê)
+
+Cada etapa produz um documento, e cada documento **alimenta** os próximos. Esta é a cadeia de dependência: mexer num doc de cima obriga revisar os de baixo.
+
+```mermaid
+flowchart TD
+    DISC["🌫 Discovery<br/>discovery/ (opcional)"] -.-> PRD["📄 PRD<br/>docs/prd/"]
+    PRD --> PERS["📄 Personas<br/>business-context/"]
+    PRD --> JOR["📄 Jornadas"]
+    PERS --> JOR
+    JOR --> MET["📄 Métricas"]
+    PRD --> MET
+    PRD --> ADR["📐 ADRs<br/>decisions/ + rules.yaml"]
+    MET --> FEAT["📄 Feature breakdown<br/>features/README"]
+    PRD --> FEAT
+    PRD -.-> LAND["🔭 Landscape<br/>research/ (opcional)"]
+    LAND -.-> FEAT
+    ADR --> SPEC["📄 Feature-spec<br/>features/F1-*"]
+    FEAT --> SPEC
+    FEAT -.-> BEH["📄 Comportamento<br/>F<N>.behavior (opcional)"]
+    BEH -.-> SPEC
+    SPEC --> SCR["🎨 Telas<br/>design/ (opcional)"]
+    SPEC --> ROAD["🗺 Roadmap<br/>roadmap/fase-N"]
+    ROAD --> ARQ["🛠 Arquitetura<br/>technical-context/"]
+    ADR --> ARQ
+    ARQ --> PLAN["📋 Plano<br/>superpowers/specs/"]
+    SPEC --> PLAN
+    ADR --> PLAN
+    PLAN --> CODE["💻 Código + testes"]
+    CODE --> RETRO["🔁 Retro<br/>roadmap/fase-N-retro"]
+    RETRO -.evidência reabre.-> PRD
+    RETRO -.evidência reabre.-> ADR
+
+    classDef root fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef adr  fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef code fill:#d4edda,stroke:#28a745,color:#000
+    classDef plan fill:#ede7f6,stroke:#8e6fc4,color:#000
+
+    class PRD root
+    class ADR adr
+    class CODE code
+    class PLAN plan
+```
+
+**Como ler:** o PRD é a raiz — quase tudo desce dele. As ADRs (amarelo) cruzam a cadeia: alimentam feature-spec, arquitetura **e** plano (por isso o hook protege código contra elas). As setas pontilhadas de volta são o loop Measure-Learn: a retro pode reabrir PRD ou ADR.
+
 ---
 
 `<a id="ordem-alternancia"></a>`
@@ -282,6 +518,13 @@ docs/
 ## Slash commands canônicos
 
 **Padrão didático — o comando ensina enquanto conduz.** Comandos que usam frameworks nomeados (ex: `/renata:discovery` com 5 porquês / JTBD) dão uma explicação de 1 linha de cada framework no momento do uso. O método atende quem ainda não sabe "fazer produto" (como o README promete) — então o conhecimento chega no fluxo, não como aula pré-requisito.
+
+### Scaffold (setup do projeto)
+
+| Comando                  | Quando usar                                                        | O que gera                                      |
+| ------------------------ | ------------------------------------------------------------------ | ----------------------------------------------- |
+| `/renata:init <nome>`         | Uma vez, no início de um projeto (diretório novo ou existente)   | Scaffold `CLAUDE.md` + `docs/` + `.claude/`     |
+| `/renata:adopt [escopos]`      | Uma vez, numa **base de código existente** que adota o método — faz engenharia reversa do padrão, das features e de um PRD retroativo, confirmando item a item (ver [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md)) | ADRs + code-pattern + `stack.md`/`arquitetura.md` + `docs/features/` + `docs/prd/` (tudo as-built, 🔄) |
 
 ### Planejamento (definir o quê)
 
@@ -458,7 +701,7 @@ Configuração em dois lugares: `.mcp.json` (raiz do projeto) declara os servido
 Este framework não é o "jeito certo" de tudo. Não use se:
 
 - ❌ **Você tá fazendo throwaway code** (script de 1 uso, prova de conceito de 1 dia). Burocracia mata velocidade.
-- ❌ **Você está em codebase legada** com método estabelecido (não tente impor).
+- ❌ **Você está em codebase legada** com método estabelecido (não tente impor). Codebase legada **sem** método estabelecido é outra história — é pra isso que existe o `/renata:adopt` (ver [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md)).
 - ❌ **Time é grande (>15 pessoas)** — esse método é otimizado pra solo / squad pequeno (1-6). Para times grandes, complementar com RFC formal, sign-off, etc.
 - ❌ **Domínio extremamente regulado** (banco, saúde) — adicionar camadas de compliance/auditoria que o método não cobre.
 

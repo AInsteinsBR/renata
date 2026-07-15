@@ -48,7 +48,7 @@ Steps with `optional: true` get the suffix "(optional)".
 
 The next step is the **lowest non-✅ step whose `prereq` are all ✅** (or with no
 prereq). Do NOT blindly point to the next numeric step — the method allows alternative
-paths (see Appendix C of GETTING-STARTED: a technical project does ADRs before
+paths (see Appendix C of REFERENCE.md: a technical project does ADRs before
 personas, etc). Steps with `optional: true` do not block the next step.
 
 State clearly: "Next step: Step N (<name>). Run `<command from the map>`."
@@ -93,6 +93,8 @@ End with 1-2 lines: how many steps are ✅ out of how many mandatory ones, and t
 - Discovery's chosen bet carries a 🔴 belief / 🟡 anecdote seal → suggest `/renata:interview-kit` (get out of the building) before or right after the PRD; each transcript comes back through `/renata:interview-debrief`.
 - A phase delivered a measurable feature (the decisive metric has real data) → suggest `/renata:hypothesis-check` to issue the verdict for each affected hypothesis (and decide on sunset).
 - These do not block the next step in the map; they are the arrow that closes the loop (the "Evidence reopens a decision" principle).
+
+**Brownfield reminder:** many steps 🔄 at once, all carrying the `> 🏗️ As-built` mark → the project came from `/renata:adopt`. Verify them in prereq order, starting at Step 1 (see ADOPTION.md); steps 3-5 (personas, journey, metrics) are legitimately ⬜ — adopt does not invent them.
 
 ## Optional argument: revalidate a specific step
 

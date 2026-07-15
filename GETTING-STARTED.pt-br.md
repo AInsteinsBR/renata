@@ -8,87 +8,11 @@
 >
 > Você não precisa ser dev pra começar. Tempo total estimado: **8-12h** distribuídas em **1-2 semanas**.
 
----
+**Antes de começar — onde as coisas estão:**
 
-## 🗺 Mapa do tutorial
-
-```mermaid
-flowchart TD
-    A["💡 Tenho uma ideia"] --> B["0. Pré-flight<br/>10min"]
-    B --> C["1. Criar projeto<br/>5min"]
-    C --> CD{"Problema já está claro?"}
-    CD -->|sim| D["2. PRD<br/>1-2h · /renata:prd"]
-    CD -->|"não, é só um palpite"| C15["1.5. Discovery<br/>/renata:discovery"]
-    C15 --> D
-    D --> E{"PRD aprovado?"}
-    E -->|não| D
-    E -->|sim| F["3. Personas<br/>30min · /renata:persona"]
-    F --> G["4. Jornadas<br/>30min · /renata:user-journey"]
-    G --> H["5. Métricas<br/>45min · /renata:metrics"]
-    H --> I["6. ADRs<br/>2-4h · /renata:adr<br/>🛠 time tech entra"]
-    I --> J["7. Features<br/>1h · /renata:feature-breakdown"]
-    I -."opcional: gaps competitivos".-> I65["6.5. Landscape<br/>/renata:landscape"]
-    I65 -.-> J
-    J --> J5["7.5. Fasear<br/>/renata:phase-roadmap"]
-    J -."opcional: regras densas".-> J77["7.7. Comportamento da feature<br/>/renata:feature-behavior"]
-    J77 -.-> J5
-    J5 --> K["8. Spec por fase<br/>1-2h · /renata:feature-spec"]
-    K --> K2{"Produto tem UI<br/>significativa?"}
-    K2 -->|não| KA{"Premissa de valor/<br/>viabilidade testada?"}
-    K2 -->|sim| K3["8.5. Design de telas<br/>1-2h · /renata:screens"]
-    K3 --> KA
-    KA -->|"não, é só intuição"| KT["Testar premissa<br/>/renata:assumption-test"]
-    KT -->|premissa caiu| D
-    KT -->|premissa sustenta| L
-    KA -->|sim| L["9. Roadmap<br/>1h · manual"]
-    L --> M["10. Arquitetura<br/>2-3h · 🛠 manual"]
-    M --> N{"Tudo pronto<br/>pra codar?"}
-    N -->|não| O["Volta na etapa<br/>que falhou"]
-    O --> E
-    N -->|sim| P["11. Plano de execução<br/>15min · 🛠 /renata:plan-phase"]
-    P --> Q["12. Executar<br/>🛠 dias-semanas<br/>↻ loop task-a-task"]
-    Q --> R["13. Retro<br/>1h · /renata:retro"]
-    R --> RH{"Entregou feature<br/>mensurável?"}
-    RH -->|sim| HC["Veredito da hipótese<br/>/renata:hypothesis-check"]
-    RH -->|não| S{"Próxima fase?"}
-    HC -->|"❌ caiu / 🤔 inconclusiva"| HCB["Evidência reabre:<br/>PRD · ADR · sunset"]
-    HCB --> D
-    HC -->|"✅ confirmada"| S
-    S -->|sim| Q
-    S -->|"não, projeto pronto"| T["🎉 Released"]
-    T -.->|"cliente/suporte/você<br/>acha um problema"| U["14. Bug report<br/>/renata:bug-report"]
-    U -->|"pequeno, isolado"| U1["/renata:todo add"]
-    U -->|"2+ sinais críticos<br/>ou crescendo"| U2["14. Incident<br/>🛠 /renata:incident"]
-    U2 --> U3["Post-mortem<br/>/renata:retro"]
-    U3 -.-> HCB
-
-    classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
-    classDef done  fill:#d4edda,stroke:#28a745,color:#000
-    classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
-    classDef opt   fill:#e0d4f5,stroke:#8e6fc4,color:#000
-    classDef val   fill:#d1ecf1,stroke:#17a2b8,color:#000
-    classDef back  fill:#f8d7da,stroke:#dc3545,color:#000
-
-    class A start
-    class T done
-    class I,M,P,Q,U2 tech
-    class C15,I65,J77,K3 opt
-    class KT,HC val
-    class HCB back
-```
-
-**Como ler este mapa:**
-
-- 🟡 **Amarelo** = etapa onde o **time técnico** entra junto (você não está mais sozinho).
-- 🟣 **Roxo** = etapas opcionais (discovery, landscape, comportamento da feature, design de telas).
-- 🔵 **Azul claro** = validação de produto (Measure-Learn): testar premissa antes, falsear hipótese depois.
-- 🔴 **Vermelho** = evidência reabre uma decisão já tomada (PRD/ADR/sunset) — a seta que volta.
-- ◇ **Losango** = decisão / gate. Se "não", volta. Se "sim", segue.
-- ⬜ **Retângulo** = etapa que produz um documento ou código.
-
-**Você vai chegar até "🎉 Released" seguindo esse caminho — não tem atalho.** E mesmo depois, o loop não fecha sozinho: feature mensurável entregue dispara `/renata:hypothesis-check`, e evidência pode te mandar de volta pro PRD. Released não é o fim da seta — a linha pontilhada saindo de "🎉 Released" é a [Etapa 14](#-etapa-14--pós-produção-quando-a-realidade-acha-um-bug-transversal): a primeira vez que um cliente acha um bug, é pra lá que você vai.
-
-> 🔁 **O nó "12. Executar" é um loop por dentro** (`↻ task-a-task`). Esse mapa o mostra como uma caixa só porque é a visão de pássaro. O ciclo detalhado dele — pegar task → teste → código → revisão → checkpoint — está na [Visão B](#visão-b-o-loop-de-execução-etapa-12) e na própria Etapa 12.
+- 🏗 **Já tem uma codebase?** Este tutorial assume um projeto novo. Para um projeto existente, a porta de entrada é o `/renata:adopt` — leia [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md) primeiro.
+- 🧠 **O mapa completo do fluxo, as 4 visões do método** (fluxo · loop de execução · responsabilidade · artefatos) **e o "por que essa ordem?"** vivem no [`METHOD.pt-br.md`](METHOD.pt-br.md) — o "porquê" por trás do que você vai fazer aqui.
+- 📎 **Os apêndices** (quando NÃO usar, anti-padrões, ordens alternativas, tempos realistas, cheatsheet rápido) vivem no [`REFERENCE.pt-br.md`](REFERENCE.pt-br.md).
 
 ---
 
@@ -113,253 +37,30 @@ Use sempre que estiver em dúvida sobre o que vem a seguir, depois de editar um 
 
 ---
 
-## 🔭 As 4 visões do método
-
-O mapa acima é a **visão de fluxo** — como o processo anda no tempo. Mas o mesmo método tem outras 3 leituras úteis. Cada uma responde uma pergunta diferente:
-
-| Visão | Pergunta que responde | Onde está |
-|---|---|---|
-| **A · Fluxo** | Em que ordem eu faço as coisas? | O mapa acima ↑ |
-| **B · Loop de execução** | Como o "executar" roda por dentro? | [Aqui ↓](#visão-b-o-loop-de-execução-etapa-12) e na Etapa 12 |
-| **C · Responsabilidade** | Quem faz o quê (eu / tech / agentes)? | [Aqui ↓](#visão-c-responsabilidade-quem-faz-o-quê) |
-| **D · Artefatos** | Que documento alimenta qual? | [Aqui ↓](#visão-d-artefatos-o-que-alimenta-o-quê) |
-
----
-
-### 🔁 Visão B — O loop de execução (Etapa 12)
-
-Dentro do nó "12. Executar", a porta de entrada é o `/renata:execute` (que orquestra o `superpowers:executing-plans` por dentro). Para **cada task** do plano, este ciclo roda. 🤖 = loop conduz · 🧑 = você decide.
-
-```mermaid
-flowchart TD
-    START(["Plano aprovado<br/>Etapa 11"]) --> T1["🤖 Pega próxima task<br/>do plano"]
-    T1 --> T2["🤖 respecting-adrs<br/>injeta ADRs da task"]
-    T2 --> T3["🤖 Teste vermelho<br/>TDD: escreve teste, falha"]
-    T3 --> T4["🤖 Código verde<br/>implementa, teste passa"]
-    T4 --> T5["🤖 Verifica de verdade<br/>roda validação do plano"]
-    T5 --> T6{"🧑 @code-reviewer<br/>diff ok?"}
-    T6 -->|"não, ajustar"| T3
-    T6 -->|sim| T7["🤖 keeping-docs-alive<br/>fecha task + atualiza sessão"]
-    T7 --> CK{"Próximo item<br/>é checkpoint?"}
-    CK -->|"sim"| PAUSE["🧑 PAUSA<br/>você revisa e libera"]
-    PAUSE --> GATE{"Todas as tasks [x]<br/>E gate da fase ✅?"}
-    CK -->|"não"| GATE
-    GATE -->|"não"| T1
-    GATE -->|"sim"| DONE(["Fase pronta<br/>→ Etapa 13 Retro"])
-
-    SOS["⚠️ deu errado?<br/>systematic-debugging /<br/>/renata:adr / @architect"] -.-> T3
-
-    classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
-    classDef done  fill:#d4edda,stroke:#28a745,color:#000
-    classDef pause fill:#fff3cd,stroke:#d39e00,color:#000
-    classDef sos   fill:#f8d7da,stroke:#dc3545,color:#000
-
-    class START start
-    class DONE done
-    class PAUSE pause
-    class SOS sos
-```
-
-**Como ler:** o caminho feliz é T1→T7 girando até o gate fechar. `@code-reviewer` (T6) pode te jogar de volta pro teste. Checkpoints **pausam** e devolvem pra você. A caixa vermelha pontilhada é o "quando dá errado" (detalhado em 12.4) — ela reentra no ciclo pelo teste.
-
----
-
-### 👥 Visão C — Responsabilidade (quem faz o quê)
-
-Quem lidera cada etapa. O **PM/founder** (você) opera sozinho no começo; o **time técnico** entra na Etapa 6 e lidera da 10 em diante; os **agentes** (skills/subagents) atuam dentro da execução.
-
-```mermaid
-flowchart LR
-    subgraph PM["🧑 PM / Founder lidera"]
-        direction TB
-        P1["0-1 Setup"] --> P2["1.5 Discovery (opc)<br/>+ 2 PRD"] --> P3["3-5 Personas<br/>Jornadas · Métricas"]
-    end
-    subgraph JUNTO["🧑 + 🛠 Decisão conjunta"]
-        direction TB
-        J1["6 ADRs +<br/>6.5 Landscape (opc)"] --> J2["7-8 Features<br/>+ comportamento (opc) + spec"] --> J3["8.5 Telas<br/>(opcional)"] --> J4["9 Roadmap"]
-    end
-    subgraph TECH["🛠 Time técnico lidera"]
-        direction TB
-        T1b["10 Arquitetura"] --> T2b["11 Plano"] --> T3b["12 Executar"]
-    end
-    subgraph FECHA["🧑 + 🛠 Conjunto"]
-        direction TB
-        F1["13 Retro +<br/>hypothesis-check"]
-    end
-    AG(["🤖 Agentes (você chama com @)<br/>@architect · @code-reviewer · @qa-tester"])
-    SK(["✨ Skills (auto-ativam)<br/>respecting-adrs · keeping-docs-alive ·<br/>detecting-scope-creep"])
-
-    PM --> JUNTO --> TECH --> FECHA
-    AG -.atuam dentro de.-> TECH
-    SK -.atuam dentro de.-> TECH
-
-    classDef pm    fill:#e1f5ff,stroke:#3399cc,color:#000
-    classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
-    classDef agent fill:#ede7f6,stroke:#8e6fc4,color:#000
-    classDef skill fill:#e8f5e9,stroke:#43a047,color:#000
-
-    class PM pm
-    class TECH tech
-    class AG agent
-    class SK skill
-```
-
-**Tradução:** você (não-técnico) opera sozinho da Etapa 0 à 5. A partir da 6, chama alguém técnico. Da 10 em diante, o técnico lidera e você acompanha checkpoints. Os agentes são braços da execução — não decidem produto, executam disciplina.
-
----
-
-### 📦 Visão D — Artefatos (o que alimenta o quê)
-
-Cada etapa produz um documento, e cada documento **alimenta** os próximos. Esta é a cadeia de dependência: mexer num doc de cima obriga revisar os de baixo.
-
-```mermaid
-flowchart TD
-    DISC["🌫 Discovery<br/>discovery/ (opcional)"] -.-> PRD["📄 PRD<br/>docs/prd/"]
-    PRD --> PERS["📄 Personas<br/>business-context/"]
-    PRD --> JOR["📄 Jornadas"]
-    PERS --> JOR
-    JOR --> MET["📄 Métricas"]
-    PRD --> MET
-    PRD --> ADR["📐 ADRs<br/>decisions/ + rules.yaml"]
-    MET --> FEAT["📄 Feature breakdown<br/>features/README"]
-    PRD --> FEAT
-    PRD -.-> LAND["🔭 Landscape<br/>research/ (opcional)"]
-    LAND -.-> FEAT
-    ADR --> SPEC["📄 Feature-spec<br/>features/F1-*"]
-    FEAT --> SPEC
-    FEAT -.-> BEH["📄 Comportamento<br/>F&lt;N&gt;.behavior (opcional)"]
-    BEH -.-> SPEC
-    SPEC --> SCR["🎨 Telas<br/>design/ (opcional)"]
-    SPEC --> ROAD["🗺 Roadmap<br/>roadmap/fase-N"]
-    ROAD --> ARQ["🛠 Arquitetura<br/>technical-context/"]
-    ADR --> ARQ
-    ARQ --> PLAN["📋 Plano<br/>superpowers/specs/"]
-    SPEC --> PLAN
-    ADR --> PLAN
-    PLAN --> CODE["💻 Código + testes"]
-    CODE --> RETRO["🔁 Retro<br/>roadmap/fase-N-retro"]
-    RETRO -.evidência reabre.-> PRD
-    RETRO -.evidência reabre.-> ADR
-
-    classDef root fill:#e1f5ff,stroke:#3399cc,color:#000
-    classDef adr  fill:#fff3cd,stroke:#d39e00,color:#000
-    classDef code fill:#d4edda,stroke:#28a745,color:#000
-    classDef plan fill:#ede7f6,stroke:#8e6fc4,color:#000
-
-    class PRD root
-    class ADR adr
-    class CODE code
-    class PLAN plan
-```
-
-**Como ler:** o PRD é a raiz — quase tudo desce dele. As ADRs (amarelo) cruzam a cadeia: alimentam feature-spec, arquitetura **e** plano (por isso o hook protege código contra elas). As setas pontilhadas de volta são o loop Measure-Learn: a retro pode reabrir PRD ou ADR.
-
----
-
-## 👥 Quem faz o quê
-
-O método cobre dois leitores. Cada etapa indica quem é responsável:
-
-| Etapa | Quem lidera | Quem entra junto |
-|---|---|---|
-| 0-1 (preparação) | Você (PM/founder) | — |
-| 2 (PRD) | Você | — |
-| 3-5 (personas, jornadas, métricas) | Você | (opcional) UX se tiver |
-| 6 (ADRs) | Você + 🛠 **time tech** | Decisão conjunta |
-| 7-8 (features, spec) | Você | 🛠 Tech valida viabilidade |
-| 8.5 (design de telas) | Você + (UX se tiver) | 🛠 Tech valida com starter/restrições |
-| 9 (roadmap) | Você | 🛠 Tech estima |
-| 10 (arquitetura) | 🛠 **Time tech** | Você revisa |
-| 11-12 (planejamento e execução) | 🛠 **Time tech** | Você acompanha checkpoints |
-| 13 (retro) | Você + 🛠 time tech | Conjunto |
-
-**Tradução:** você (não-técnico) opera sozinho da Etapa 0 até a 5. A partir da Etapa 6 chama alguém técnico. Da 10 em diante, o técnico lidera e você acompanha.
-
----
-
-## 🧠 Antes de começar: por que essa ordem específica?
-
-A pergunta natural de quem olha o sumário pela primeira vez é:
-
-> *"Como eu faço ADRs (Etapa 6) antes de detalhar features (Etapa 7)? Não deveria saber o que vou construir primeiro?"*
-
-**Resposta:** o método **alterna** entre "o quê" e "como" em diferentes níveis de granularidade. Não é uma confusão — é proposital.
-
-| Nível | Etapa | Pergunta | O que define |
-|---|---|---|---|
-| Névoa | 1.5. Discovery (opcional) | QUE problema, de fato | Problema claro + público + sementes |
-| Macro | 2. PRD | O QUE em alto nível | Tese + escopo + métrica decisiva |
-| Contexto | 3-5. Personas/Jornadas/Métricas | POR QUÊ e PRA QUEM | Restrições amarradas |
-| Macro | 6. ADRs | COMO em alto nível | Stack + estratégia |
-| Mercado | 6.5. Landscape (opcional) | O QUE os outros fazem | Gaps de diferenciação → features candidatas |
-| Médio | 7. Feature breakdown | O QUE em médio nível | Capacidades atômicas |
-| Médio | 7.7. Comportamento da feature (opcional) | O QUE o usuário observa | Comportamento observável, sem detalhe técnico |
-| Médio | 7.5. Fasear o sistema | QUANDO cada feature | Todas as features em fases por tempo |
-| Médio | 8. Feature spec | COMO em médio nível | Plano por feature |
-| Visual | 8.5. Design de telas (opcional) | COMO o usuário vê | Inventário + fluxo + briefs |
-| Baixo | 10. Arquitetura | COMO em baixo nível | Diagramas técnicos |
-| Micro | 11. Plano de execução | COMO em micro nível | Passos de código |
-
-### Por que funciona assim
-
-- O **PRD já te dá os requisitos pra abrir ADRs** — você não precisa de features detalhadas.
-- Você **não consegue detalhar feature** sem saber qual é o stack (que vem das ADRs).
-- Features só **detalham** o que o PRD já decidiu em alto nível.
-
-### Exemplo concreto
-
-Um PRD que diz *"avatar humano realtime com RAG sobre KB da empresa, latência <2s, self-hosted"* já **força** abrir ADRs sobre:
-
-- **Vector DB** (porque "RAG" → precisa de algum lugar pra guardar embeddings)
-- **Transporte** (porque "latência <2s" → precisa de WebRTC ou similar)
-- **Modelo de lip sync** (porque "realtime" → SadTalker não serve)
-- **Estratégia self-host vs API** (porque "self-hosted")
-
-Nenhuma dessas ADRs precisa esperar a feature spec — elas são **pré-requisitos** pra falar de features.
-
-### Importante: ADRs aparecem em qualquer etapa
-
-A **Etapa 6 é só o primeiro lote concentrado** (ADRs que destravam o resto). Você fará mais ADRs:
-
-- **Durante Etapa 7** — ao ver features, percebe que precisa de ADR sobre algo
-- **Durante Etapa 10** — arquitetura revela decisão estrutural não-prevista
-- **Durante Etapa 12 (execução)** — escolhe biblioteca, padrão de teste, etc
-- **Durante Etapa 13 (retro)** — descobre que decisão antiga estava errada → ADR `superseded`
-
-A regra: **se aparece decisão com impacto > 1 sprint, abre `/renata:adr`. Não importa em que etapa você está.**
-
-### Em uma frase
-
-> **PRD pinta o quadro grande, ADRs decidem as cores e técnicas, features pintam os detalhes.**
-
-Se essa explicação ainda está confusa, abra [`METHOD.pt-br.md`](./METHOD.pt-br.md#ordem-alternancia) — tem versão mais longa lá.
-
----
-
 ## 📖 Sumário das etapas
 
-| # | Etapa | Tempo | Comando | Resultado |
-|---|---|---|---|---|
-| 0 | Pré-flight | 10min | — | Ambiente pronto |
-| 0.5 | Retrofit (só se já tem projeto) | 15min | — | Framework aplicado em projeto existente |
-| 1 | Criar projeto | 5min | — | Estrutura inicial |
-| **1.5** | **Discovery (opcional)** | **30-60min** | **`/renata:discovery`** | **`docs/discovery/<data>-<slug>.md`** |
-| 2 | Definir produto | 1-2h | `/renata:prd` | `docs/prd/<slug>.md` |
-| 3 | Mapear personas | 30min cada | `/renata:persona` | `docs/business-context/personas.md` |
-| 4 | Mapear jornadas | 30min | `/renata:user-journey` | `docs/business-context/jornada.md` |
-| 5 | Definir métricas | 45min | `/renata:metrics` | `docs/business-context/metricas.md` |
-| 6 | Decisões técnicas (ADRs) | 2-4h | `/renata:adr` | `docs/decisions/ADR-*.md` |
-| **6.5** | **Pesquisa competitiva (opcional)** | **30-60min** | **`/renata:landscape`** | **`docs/research/<data>-landscape.md`** |
-| 7 | Priorizar features | 1h | `/renata:feature-breakdown` | `docs/features/README.md` |
-| 7.5 | Fasear o sistema | 30-45min | `/renata:phase-roadmap` | `docs/roadmap/fases-overview.md` |
-| **7.7** | **Comportamento da feature (opcional)** | **30min por feature** | **`/renata:feature-behavior`** | **`docs/features/F<N>-*.behavior.md`** |
-| 8 | Spec por fase (começa pela Fase 0) | 1-2h | `/renata:feature-spec` | `docs/features/F1-*.md` |
-| **8.5** | **Design de telas (opcional)** | **1-2h** | **`/renata:screens`** | **`docs/design/`** |
-| 9 | Roadmap macro | 1h | manual | `docs/roadmap/` |
-| 10 | Arquitetura técnica | 2-3h | manual | `docs/technical-context/` |
-| 11 | Plano de execução | 15min | `/renata:plan-phase` (envolve `superpowers:writing-plans`) | `docs/superpowers/specs/` |
-| 12 | Executar | dias-semanas | `/renata:execute <fase>` (envolve `superpowers:executing-plans` + gate de pronto) | código real |
-| 13 | Retro da fase | 1h | `/renata:retro` | `docs/roadmap/fase-N-retro.md` |
+| #             | Etapa                                         | Tempo                       | Comando                                                                               | Resultado                                       |
+| ------------- | --------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| 0             | Pré-flight                                   | 10min                       | —                                                                                    | Ambiente pronto                                 |
+| 0.5           | Adotar (só se você já tem projeto)           | varia                       | `/renata:adopt`                                                                       | RENATA adotada sobre código existente — guia: [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md) |
+| 1             | Criar projeto                                 | 5min                        | —                                                                                    | Estrutura inicial                               |
+| **1.5** | **Discovery (opcional)**                | **30-60min**          | **`/renata:discovery`**                                                       | **`docs/discovery/<data>-<slug>.md`**   |
+| 2             | Definir produto                               | 1-2h                        | `/renata:prd`                                                                       | `docs/prd/<slug>.md`                          |
+| 3             | Mapear personas                               | 30min cada                  | `/renata:persona`                                                                   | `docs/business-context/personas.md`           |
+| 4             | Mapear jornadas                               | 30min                       | `/renata:user-journey`                                                              | `docs/business-context/jornada.md`            |
+| 5             | Definir métricas                             | 45min                       | `/renata:metrics`                                                                   | `docs/business-context/metricas.md`           |
+| 6             | Decisões técnicas (ADRs)                    | 2-4h                        | `/renata:adr`                                                                       | `docs/decisions/ADR-*.md`                     |
+| **6.5** | **Pesquisa competitiva (opcional)**     | **30-60min**          | **`/renata:landscape`**                                                       | **`docs/research/<data>-landscape.md`** |
+| 7             | Priorizar features                            | 1h                          | `/renata:feature-breakdown`                                                         | `docs/features/README.md`                     |
+| 7.5           | Fasear o sistema                              | 30-45min                    | `/renata:phase-roadmap`                                                             | `docs/roadmap/fases-overview.md`              |
+| **7.7** | **Comportamento da feature (opcional)** | **30min por feature** | **`/renata:feature-behavior`**                                                | **`docs/features/F<N>-*.behavior.md`**  |
+| 8             | Spec por fase (começa pela Fase 0)           | 1-2h                        | `/renata:feature-spec`                                                              | `docs/features/F1-*.md`                       |
+| **8.5** | **Design de telas (opcional)**          | **1-2h**              | **`/renata:screens`**                                                         | **`docs/design/`**                      |
+| 9             | Roadmap macro                                 | 1h                          | manual                                                                                | `docs/roadmap/`                               |
+| 10            | Arquitetura técnica                          | 2-3h                        | manual                                                                                | `docs/technical-context/`                     |
+| 11            | Plano de execução                           | 15min                       | `/renata:plan-phase` (envolve `superpowers:writing-plans`)                        | `docs/superpowers/specs/`                     |
+| 12            | Executar                                      | dias-semanas                | `/renata:execute <fase>` (envolve `superpowers:executing-plans` + gate de pronto) | código real                                    |
+| 13            | Retro da fase                                 | 1h                          | `/renata:retro`                                                                     | `docs/roadmap/fase-N-retro.md`                |
 
 ---
 
@@ -369,11 +70,11 @@ Se essa explicação ainda está confusa, abra [`METHOD.pt-br.md`](./METHOD.pt-b
 
 ## O que você precisa ter instalado
 
-| Ferramenta | Pra que serve | Como instalar |
-|---|---|---|
-| **Claude Code** | É a "IDE" onde você vai operar | https://claude.com/claude-code (siga o site, é 1-clique) |
-| **Git** | Versionar arquivos | Provavelmente já tem. Testar: `git --version` |
-| **yq** | Ferramenta usada pelo hook automático (opcional) | macOS: `brew install yq` · Linux: `sudo apt install yq` |
+| Ferramenta            | Pra que serve                                     | Como instalar                                               |
+| --------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| **Claude Code** | É a "IDE" onde você vai operar                  | https://claude.com/claude-code (siga o site, é 1-clique)   |
+| **Git**         | Versionar arquivos                                | Provavelmente já tem. Testar:`git --version`             |
+| **yq**          | Ferramenta usada pelo hook automático (opcional) | macOS:`brew install yq` · Linux: `sudo apt install yq` |
 
 ## Validação
 
@@ -391,81 +92,25 @@ Se `yq` não estiver instalado, **não trava nada agora** — só o hook fica em
 
 Antes de seguir, fixe esses 3 conceitos:
 
-| Termo | O que é |
-|---|---|
-| **Doc viva** | Documento em `docs/` que evolui junto com o projeto. NÃO é "escreveu e esqueceu" — é "escreve, decide, volta, atualiza". |
-| **Slash command** | Comando que você digita no Claude Code começando com `/`. Ex: `/renata:prd`. Ele te faz perguntas e gera doc. |
-| **Hook** | Script que roda sozinho antes de cada commit, conferindo se você não está violando decisões antigas. |
+| Termo                   | O que é                                                                                                                      |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Doc viva**      | Documento em`docs/` que evolui junto com o projeto. NÃO é "escreveu e esqueceu" — é "escreve, decide, volta, atualiza". |
+| **Slash command** | Comando que você digita no Claude Code começando com`/`. Ex: `/renata:prd`. Ele te faz perguntas e gera doc.            |
+| **Hook**          | Script que roda sozinho antes de cada commit, conferindo se você não está violando decisões antigas.                      |
 
 ---
 
-# 🔧 Etapa 0.5 — Retrofit (pular se projeto novo)
+# 🏗 Etapa 0.5 — Projeto existente? (pule se for projeto novo)
 
-**Só leia esta etapa se você já tem um projeto rodando e quer adicionar o RENATA depois.**
-
-Se você está criando projeto **do zero**, pule pra Etapa 1.
-
-## Quando isto se aplica
-
-- Você tem um repo existente com código (ou só documentação) e quer adotar o método.
-- Não dá pra rodar o `init.sh` porque ele sobrescreveria arquivos.
-
-## Procedimento
-
-```bash
-cd /caminho/do/seu/projeto/existente
-FW=~/renata   # onde você clonou o framework
-
-# 1. Copia .claude/ se não existe
-[ -d .claude ] || cp -R $FW/template/.claude .
-
-# 2. Atualiza slash commands (sobrescreve)
-mkdir -p .claude/commands
-cp $FW/template/.claude/commands/*.md .claude/commands/
-
-# 3. Atualiza subagentes
-mkdir -p .claude/agents
-cp $FW/template/.claude/agents/*.md .claude/agents/
-
-# 4. Atualiza hook
-mkdir -p .claude/hooks
-cp $FW/template/.claude/hooks/rules-violation.sh .claude/hooks/
-chmod +x .claude/hooks/rules-violation.sh
-
-# 5. CRÍTICO: template de ADR (frequentemente esquecido)
-mkdir -p docs/decisions
-cp $FW/template/docs/decisions/_template.md docs/decisions/
-[ -f docs/decisions/README.md ] || cp $FW/template/docs/decisions/README.md docs/decisions/
-
-# 6. rules.yaml inicial
-[ -f .claude/rules.yaml ] || cp $FW/template/.claude/rules.yaml.template .claude/rules.yaml
-```
-
-## Atenção em projetos com ADRs pré-existentes
-
-Se você já tinha ADRs antes do framework:
-
-- O `.claude/rules.yaml` foi populado **fora** do fluxo `/renata:adr` (manualmente, ou ficou vazio).
-- Isso é **débito técnico**: o YAML perdeu a amarração com a ADR.
-
-**Caminho de limpeza:**
-
-Para cada ADR existente que tem enforcement por hook, rode:
+**Já tem uma codebase?** Não faça o retrofit na mão — um comando orquestra a adoção inteira: padrão técnico de engenharia reversa (ADRs + docs de code-pattern), inventário de features, specs as-built e um PRD retroativo, confirmando cada item com você:
 
 ```text
-/renata:adr refinar ADR-001 — re-validar enforcement no rules.yaml
+/renata:adopt
 ```
 
-O `/renata:adr` em modo refinar lê a ADR, valida o bloco YAML correspondente, e completa o que falta com sua confirmação.
+Leia [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md) — ele explica cada estágio, **onde cada artefato mora**, o que verificar depois via `/renata:status`, e como lidar com ADRs pré-existentes.
 
-## Validação
-
-- [ ] `ls .claude/commands/` lista 18 arquivos `.md`.
-- [ ] `ls .claude/agents/` lista 5 arquivos `.md`.
-- [ ] `docs/decisions/_template.md` existe.
-- [ ] `bash .claude/hooks/rules-violation.sh` roda sem erro fatal.
-
-Pronto, framework retrofitado. **Pule pra Etapa 6** (sua etapa 1 já foi feita há tempos).
+Se você está criando um projeto **do zero**, pule para a Etapa 1.
 
 ---
 
@@ -484,7 +129,17 @@ PROJECT_NAME="TaskFlow"
 PROJECT_DIR=~/projetos/taskflow
 ```
 
-## 1.2. Instalar o plugin (uma vez) e inicializar o projeto
+## 1.2. Criar a pasta e iniciar o git
+
+Faça isso **antes** do `/renata:init` — o hook de enforcement de ADR só ativa se o git já existir:
+
+```bash
+mkdir -p $PROJECT_DIR
+cd $PROJECT_DIR
+git init
+```
+
+## 1.3. Instalar o plugin (uma vez) e inicializar o projeto
 
 O RENATA é um **plugin do Claude Code** — você instala uma vez e ele fica disponível em todo projeto.
 
@@ -503,12 +158,11 @@ O RENATA é um **plugin do Claude Code** — você instala uma vez e ele fica di
 
 (ou `/renata:init "TaskFlow" --starter <URL-do-starter>` se você tem um boilerplate de frontend.)
 
-O `/renata:init` cria a estrutura, preenche o `CLAUDE.md` com o nome, e — se o projeto já tem git — **ativa automaticamente** o bloqueio de commits que violam ADR.
+O `/renata:init` cria a estrutura, preenche o `CLAUDE.md` com o nome, e — como o projeto já tem git (passo 1.2) — **ativa automaticamente** o bloqueio de commits que violam ADR.
 
-## 1.3. Conferir o que foi criado
+## 1.4. Conferir o que foi criado e fazer o primeiro commit
 
 ```bash
-cd $PROJECT_DIR
 ls -la
 ```
 
@@ -522,10 +176,7 @@ CLAUDE.md          ← arquivo de contexto do projeto
 
 > Os **comandos, agentes e hooks** não ficam no projeto — vêm do plugin instalado no Claude Code. Só o scaffold de dados (`docs/`, `CLAUDE.md`, `.claude/progress-map.yaml`, `.claude/rules.yaml`) vive no projeto.
 
-## 1.4. Primeiro commit
-
 ```bash
-git init
 git add .
 git commit -m "chore: scaffold via RENATA"
 ```
@@ -576,7 +227,7 @@ O discovery também **carimba cada afirmação com um selo de evidência** (🔴
 
 **Objetivo:** escrever o Micro PRD — o documento mais importante do projeto. Tudo depois amarra nele.
 
-> 🧭 **Começando um sistema com várias apostas?** Regra do método: **um projeto = um PRD**, e esse PRD abriga **N hipóteses** (cada uma com seu sinal de falsificação e sua métrica decisiva). Não crie "vários PRDs" — se uma aposta é separável a ponto de viver sozinha, ela é **outro projeto** (pasta própria), não outro PRD aqui. A regra completa (com exemplos) está em [`METHOD.pt-br.md` → "1 projeto = 1 PRD"](METHOD.pt-br.md#um-prd-vs-n-prds). ADRs são **transversais** (`docs/decisions/`), nunca dentro do PRD.
+> 🧭 **Começando um sistema com várias apostas?** Regra do método: **um projeto = um PRD**, e esse PRD abriga **N hipóteses** (cada uma com seu sinal de falsificação e sua métrica decisiva). Não crie "vários PRDs" — se uma aposta é separável a ponto de viver sozinha, ela é **outro projeto** (pasta própria), não outro PRD aqui. A regra completa (com exemplos) está em [`METHOD.pt-br.md` → &#34;1 projeto = 1 PRD&#34;](METHOD.pt-br.md#um-prd-vs-n-prds). ADRs são **transversais** (`docs/decisions/`), nunca dentro do PRD.
 
 ## 2.1. Pensar 5 minutos antes de rodar
 
@@ -660,12 +311,12 @@ Abra `CLAUDE.md` e preencha agora:
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| Hipótese vaga ("vai melhorar UX") | Força um número. Estime se não tem dado. |
-| Escopo IN gigante | Decompor em fases. Se descrever plataforma com 6 subsistemas, pause e use `superpowers:brainstorming`. |
-| Sem escopo OUT | Force. 3-5 itens mínimo. |
-| Persona genérica ("PMEs") | Pause aqui, vá pra Etapa 3, depois volte. |
+| Sintoma                            | Solução                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Hipótese vaga ("vai melhorar UX") | Força um número. Estime se não tem dado.                                                             |
+| Escopo IN gigante                  | Decompor em fases. Se descrever plataforma com 6 subsistemas, pause e use`superpowers:brainstorming`. |
+| Sem escopo OUT                     | Force. 3-5 itens mínimo.                                                                               |
+| Persona genérica ("PMEs")         | Pause aqui, vá pra Etapa 3, depois volte.                                                              |
 
 ---
 
@@ -675,11 +326,11 @@ Abra `CLAUDE.md` e preencha agora:
 
 ## 3.1. Definir quem é primária, secundária, indireta
 
-| Tipo | Quem é | Quantas |
-|---|---|---|
-| **Primária** | Sofre mais o problema e decide pela solução | 1 |
-| **Secundária** | Afetada mas com peso menor | 0-2 |
-| **Indireta** | Usa mas não compra (end-user) | 0-1 |
+| Tipo                  | Quem é                                       | Quantas |
+| --------------------- | --------------------------------------------- | ------- |
+| **Primária**   | Sofre mais o problema e decide pela solução | 1       |
+| **Secundária** | Afetada mas com peso menor                    | 0-2     |
+| **Indireta**    | Usa mas não compra (end-user)                | 0-1     |
 
 > 💡 **TaskFlow exemplo:**
 >
@@ -695,12 +346,12 @@ Abra `CLAUDE.md` e preencha agora:
 
 **O comando faz 4 turnos:**
 
-| Turno | Pergunta |
-|---|---|
-| 1 | Papel e contexto (cargo, empresa/situação, rotina) |
-| 2 | Dor específica com **número** + alternativas que já tentou |
-| 3 | Critério de sucesso (em palavras dela, como citação) + frase âncora |
-| 4 | Anti-personas (quem **não** é) |
+| Turno | Pergunta                                                                |
+| ----- | ----------------------------------------------------------------------- |
+| 1     | Papel e contexto (cargo, empresa/situação, rotina)                    |
+| 2     | Dor específica com**número** + alternativas que já tentou      |
+| 3     | Critério de sucesso (em palavras dela, como citação) + frase âncora |
+| 4     | Anti-personas (quem**não** é)                                   |
 
 ## 3.3. Repetir para personas secundárias e indiretas
 
@@ -734,11 +385,11 @@ E no fim do arquivo (uma única seção consolidada):
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| "Persona é todo mundo" | Force perfil específico. "Marcos, designer freelancer, 32, gerencia 5 clientes em 3 redes sociais diferentes" é persona. "Freelancers de tech" não é. |
-| Dor sem número | Estime, mesmo aproximado. Sem número, é desejo. |
-| Critério de sucesso técnico ("vai usar nossa API") | Sucesso é o que **ela** quer, não o que produto faz. |
+| Sintoma                                              | Solução                                                                                                                                                 |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Persona é todo mundo"                              | Force perfil específico. "Marcos, designer freelancer, 32, gerencia 5 clientes em 3 redes sociais diferentes" é persona. "Freelancers de tech" não é. |
+| Dor sem número                                      | Estime, mesmo aproximado. Sem número, é desejo.                                                                                                         |
+| Critério de sucesso técnico ("vai usar nossa API") | Sucesso é o que**ela** quer, não o que produto faz.                                                                                               |
 
 ---
 
@@ -811,11 +462,11 @@ Tabela amarrando ponto crítico → métrica observável.
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| Jornada só do "durante" | O "antes" é tão importante. Explica por que sua solução ganha. |
-| Mermaid journey muito longo | Se uma seção tem >7 passos, fragmenta em mais seções. |
-| Ponto crítico genérico ("tudo precisa ser rápido") | Aponte momentos **específicos**. |
+| Sintoma                                               | Solução                                                          |
+| ----------------------------------------------------- | ------------------------------------------------------------------ |
+| Jornada só do "durante"                              | O "antes" é tão importante. Explica por que sua solução ganha. |
+| Mermaid journey muito longo                           | Se uma seção tem >7 passos, fragmenta em mais seções.          |
+| Ponto crítico genérico ("tudo precisa ser rápido") | Aponte momentos**específicos**.                             |
 
 ---
 
@@ -831,12 +482,12 @@ Tabela amarrando ponto crítico → métrica observável.
 
 **O comando estrutura em 4 camadas:**
 
-| Camada | Pergunta-chave |
-|---|---|
-| 1. Adoção | Alguém usa? |
-| 2. Engajamento | Usa direito? |
-| 3. Valor | Entrega resultado? (esta é a métrica decisiva) |
-| 4. Qualidade percebida (opcional) | Parece bom pra quem usa? |
+| Camada                            | Pergunta-chave                                   |
+| --------------------------------- | ------------------------------------------------ |
+| 1. Adoção                       | Alguém usa?                                     |
+| 2. Engajamento                    | Usa direito?                                     |
+| 3. Valor                          | Entrega resultado? (esta é a métrica decisiva) |
+| 4. Qualidade percebida (opcional) | Parece bom pra quem usa?                         |
 
 ## 5.2. Cuidado com a métrica decisiva (Camada 3)
 
@@ -861,10 +512,10 @@ Ela tem que:
 
 Tabela:
 
-| Métrica técnica | Alvo | Por que importa |
-|---|---|---|
-| TTFB do app | <500ms | Marcos abandona se demorar |
-| Latência STT (se tem voz) | <2s | Conversa quebra acima disso |
+| Métrica técnica          | Alvo   | Por que importa             |
+| -------------------------- | ------ | --------------------------- |
+| TTFB do app                | <500ms | Marcos abandona se demorar  |
+| Latência STT (se tem voz) | <2s    | Conversa quebra acima disso |
 
 ## 5.4. Anti-métricas
 
@@ -886,11 +537,11 @@ Quem olha qual métrica e com que frequência.
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
+| Sintoma                  | Solução                                                           |
+| ------------------------ | ------------------------------------------------------------------- |
 | Métrica decisiva é NPS | NPS é Camada 4. Encontre métrica de output operacional/comercial. |
-| 5 métricas decisivas | Força 1. Outras viram secundárias. |
-| Baseline "vai descobrir" | Estime, mesmo grosseiro. |
+| 5 métricas decisivas    | Força 1. Outras viram secundárias.                                |
+| Baseline "vai descobrir" | Estime, mesmo grosseiro.                                            |
 
 > ⛔ **GATE 5→6 (não pule).** Antes de tocar em features, as **ADRs** (Etapa 6) são
 > obrigatórias. O PRD + métricas já forçam decisões técnicas (banco, stack, transporte).
@@ -1027,6 +678,8 @@ O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arqui
 
 > ADR ≠ doc: a ADR registra **a decisão** (por que shadcn, não Material); o `code-pattern-*.md` registra **o detalhe** (quais componentes, quais tokens). A ADR aponta pro doc; nada é duplicado.
 
+> 🏗 **Adotando um projeto existente inteiro?** o extract-pattern é o Stage 1 do `/renata:adopt`, que também faz a engenharia reversa do inventário de features, specs as-built e um PRD retroativo — veja [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md).
+
 ## Validação da Etapa 6
 
 - [ ] `docs/decisions/` tem ≥ 5 ADRs accepted (típico)
@@ -1038,11 +691,11 @@ O command dispara o agente `@pattern-mapper`, que varre o repo em 4 eixos (arqui
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| ADR "Status: proposed" há semanas | Decide ou descarta. Proposed eterno é ruído. |
-| ADR sem alternativas | Você não tomou decisão — fez escolha por inércia. Force 2+ alternativas. |
-| Enforcement só "code review" | Sempre que possível, automatize via hook. Code review esquece. |
+| Sintoma                            | Solução                                                                     |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| ADR "Status: proposed" há semanas | Decide ou descarta. Proposed eterno é ruído.                                |
+| ADR sem alternativas               | Você não tomou decisão — fez escolha por inércia. Force 2+ alternativas. |
+| Enforcement só "code review"      | Sempre que possível, automatize via hook. Code review esquece.               |
 
 ---
 
@@ -1084,13 +737,13 @@ Antes do `/renata:feature-breakdown`, liste em rascunho:
 
 > 💡 **TaskFlow exemplo (5 features):**
 >
-> | ID | Nome | Categoria | Esforço | Fase | Depende |
-> |---|---|---|---|---|---|
-> | **F1** | **Captura rápida de tarefa** ⚓ | MUST | L | 0 | — |
-> | F2 | Visão por cliente | MUST | M | 1 | F1 |
-> | F3 | Notificação de prazo | MUST | M | 1 | F1 |
-> | F4 | Backup em nuvem | MUST | S | 2 | F1 |
-> | F5 | Multi-device sync | MUST | L | 2 | F4 |
+> | ID           | Nome                                   | Categoria | Esforço | Fase | Depende |
+> | ------------ | -------------------------------------- | --------- | -------- | ---- | ------- |
+> | **F1** | **Captura rápida de tarefa** ⚓ | MUST      | L        | 0    | —      |
+> | F2           | Visão por cliente                     | MUST      | M        | 1    | F1      |
+> | F3           | Notificação de prazo                 | MUST      | M        | 1    | F1      |
+> | F4           | Backup em nuvem                        | MUST      | S        | 2    | F1      |
+> | F5           | Multi-device sync                      | MUST      | L        | 2    | F4      |
 
 ## 7.3. Marcar features para o conjunto-âncora (Fase 0)
 
@@ -1099,6 +752,7 @@ ponta (uma jornada-âncora fechada). Marque quais features compõem a Fase 0. As
 serão distribuídas em fases na Etapa 7.5 (`/renata:phase-roadmap`).
 
 Critérios pro conjunto-âncora:
+
 1. ✅ Juntas, fecham ≥1 jornada de ponta a ponta
 2. ✅ Cada uma é MUST sem dúvida
 3. ✅ O conjunto cabe num primeiro ciclo curto
@@ -1135,11 +789,11 @@ Depois o `/renata:feature-spec` lê esse comportamento, linka pra ele, e trata s
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| 10+ features | Junta as menores. |
-| Conjunto-âncora vago | Force escolha. Não dá "todas iguais". |
-| Conjunto-âncora XL | Reduz o slice. O conjunto deve caber num primeiro ciclo curto. |
+| Sintoma               | Solução                                                      |
+| --------------------- | -------------------------------------------------------------- |
+| 10+ features          | Junta as menores.                                              |
+| Conjunto-âncora vago | Force escolha. Não dá "todas iguais".                        |
+| Conjunto-âncora XL   | Reduz o slice. O conjunto deve caber num primeiro ciclo curto. |
 
 ---
 
@@ -1332,13 +986,13 @@ Se persona-âncora trava em algum ponto, **volte ao brief**. Não siga pra Etapa
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| 25 telas no inventário inicial | Provavelmente está fragmentando demais ou produto está grande pra fase. Volte e reduza. |
-| Tela sem persona-âncora citada | Tela não existe pra ninguém. Cortar ou amarrar. |
-| Cenário B sem validação com persona | Não siga pra Etapa 9. Itere até persona aprovar. |
+| Sintoma                                                | Solução                                                                                                             |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| 25 telas no inventário inicial                        | Provavelmente está fragmentando demais ou produto está grande pra fase. Volte e reduza.                             |
+| Tela sem persona-âncora citada                        | Tela não existe pra ninguém. Cortar ou amarrar.                                                                     |
+| Cenário B sem validação com persona                 | Não siga pra Etapa 9. Itere até persona aprovar.                                                                    |
 | Cenário B aceito output do Lovable como código final | ⚠️ Vai cair na Etapa 10 — Lovable escolheu stack que pode não bater com ADRs. Refazer ou aceitar conscientemente. |
-| Cenário A com brief tentando "criar componente novo" | Não. Reaproveite o que o starter já tem. Se realmente precisa novo, abra `/renata:adr` autorizando. |
+| Cenário A com brief tentando "criar componente novo"  | Não. Reaproveite o que o starter já tem. Se realmente precisa novo, abra`/renata:adr` autorizando.                |
 
 ---
 
@@ -1352,11 +1006,11 @@ Se persona-âncora trava em algum ponto, **volte ao brief**. Não siga pra Etapa
 
 Pra produto novo, geralmente 3-4:
 
-| Fase | Tema típico |
-|---|---|
-| Fase 0 | Spike técnico (validar maior risco) |
-| Fase 1 | MVP single-tenant / single-customer |
-| Fase 2 | Generalização (multi-tenant, SaaS) |
+| Fase   | Tema típico                           |
+| ------ | -------------------------------------- |
+| Fase 0 | Spike técnico (validar maior risco)   |
+| Fase 1 | MVP single-tenant / single-customer    |
+| Fase 2 | Generalização (multi-tenant, SaaS)   |
 | Fase 3 | Escala (K8s, otimizações, soberania) |
 
 > 💡 **TaskFlow:**
@@ -1477,10 +1131,10 @@ Quando o macro não chega:
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| Stack sem âncora ("usamos Postgres") | Por quê? Force restrição amarrada. |
-| Arquitetura ideal sem fase | Tudo que aparece em arquitetura precisa caber em alguma fase do roadmap. |
+| Sintoma                               | Solução                                                                |
+| ------------------------------------- | ------------------------------------------------------------------------ |
+| Stack sem âncora ("usamos Postgres") | Por quê? Force restrição amarrada.                                    |
+| Arquitetura ideal sem fase            | Tudo que aparece em arquitetura precisa caber em alguma fase do roadmap. |
 
 ---
 
@@ -1498,18 +1152,18 @@ Quando o macro não chega:
 
 Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **NÃO invoque `/renata:plan-phase`** — corrija primeiro.
 
-| # | Item | Como confirmar |
-|---|---|---|
-| 1 | CLAUDE.md tem identidade preenchida | Abrir e verificar Seção 1 sem `{{...}}` |
-| 2 | PRD existe e tem hipótese falsificável | `cat docs/prd/*.md \| grep "Hipótese"` |
-| 3 | ≥1 persona estruturada existe | `ls docs/business-context/personas.md` |
-| 4 | Métricas definidas (Camadas 1-3 no mínimo) | `cat docs/business-context/metricas.md` |
-| 5 | ≥1 ADR `accepted` | `grep -l "Status:.*accepted" docs/decisions/ADR-*.md` |
-| 6 | Feature-âncora tem spec com plano em fases | `ls docs/features/F1-*.md` |
-| 7 | Fase a planejar tem doc própria | `ls docs/roadmap/fase-N-*.md` |
-| 8 | `rules.yaml` válido | `bash .claude/hooks/rules-violation.sh` |
-| 9 | Sem plano `running` da mesma fase ativo | `grep -l "Status:.*running" docs/superpowers/specs/*.md` retorna vazio |
-| 10 | Se a fase tem UI: design existe | feature-spec menciona telas/UI → `docs/design/inventory.md` existe (senão `/renata:screens`) |
+| #  | Item                                         | Como confirmar                                                                                    |
+| -- | -------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 1  | CLAUDE.md tem identidade preenchida          | Abrir e verificar Seção 1 sem`{{...}}`                                                        |
+| 2  | PRD existe e tem hipótese falsificável     | `cat docs/prd/*.md \| grep "Hipótese"`                                                          |
+| 3  | ≥1 persona estruturada existe               | `ls docs/business-context/personas.md`                                                          |
+| 4  | Métricas definidas (Camadas 1-3 no mínimo) | `cat docs/business-context/metricas.md`                                                         |
+| 5  | ≥1 ADR`accepted`                          | `grep -l "Status:.*accepted" docs/decisions/ADR-*.md`                                           |
+| 6  | Feature-âncora tem spec com plano em fases  | `ls docs/features/F1-*.md`                                                                      |
+| 7  | Fase a planejar tem doc própria             | `ls docs/roadmap/fase-N-*.md`                                                                   |
+| 8  | `rules.yaml` válido                       | `bash .claude/hooks/rules-violation.sh`                                                         |
+| 9  | Sem plano`running` da mesma fase ativo     | `grep -l "Status:.*running" docs/superpowers/specs/*.md` retorna vazio                          |
+| 10 | Se a fase tem UI: design existe              | feature-spec menciona telas/UI →`docs/design/inventory.md` existe (senão `/renata:screens`) |
 
 > 💡 **TaskFlow exemplo:** ao chegar nesta etapa para a Fase 0, confirma que: PRD existe (`taskflow.md`), persona Marcos está em `personas.md`, métricas têm contained rate, ADRs cobrem Postgres + framework + auth, feature F1 spec'ada, `fase-0-spike.md` existe.
 
@@ -1572,12 +1226,12 @@ Se algo soar errado, ou refine direto no arquivo, ou re-invoque `/renata:plan-ph
 
 ## Pegadinhas comuns
 
-| Sintoma | Solução |
-|---|---|
-| `/renata:plan-phase` aborta no pré-requisito #6 ("feature âncora sem spec") | Volte à Etapa 8. |
-| `@architect` retorna 5+ bloqueadores | Sinal de que a feature-spec está vaga. Refine spec antes de re-plano. |
-| Plano com 1500+ linhas e checkpoints raros | Re-invoque pedindo mais granularidade (passos menores). |
-| Plano cita ADR-X mas o arquivo da ADR não diz isso | Erro do `writing-plans` interpretando errado. Refine o plano manualmente ou abra `/renata:adr refinar ADR-X`. |
+| Sintoma                                                                         | Solução                                                                                                        |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `/renata:plan-phase` aborta no pré-requisito #6 ("feature âncora sem spec") | Volte à Etapa 8.                                                                                                |
+| `@architect` retorna 5+ bloqueadores                                          | Sinal de que a feature-spec está vaga. Refine spec antes de re-plano.                                           |
+| Plano com 1500+ linhas e checkpoints raros                                      | Re-invoque pedindo mais granularidade (passos menores).                                                          |
+| Plano cita ADR-X mas o arquivo da ADR não diz isso                             | Erro do`writing-plans` interpretando errado. Refine o plano manualmente ou abra `/renata:adr refinar ADR-X`. |
 
 ---
 
@@ -1613,19 +1267,19 @@ O `/renata:execute` faz um **pré-flight** (confirma que há plano aprovado pelo
 
 ## 12.2. O loop de uma task (o ciclo que se repete)
 
-> 📊 **Veja o diagrama deste loop** na [Visão B](#visão-b-o-loop-de-execução-etapa-12) (topo do documento). A tabela abaixo é a mesma coisa em texto, com o comando de cada passo.
+> 📊 **Veja o diagrama deste loop** na [Visão B do METHOD.pt-br.md](METHOD.pt-br.md#-visão-b--o-loop-de-execução-etapa-12). A tabela abaixo é a mesma coisa em texto, com o comando de cada passo.
 
 Para **cada task** do plano, este ciclo de 7 passos roda. Quem executa cada passo está marcado: 🤖 loop conduz · 🧑 você decide.
 
-| # | Passo | Quem | O que acontece | O que chamar |
-|---|---|---|---|---|
-| 1 | **Pega a próxima task** | 🤖 | Loop lê a próxima task não-concluída do plano | — (automático) |
-| 2 | **Carrega ADRs relevantes** | 🤖 | Skill `respecting-adrs` ativa e injeta as ADRs que tocam esta task | `respecting-adrs` (auto) |
-| 3 | **Teste vermelho (red)** | 🤖 | Escreve o teste **antes** do código; roda; confirma que falha | `superpowers:test-driven-development` (auto) |
-| 4 | **Código + teste verde (green)** | 🤖 | Implementa o mínimo pra passar; roda os testes; confirma verde | TDD (auto) |
-| 5 | **Verifica de verdade (gate de pronto)** | 🤖 | Roda comando de validação do plano (não confia em "deve funcionar"); a task não fecha sem teste verde + hook não-bloqueando | `superpowers:verification-before-completion` (gate do `/renata:execute`) |
-| 6 | **Revisão de código** | 🧑→🤖 | Antes de fechar a task | `@code-reviewer` no diff |
-| 7 | **Atualiza docs vivas + fecha task** | 🤖 | Marca task como done no plano; atualiza `.claude/sessions/` e CLAUDE.md | `keeping-docs-alive` (auto) |
+| # | Passo                                          | Quem   | O que acontece                                                                                                                   | O que chamar                                                                 |
+| - | ---------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1 | **Pega a próxima task**                 | 🤖     | Loop lê a próxima task não-concluída do plano                                                                                | — (automático)                                                             |
+| 2 | **Carrega ADRs relevantes**              | 🤖     | Skill`respecting-adrs` ativa e injeta as ADRs que tocam esta task                                                              | `respecting-adrs` (auto)                                                   |
+| 3 | **Teste vermelho (red)**                 | 🤖     | Escreve o teste**antes** do código; roda; confirma que falha                                                              | `superpowers:test-driven-development` (auto)                               |
+| 4 | **Código + teste verde (green)**        | 🤖     | Implementa o mínimo pra passar; roda os testes; confirma verde                                                                  | TDD (auto)                                                                   |
+| 5 | **Verifica de verdade (gate de pronto)** | 🤖     | Roda comando de validação do plano (não confia em "deve funcionar"); a task não fecha sem teste verde + hook não-bloqueando | `superpowers:verification-before-completion` (gate do `/renata:execute`) |
+| 6 | **Revisão de código**                  | 🧑→🤖 | Antes de fechar a task                                                                                                           | `@code-reviewer` no diff                                                   |
+| 7 | **Atualiza docs vivas + fecha task**     | 🤖     | Marca task como done no plano; atualiza`.claude/sessions/` e CLAUDE.md                                                         | `keeping-docs-alive` (auto)                                                |
 
 Depois do passo 7: se a próxima coisa no plano for um **checkpoint**, o loop **pausa** e devolve pra você (passo 🧑). Se não, volta ao passo 1 com a próxima task.
 
@@ -1654,14 +1308,14 @@ Depois do passo 7: se a próxima coisa no plano for um **checkpoint**, o loop **
 
 Não é "se" — é "quando". O loop não esconde falha; ele para e te mostra. O que fazer:
 
-| Sintoma | O que fazer |
-|---|---|
-| **Teste não passa depois de 2-3 tentativas** | Pare de tentar variações. Acione `superpowers:systematic-debugging` — ele força hipótese → teste → conclusão em vez de chute. |
-| **Hook bloqueou o commit** (violou ADR) | Não desligue o hook. Ou **refatora** pra respeitar a ADR, ou abre `/renata:adr` pra **superseding** consciente da decisão antiga. |
-| **A task revelou decisão estrutural não-prevista** | Pause a task. Abra `/renata:adr <decisão>` **antes** de codar. Se tiver dúvida, `@architect` revisa a proposta. |
-| **A task está maior do que o plano dizia** | Provável scope-creep ou estimativa errada. `detecting-scope-creep` deve ativar; se a task real é XL, volte e quebre no plano (`/renata:plan-phase` ou edição manual). |
-| **Critério de aceite da feature não bate** | `@qa-tester` reprovou. Não marque a feature como pronta. Volte ao loop com as tasks que faltam. |
-| **Você não sabe se a fase acabou** | A fase termina quando **todas as tasks do plano estão `[x]`** E o **gate da fase** (em `docs/roadmap/fase-N-*.md`) está satisfeito. Sem gate verde, não é fim de fase. |
+| Sintoma                                                    | O que fazer                                                                                                                                                                               |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Teste não passa depois de 2-3 tentativas**        | Pare de tentar variações. Acione`superpowers:systematic-debugging` — ele força hipótese → teste → conclusão em vez de chute.                                                    |
+| **Hook bloqueou o commit** (violou ADR)              | Não desligue o hook. Ou**refatora** pra respeitar a ADR, ou abre `/renata:adr` pra **superseding** consciente da decisão antiga.                                          |
+| **A task revelou decisão estrutural não-prevista** | Pause a task. Abra`/renata:adr <decisão>` **antes** de codar. Se tiver dúvida, `@architect` revisa a proposta.                                                                |
+| **A task está maior do que o plano dizia**          | Provável scope-creep ou estimativa errada.`detecting-scope-creep` deve ativar; se a task real é XL, volte e quebre no plano (`/renata:plan-phase` ou edição manual).              |
+| **Critério de aceite da feature não bate**         | `@qa-tester` reprovou. Não marque a feature como pronta. Volte ao loop com as tasks que faltam.                                                                                        |
+| **Você não sabe se a fase acabou**                 | A fase termina quando**todas as tasks do plano estão `[x]`** E o **gate da fase** (em `docs/roadmap/fase-N-*.md`) está satisfeito. Sem gate verde, não é fim de fase. |
 
 ## 12.5. Referência — subagents e skills da execução
 
@@ -1687,18 +1341,18 @@ Skills carregam sozinhas pelo contexto — você não precisa invocar:
 
 ## 12.6. Slash commands úteis durante execução
 
-| Quando | Comando |
-|---|---|
-| Risco técnico não validado no meio da fase | `/renata:spike <pergunta>` |
-| Acumulou fila de bugs/débitos | `/renata:triage <contexto>` |
-| Usou dado provisório num doc que convém validar depois (sem travar) | marca inline `<!-- TODO[data][impacto]: ... -->` + `/renata:todo sync` |
-| Quer ver/priorizar todas as pendências num lugar só | `/renata:todo list` |
-| Escopo da fase começou a parecer grande demais | `/renata:phase-scope <fase>` |
-| Código atual emperrando próxima feature | `/renata:refactor <alvo>` |
-| Decisão estrutural não-prevista aparece | `/renata:adr <decisão>` antes de codar |
-| Premissa de negócio não-testada antes de construir ("alguém quer? paga?") | `/renata:assumption-test <premissa>` |
-| Fase entregou feature mensurável — a hipótese se confirmou? | `/renata:hypothesis-check [hipótese]` |
-| Feature entregue não moveu a métrica — remover? | `/renata:hypothesis-check` (decide sunset) |
+| Quando                                                                       | Comando                                                                   |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Risco técnico não validado no meio da fase                                 | `/renata:spike <pergunta>`                                              |
+| Acumulou fila de bugs/débitos                                               | `/renata:triage <contexto>`                                             |
+| Usou dado provisório num doc que convém validar depois (sem travar)        | marca inline`<!-- TODO[data][impacto]: ... -->` + `/renata:todo sync` |
+| Quer ver/priorizar todas as pendências num lugar só                        | `/renata:todo list`                                                     |
+| Escopo da fase começou a parecer grande demais                              | `/renata:phase-scope <fase>`                                            |
+| Código atual emperrando próxima feature                                    | `/renata:refactor <alvo>`                                               |
+| Decisão estrutural não-prevista aparece                                    | `/renata:adr <decisão>` antes de codar                                 |
+| Premissa de negócio não-testada antes de construir ("alguém quer? paga?") | `/renata:assumption-test <premissa>`                                    |
+| Fase entregou feature mensurável — a hipótese se confirmou?               | `/renata:hypothesis-check [hipótese]`                                  |
+| Feature entregue não moveu a métrica — remover?                           | `/renata:hypothesis-check` (decide sunset)                              |
 
 ### `/renata:refactor` — um refactor disciplinado, não uma faxina
 
@@ -1851,158 +1505,6 @@ cliente/suporte/você percebe algo errado
 
 ---
 
-# 📎 Apêndice A — Quando NÃO usar este método
+# 📎 Apêndices
 
-RENATA não é o jeito certo de tudo. Não use se:
-
-- ❌ **Throwaway code** — script de 1 uso, demo, prova de conceito de 1 dia
-- ❌ **Codebase legada** com método estabelecido (não tente impor)
-- ❌ **Time grande (>15 pessoas)** — otimizado para solo/squad pequeno (1-6)
-- ❌ **Domínio extremamente regulado** sem complementação de compliance/auditoria
-
----
-
-# 📎 Apêndice B — Anti-padrões do método
-
-Sinais de alerta — você está fazendo errado:
-
-| Sintoma | Diagnóstico |
-|---|---|
-| PRD com 10 páginas | É Micro PRD. 1 página. Vivo. |
-| ADR com 5 alternativas todas "rejeitada por ser ruim" | Análise rasa. Force motivo concreto. |
-| Persona "todo dev brasileiro" | Vago demais. Force específico. |
-| Feature-âncora que ninguém depende | Aplica 4 critérios. Se falha, escolhe outra. |
-| Roadmap sem gates | Sem critério objetivo, não é roadmap, é wishlist. |
-| Hook desligado "temporariamente" | Sinal de doença. Resolve ou abre ADR superseding. |
-
----
-
-# 📎 Apêndice C — Ordem alternativa para projetos diferentes
-
-A ordem 0-13 é canônica, mas pode variar:
-
-**Projeto técnico (sem persona externa clara):**
-1, 6 (ADRs primeiro), 10 (arquitetura), 7 (features), 9 (roadmap), 11, 12, 13.
-PRD e personas podem ser mais leves.
-
-**Projeto de pesquisa/exploração:**
-1, 2 (PRD com hipótese forte), 6 (1-2 ADRs sobre stack), 11 (plano direto), 12.
-Pular 7-9 — refatora se virar produto.
-
-**Plugin/biblioteca para devs:**
-1, 2 (PRD), 3 (persona = dev), 6 (ADRs sobre API surface), 7-8 (features = endpoints), 10 (arquitetura), 12.
-Métricas (5) ficam light — devs não respondem pesquisa.
-
----
-
-# 📎 Apêndice D — Tempo total realista
-
-| Cenário | Tempo Etapas 0-11 (até começar a codar) |
-|---|---|
-| Solo, projeto novo, conhece o domínio | 8-12h em 3-5 dias |
-| Solo, projeto novo, domínio novo | 15-25h em 1-2 semanas |
-| Dupla, projeto novo | 12-18h em 1 semana (sincronização gera fricção) |
-| Time pequeno (4-6) | 20-40h em 2 semanas (mais discussão por etapa) |
-
-Etapa 12 (executar) é sempre o maior bloco — pode ser semanas a meses.
-
----
-
-# 📎 Apêndice E — Cheatsheet rápido
-
-Pra quando você já fez o tutorial uma vez e quer consultar rápido.
-
-## Comandos (em ordem de uso)
-
-| Etapa | Comando | O que faz |
-|---|---|---|
-| 1.5 | `/renata:discovery <ideia>` | Palpite vago → problema claro (5 porquês + JTBD + why-now) (opcional) |
-| 2 | `/renata:prd <ideia>` | Micro PRD em 9 perguntas |
-| 3 | `/renata:persona <nome>` | Persona estruturada em 4 turnos |
-| 4 | `/renata:user-journey <persona>` | Antes/durante/depois |
-| 5 | `/renata:metrics` | 4 camadas (adoção, engajamento, valor, qualidade) |
-| 6 | `/renata:adr <decisão>` | ADR Nygard + atualiza `rules.yaml` |
-| 6 | `/renata:extract-pattern <repo>` | Destila o padrão de um repo existente em ADRs + doc de code-pattern |
-| 6.5 | `/renata:landscape` | Pesquisa competitiva → gaps de diferenciação (opcional) |
-| 7 | `/renata:feature-breakdown` | Lista features + identifica âncora |
-| 7.5 | `/renata:phase-roadmap` | Distribui todas as features em fases sequenciais (Fase 0 = conjunto âncora) |
-| 7.7 | `/renata:feature-behavior <id>` | Feature como comportamento observável (stories + Gherkin) antes da spec (opcional) |
-| 8 | `/renata:feature-spec <id>` | Detalha feature + plano em fases |
-| 8.5 | `/renata:screens` | Inventário + fluxo + briefs de telas (opcional) |
-| gate | `/renata:assumption-test <premissa>` | Testar risco de valor/viabilidade antes de construir (loop Measure-Learn) |
-| gate | `/renata:interview-kit [premissa]` | Roteiro Mom Test de 1 página antes de uma entrevista de problema |
-| gate | `/renata:interview-debrief <transcrição>` | Transcrição → evidência verbatim + board + coaching do entrevistador |
-| 9 | manual | Roadmap macro (fases + gates) |
-| 11 | `/renata:plan-phase <fase>` | Plano blindado (writing-plans + @architect) |
-| 12 | `/renata:spike <pergunta>` | Investigação de risco |
-| 12 | `/renata:phase-scope <fase>` | Re-escopar com MoSCoW |
-| 12 | `/renata:triage <contexto>` | Priorizar bugs/débitos |
-| 12 | `/renata:todo <add\|sync\|list\|done>` | Backlog de pendências (inline + sync central) |
-| 12 | `/renata:refactor <alvo>` | Refactor disciplinado |
-| 13 | `/renata:retro [fase]` | Retrospectiva (aprendizado de execução) |
-| 13 | `/renata:hypothesis-check [hipótese]` | Veredito da hipótese vs dado real (✅/❌/🤔 + sunset) |
-| 14 | `/renata:bug-report <descrição bruta>` | Bug novo de produção → estruturado, classificado por severidade, roteado |
-| 14 | `/renata:incident <descrição>` | Coordenação ao vivo de incidente de produção maior → entrega pro `/renata:retro` |
-| — | `/renata:status [N]` | Onde estou no fluxo + próximo passo (valida etapa atual com gate humano) |
-
-## Subagentes (chame quando bater dúvida)
-
-Você os invoca com `@` quando quer uma segunda opinião focada. Cada um lê os docs/diff relevantes e devolve um veredicto estruturado — nenhum escreve código de produto.
-
-| Quando | Agente | O que devolve |
-|---|---|---|
-| Antes de codar, dúvida arquitetural | `@architect` | Revisa uma proposta/diff contra o CLAUDE.md + ADRs; decide e justifica (não coda) |
-| Código pronto, antes de PR | `@code-reviewer` | Lê o diff: bugs, padrões violados, testes faltando, naming, ADRs não honrados no código |
-| Antes de marcar feature como pronta | `@qa-tester` | Roda o app de verdade (Playwright/manual) contra os critérios de aceite do PRD + feature, reporta achados |
-| Latência/throughput abaixo do alvo do PRD | `@perf-auditor` | Auditoria profunda de perf: hot paths, N+1, memory leaks, cache faltando, I/O síncrono em caminho async |
-| Mexeu em auth / permissões / dado sensível | `@security-reviewer` | OWASP top-10 prático, secrets vazados, validação de input, authz cross-tenant, LGPD básica |
-
-> **O `@pattern-mapper` é a exceção — você não o chama direto.** Ele mapeia o padrão de um repo (4 eixos, com força de evidência) e roda **dentro** do `/renata:extract-pattern`, que transforma o mapa dele em ADRs + um doc carregável. Se você quer um padrão mapeado, rode o comando, não o agente.
-
-## Skills do framework (auto-ativáveis — você não invoca)
-
-Essas três disparam sozinhas quando a conversa bate num gatilho. Você não as chama; elas observam o momento e entram em cena.
-
-- `respecting-adrs` — dispara em "vou implementar X / qual lib / vamos refatorar". Força ler os ADRs aceitos e validar a proposta contra eles **antes** de codar.
-- `keeping-docs-alive` — dispara em "terminei / vou pausar / fase completa". Atualiza CLAUDE.md + `.claude/sessions/` + o plano ativo, pra que os docs nunca descolem do código.
-- `detecting-scope-creep` — dispara em "já que estou aqui / também dá pra…". Compara a ideia nova com o escopo IN/OUT da feature ativa e **oferece três opções** (fazer agora / parar como TODO / abrir um ADR), forçando decisão consciente em vez de crescimento silencioso de escopo.
-
-## Skills do superpowers (automáticas)
-
-- `superpowers:writing-plans` — plano de execução (Etapa 11)
-- `superpowers:executing-plans` / `subagent-driven-development` — executa (Etapa 12)
-- `superpowers:test-driven-development` — durante implementação
-- `superpowers:systematic-debugging` — quando aparecer bug
-- `superpowers:verification-before-completion` — antes de declarar pronto
-
-## Validação macro por etapa (resumo)
-
-| Etapa | Está pronta quando |
-|---|---|
-| 2 PRD | Hipótese falsificável + métrica decisiva com baseline |
-| 3 Personas | Primária com nome, dor numérica, citação + anti-personas |
-| 4 Jornada | Antes/durante/depois com pontos críticos amarrados |
-| 5 Métricas | 3-4 camadas + métrica decisiva amarrada à hipótese |
-| 6 ADRs | ≥5 accepted + hook testado + cada uma com gatilho de revisão |
-| 7 Features | 3-7 features + âncora marcada com 4 critérios |
-| 8 Feature spec | Plano em fases XS-M com critério verificável |
-| 9 Roadmap | Fases macro + gates explícitos + anti-roadmap |
-| 10 Arquitetura | Stack ancorada em restrições + C4 nível 1 e 2 |
-| 11 Plano execução | Plano com TDD + ≥3 checkpoints |
-| 12 Execução | Commits passam pelo hook + testes verdes |
-| 13 Retro | Decisão explícita: próxima fase / repete / pivot |
-| 14 Pós-produção | Todo bug novo registrado; incidentes só fecham após o checklist de resolução; uma retro agendada |
-
----
-
-# 📎 Apêndice F — Como evoluir o método
-
-O método **vai mudar**. Toda mudança nasce de fricção real, não de teoria.
-
-Ao fim de cada projeto:
-
-1. Listar 3 momentos de fricção
-2. Para cada: ajustar método, ajustar ferramenta, ou aceitar custo
-3. Se ajustar método: PR no RENATA com mudança + justificativa
-
-> O método serve ao projeto. Não o contrário.
+Os apêndices se moveram para o [`REFERENCE.pt-br.md`](REFERENCE.pt-br.md): **A** — quando NÃO usar este método · **B** — anti-padrões do método · **C** — ordem alternativa para projetos diferentes · **D** — tempo total realista · **E** — cheatsheet rápido · **F** — como evoluir o método.

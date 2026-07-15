@@ -117,6 +117,242 @@ RENATA does not invent its parts — it assembles proven ones and adds enforceme
 
 ---
 
+## The flow at a glance
+
+The full flow, from "I have an idea" to "released" (the step-by-step operational guide is [`GETTING-STARTED.md`](GETTING-STARTED.md)):
+
+```mermaid
+flowchart TD
+    A["💡 I have an idea"] --> B["0. Pre-flight<br/>10min"]
+    B --> C["1. Create project<br/>5min"]
+    C --> CD{"Problem already clear?"}
+    CD -->|yes| D["2. PRD<br/>1-2h · /renata:prd"]
+    CD -->|"no, just a hunch"| C15["1.5. Discovery<br/>/renata:discovery"]
+    C15 --> D
+    D --> E{"PRD approved?"}
+    E -->|no| D
+    E -->|yes| F["3. Personas<br/>30min · /renata:persona"]
+    F --> G["4. Journeys<br/>30min · /renata:user-journey"]
+    G --> H["5. Metrics<br/>45min · /renata:metrics"]
+    H --> I["6. ADRs<br/>2-4h · /renata:adr<br/>🛠 tech team joins"]
+    I --> J["7. Features<br/>1h · /renata:feature-breakdown"]
+    I -."optional: competitive gaps".-> I65["6.5. Landscape<br/>/renata:landscape"]
+    I65 -.-> J
+    J --> J5["7.5. Phasing<br/>/renata:phase-roadmap"]
+    J -."optional: dense rules".-> J77["7.7. Feature behavior<br/>/renata:feature-behavior"]
+    J77 -.-> J5
+    J5 --> K["8. Spec per phase<br/>1-2h · /renata:feature-spec"]
+    K --> K2{"Does the product have<br/>meaningful UI?"}
+    K2 -->|no| KA{"Value/viability<br/>assumption tested?"}
+    K2 -->|yes| K3["8.5. Screen design<br/>1-2h · /renata:screens"]
+    K3 --> KA
+    KA -->|"no, just intuition"| KT["Test the assumption<br/>/renata:assumption-test"]
+    KT -->|assumption failed| D
+    KT -->|assumption holds| L
+    KA -->|yes| L["9. Roadmap<br/>1h · manual"]
+    L --> M["10. Architecture<br/>2-3h · 🛠 manual"]
+    M --> N{"Everything ready<br/>to code?"}
+    N -->|no| O["Back to the step<br/>that failed"]
+    O --> E
+    N -->|yes| P["11. Execution plan<br/>15min · 🛠 /renata:plan-phase"]
+    P --> Q["12. Execute<br/>🛠 days-weeks<br/>↻ task-by-task loop"]
+    Q --> R["13. Retro<br/>1h · /renata:retro"]
+    R --> RH{"Delivered a measurable<br/>feature?"}
+    RH -->|yes| HC["Hypothesis verdict<br/>/renata:hypothesis-check"]
+    RH -->|no| S{"Next phase?"}
+    HC -->|"❌ failed / 🤔 inconclusive"| HCB["Evidence reopens:<br/>PRD · ADR · sunset"]
+    HCB --> D
+    HC -->|"✅ confirmed"| S
+    S -->|yes| Q
+    S -->|"no, project done"| T["🎉 Released"]
+    T -.->|"customer/support/you<br/>finds a problem"| U["14. Bug report<br/>/renata:bug-report"]
+    U -->|"small, isolated"| U1["/renata:todo add"]
+    U -->|"2+ critical signals<br/>or growing"| U2["14. Incident<br/>🛠 /renata:incident"]
+    U2 --> U3["Post-mortem<br/>/renata:retro"]
+    U3 -.-> HCB
+
+    classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef done  fill:#d4edda,stroke:#28a745,color:#000
+    classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef opt   fill:#e0d4f5,stroke:#8e6fc4,color:#000
+    classDef val   fill:#d1ecf1,stroke:#17a2b8,color:#000
+    classDef back  fill:#f8d7da,stroke:#dc3545,color:#000
+
+    class A start
+    class T done
+    class I,M,P,Q,U2 tech
+    class C15,I65,J77,K3 opt
+    class KT,HC val
+    class HCB back
+```
+
+**How to read this map:**
+
+- 🟡 **Yellow** = step where the **technical team** joins in (you're no longer alone).
+- 🟣 **Purple** = optional steps (discovery, landscape, feature behavior, screen design).
+- 🔵 **Light blue** = product validation (Measure-Learn): test the assumption first, falsify the hypothesis later.
+- 🔴 **Red** = evidence reopens a decision already made (PRD/ADR/sunset) — the arrow that goes back.
+- ◇ **Diamond** = decision / gate. If "no", go back. If "yes", continue.
+- ⬜ **Rectangle** = step that produces a document or code.
+
+**You'll reach "🎉 Released" by following this path — there's no shortcut.** And even after that, the loop doesn't close by itself: a measurable feature delivered triggers `/renata:hypothesis-check`, and evidence can send you back to the PRD. Released is not the end of the arrow — the dotted line out of "🎉 Released" is Step 14 of the tutorial: the first time a customer finds a bug, that's where you go.
+
+> 🧭 **Already have a codebase?** This map assumes greenfield. For an existing project, the entry point is `/renata:adopt` — see [`ADOPTION.md`](ADOPTION.md).
+>
+> 🔁 **The "12. Execute" node is a loop on the inside** (`↻ task-by-task`). This map shows it as a single box because it's the bird's-eye view. Its detailed cycle — grab task → test → code → review → checkpoint — is in [View B](#-view-b--the-execution-loop-step-12) below and in Step 12 of the tutorial.
+
+---
+
+## The 4 views of the method
+
+The map above is the **flow view** — how the process moves over time. But the same method has 3 other useful readings. Each one answers a different question:
+
+| View | Question it answers | Where it is |
+|---|---|---|
+| **A · Flow** | In what order do I do things? | The map above ↑ |
+| **B · Execution loop** | How does "execute" run on the inside? | [Here ↓](#-view-b--the-execution-loop-step-12) and in Step 12 of the tutorial |
+| **C · Responsibility** | Who does what (me / tech / agents)? | [Here ↓](#-view-c--responsibility-who-does-what) |
+| **D · Artifacts** | Which document feeds which? | [Here ↓](#-view-d--artifacts-what-feeds-what) |
+
+### 🔁 View B — The execution loop (Step 12)
+
+Inside the "12. Execute" node, the entry point is `/renata:execute` (which orchestrates `superpowers:executing-plans` under the hood). For **each task** in the plan, this cycle runs. 🤖 = the loop drives · 🧑 = you decide.
+
+```mermaid
+flowchart TD
+    START(["Plan approved<br/>Step 11"]) --> T1["🤖 Grab next task<br/>from the plan"]
+    T1 --> T2["🤖 respecting-adrs<br/>injects the task's ADRs"]
+    T2 --> T3["🤖 Red test<br/>TDD: write test, it fails"]
+    T3 --> T4["🤖 Green code<br/>implement, test passes"]
+    T4 --> T5["🤖 Verify for real<br/>run the plan's validation"]
+    T5 --> T6{"🧑 @code-reviewer<br/>diff ok?"}
+    T6 -->|"no, adjust"| T3
+    T6 -->|yes| T7["🤖 keeping-docs-alive<br/>close task + update session"]
+    T7 --> CK{"Is the next item<br/>a checkpoint?"}
+    CK -->|"yes"| PAUSE["🧑 PAUSE<br/>you review and release"]
+    PAUSE --> GATE{"All tasks [x]<br/>AND phase gate ✅?"}
+    CK -->|"no"| GATE
+    GATE -->|"no"| T1
+    GATE -->|"yes"| DONE(["Phase done<br/>→ Step 13 Retro"])
+
+    SOS["⚠️ something went wrong?<br/>systematic-debugging /<br/>/renata:adr / @architect"] -.-> T3
+
+    classDef start fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef done  fill:#d4edda,stroke:#28a745,color:#000
+    classDef pause fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef sos   fill:#f8d7da,stroke:#dc3545,color:#000
+
+    class START start
+    class DONE done
+    class PAUSE pause
+    class SOS sos
+```
+
+**How to read it:** the happy path is T1→T7 spinning until the gate closes. `@code-reviewer` (T6) can throw you back to the test. Checkpoints **pause** and hand control back to you. The dotted red box is the "when it goes wrong" (detailed in Step 12.4 of the tutorial) — it re-enters the cycle via the test.
+
+### 👥 View C — Responsibility (who does what)
+
+Who leads each step. The **PM/founder** (you) operates alone at the start; the **technical team** joins at Step 6 and leads from 10 onward; the **agents** (skills/subagents) act inside the execution.
+
+```mermaid
+flowchart LR
+    subgraph PM["🧑 PM / Founder leads"]
+        direction TB
+        P1["0-1 Setup"] --> P2["1.5 Discovery (opt)<br/>+ 2 PRD"] --> P3["3-5 Personas<br/>Journeys · Metrics"]
+    end
+    subgraph JUNTO["🧑 + 🛠 Joint decision"]
+        direction TB
+        J1["6 ADRs +<br/>6.5 Landscape (opt)"] --> J2["7-8 Features<br/>+ behavior (opt) + spec"] --> J3["8.5 Screens<br/>(optional)"] --> J4["9 Roadmap"]
+    end
+    subgraph TECH["🛠 Technical team leads"]
+        direction TB
+        T1b["10 Architecture"] --> T2b["11 Plan"] --> T3b["12 Execute"]
+    end
+    subgraph FECHA["🧑 + 🛠 Joint"]
+        direction TB
+        F1["13 Retro +<br/>hypothesis-check"]
+    end
+    AG(["🤖 Agents (you call with @)<br/>@architect · @code-reviewer · @qa-tester"])
+    SK(["✨ Skills (auto-activate)<br/>respecting-adrs · keeping-docs-alive ·<br/>detecting-scope-creep"])
+
+    PM --> JUNTO --> TECH --> FECHA
+    AG -.act inside.-> TECH
+    SK -.act inside.-> TECH
+
+    classDef pm    fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef tech  fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef agent fill:#ede7f6,stroke:#8e6fc4,color:#000
+    classDef skill fill:#e8f5e9,stroke:#43a047,color:#000
+
+    class PM pm
+    class TECH tech
+    class AG agent
+    class SK skill
+```
+
+Step by step, who is responsible:
+
+| Step | Who leads | Who joins in |
+|---|---|---|
+| 0-1 (preparation) | You (PM/founder) | — |
+| 2 (PRD) | You | — |
+| 3-5 (personas, journeys, metrics) | You | (optional) UX if you have it |
+| 6 (ADRs) | You + 🛠 **tech team** | Joint decision |
+| 7-8 (features, spec) | You | 🛠 Tech validates feasibility |
+| 8.5 (screen design) | You + (UX if you have it) | 🛠 Tech validates with starter/constraints |
+| 9 (roadmap) | You | 🛠 Tech estimates |
+| 10 (architecture) | 🛠 **Tech team** | You review |
+| 11-12 (planning and execution) | 🛠 **Tech team** | You follow along the checkpoints |
+| 13 (retro) | You + 🛠 tech team | Joint |
+
+**Translation:** you (non-technical) operate alone from Step 0 to 5. From Step 6 on, you bring in someone technical. From 10 onward, the techie leads and you follow along the checkpoints. The agents are arms of the execution — they don't decide product, they execute discipline.
+
+### 📦 View D — Artifacts (what feeds what)
+
+Each step produces a document, and each document **feeds** the next ones. This is the dependency chain: touching a doc up top forces you to revisit the ones below.
+
+```mermaid
+flowchart TD
+    DISC["🌫 Discovery<br/>discovery/ (optional)"] -.-> PRD["📄 PRD<br/>docs/prd/"]
+    PRD --> PERS["📄 Personas<br/>business-context/"]
+    PRD --> JOR["📄 Journeys"]
+    PERS --> JOR
+    JOR --> MET["📄 Metrics"]
+    PRD --> MET
+    PRD --> ADR["📐 ADRs<br/>decisions/ + rules.yaml"]
+    MET --> FEAT["📄 Feature breakdown<br/>features/README"]
+    PRD --> FEAT
+    PRD -.-> LAND["🔭 Landscape<br/>research/ (optional)"]
+    LAND -.-> FEAT
+    ADR --> SPEC["📄 Feature-spec<br/>features/F1-*"]
+    FEAT --> SPEC
+    FEAT -.-> BEH["📄 Behavior<br/>F&lt;N&gt;.behavior (optional)"]
+    BEH -.-> SPEC
+    SPEC --> SCR["🎨 Screens<br/>design/ (optional)"]
+    SPEC --> ROAD["🗺 Roadmap<br/>roadmap/fase-N"]
+    ROAD --> ARQ["🛠 Architecture<br/>technical-context/"]
+    ADR --> ARQ
+    ARQ --> PLAN["📋 Plan<br/>superpowers/specs/"]
+    SPEC --> PLAN
+    ADR --> PLAN
+    PLAN --> CODE["💻 Code + tests"]
+    CODE --> RETRO["🔁 Retro<br/>roadmap/fase-N-retro"]
+    RETRO -.evidence reopens.-> PRD
+    RETRO -.evidence reopens.-> ADR
+
+    classDef root fill:#e1f5ff,stroke:#3399cc,color:#000
+    classDef adr  fill:#fff3cd,stroke:#d39e00,color:#000
+    classDef code fill:#d4edda,stroke:#28a745,color:#000
+    classDef plan fill:#ede7f6,stroke:#8e6fc4,color:#000
+
+    class PRD root
+    class ADR adr
+    class CODE code
+    class PLAN plan
+```
+
+**How to read it:** the PRD is the root — almost everything descends from it. The ADRs (yellow) cut across the chain: they feed feature-spec, architecture **and** plan (that's why the hook protects code against them). The dotted arrows going back are the Measure-Learn loop: the retro can reopen the PRD or an ADR.
+
 ---
 
 `<a id="ordem-alternancia"></a>`
@@ -282,6 +518,13 @@ docs/
 ## Canonical slash commands
 
 **Teaching pattern — a command teaches as it conducts.** Commands that use named frameworks (e.g. `/renata:discovery` with 5-whys / JTBD) give a one-line explanation of each framework at the moment of use. The method serves people who don't yet know "how to do product" (per the README's promise) — so the knowledge arrives in the flow, not as a prerequisite lesson.
+
+### Scaffold (project setup)
+
+| Command                  | When to use                                                        | What it generates                               |
+| ------------------------ | ------------------------------------------------------------------ | ----------------------------------------------- |
+| `/renata:init <name>`         | Once, at the start of a project (new or existing directory)   | `CLAUDE.md` + `docs/` + `.claude/` scaffold     |
+| `/renata:adopt [scopes]`      | Once, on an **existing codebase** adopting the method — reverse-engineers pattern, features and a retroactive PRD, confirming item by item (see [`ADOPTION.md`](ADOPTION.md)) | ADRs + code-pattern + `stack.md`/`arquitetura.md` + `docs/features/` + `docs/prd/` (all as-built, 🔄) |
 
 ### Planning (defining the what)
 
@@ -458,7 +701,7 @@ Configuration in two places: `.mcp.json` (project root) declares the servers; th
 This framework is not the "right way" for everything. Don't use it if:
 
 - ❌ **You're writing throwaway code** (a single-use script, a 1-day proof of concept). Bureaucracy kills speed.
-- ❌ **You're in a legacy codebase** with an established method (don't try to impose it).
+- ❌ **You're in a legacy codebase** with an established method (don't try to impose it). A legacy codebase **without** an established method is a different story — that's what `/renata:adopt` is for (see [`ADOPTION.md`](ADOPTION.md)).
 - ❌ **The team is large (>15 people)** — this method is optimized for solo / small squad (1-6). For large teams, complement it with formal RFCs, sign-offs, etc.
 - ❌ **An extremely regulated domain** (banking, healthcare) — add compliance/audit layers that the method doesn't cover.
 

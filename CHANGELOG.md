@@ -8,6 +8,24 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 _Nothing yet._
 
+## [0.1.11] — 2026-07-15
+
+**What's new:** brownfield adoption — born from real user feedback: a dev reverse-engineering an existing system ran `/renata:extract-pattern` and had no answer for "where do the tech specs live?". Now there's one command and one guide for the whole path.
+
+### Added
+- `/renata:adopt` — the 30th command: adopts RENATA over an existing codebase in 6 confirmed stages — technical pattern (composes with `/renata:extract-pattern` per scope), technical context (`stack.md` + `arquitetura.md` C4), reverse-engineered feature inventory, retroactive PRD, selective as-built specs, wrap-up with the artifact map. Every artifact is born 🔄 with an `> 🏗️ As-built` provenance mark; only the human verifies, via `/renata:status`.
+- `ADOPTION.md` (en+pt) — the brownfield guide: stage-by-stage table, **"Where every artifact lives"** (the table that answers the original question), what `/renata:status` shows after a run, pre-existing-ADR cleanup, FAQ.
+- `REFERENCE.md` (en+pt) — the six GETTING-STARTED appendices (when NOT to use, anti-patterns, alternative orders, realistic times, cheatsheet, evolving the method), now with a brownfield alternative order and `/renata:adopt` + `/renata:init` in the cheatsheet.
+- `/renata:init` detects existing code (dependency manifests / source dirs) and closes pointing to `/renata:adopt` instead of the greenfield Step 2 flow.
+
+### Changed
+- GETTING-STARTED (en+pt) slimmed from ~2000 to ~1550 lines: the tutorial-map mermaid, the 4 views (execution loop, responsibility, artifacts) and the "why this order?" essay moved to METHOD.md (deduplicating "Who does what" into View C); appendices moved to REFERENCE.md; the preamble is now ~70 lines with the compass and the steps summary.
+- METHOD.md (en+pt) gains "The flow at a glance", "The 4 views of the method", a "Scaffold" command category (`/renata:init`, `/renata:adopt`) and the brownfield nuance in "when NOT to use".
+
+### Fixed
+- Step 0.5 "Retrofit" was pre-plugin legacy — manual `cp -R $FW/template` from a cloned framework, with stale validation counts ("18 commands / 5 agents") and no connection to `/renata:extract-pattern`. Replaced by a pointer to `/renata:adopt` + `ADOPTION.md`; the pre-existing-ADR cleanup advice moved to ADOPTION.md.
+- Step 1 ordered `git init` (1.4) after `/renata:init` (1.2), so the ADR-enforcement hook — which only activates when git exists — never activated on first run. `git init` now comes first.
+
 ## [0.1.10] — 2026-07-09
 
 **What's new:** two new commands close the post-production loop — `/renata:bug-report` structures a single fresh bug report from production; `/renata:incident` coordinates live response to a larger incident and hands off to `/renata:retro` for the post-mortem.

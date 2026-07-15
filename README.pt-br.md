@@ -48,14 +48,22 @@ O RENATA vive numa interseção que ninguém mais ocupa:
 
 Cria `CLAUDE.md`, `docs/` e `.claude/` no projeto, e ativa o enforcement de ADR no commit (se há git). Depois siga o `GETTING-STARTED.md`.
 
+## Projeto existente?
+
+```text
+/renata:adopt
+```
+
+Já tem código? O `/renata:adopt` faz engenharia reversa do padrão técnico (ADRs + docs de code-pattern), do inventário de features, das specs as-built e de um PRD retroativo — confirmando cada item com você. Guia: [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md).
+
 ## O que vem no plugin
 
-- **29 comandos** — planejamento (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), pós-produção (`/renata:bug-report`, `/renata:incident`), navegação (`/renata:status`), e o scaffold (`/renata:init`).
+- **30 comandos** — planejamento (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), pós-produção (`/renata:bug-report`, `/renata:incident`), navegação (`/renata:status`), e o scaffold (`/renata:init`, `/renata:adopt`).
 - **6 agentes** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 skills auto-ativáveis** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — gate de etapas, status na sessão, enforcement de ADR no commit.
 
-Para a filosofia, veja `METHOD.pt-br.md`. Para o passo a passo, `GETTING-STARTED.pt-br.md`. Pra ver o que há de novo em cada versão, veja [`CHANGELOG.pt-br.md`](CHANGELOG.pt-br.md).
+Para a filosofia, veja `METHOD.pt-br.md`. Para o passo a passo, `GETTING-STARTED.pt-br.md`. Pra adotar o método numa base de código existente, `ADOPTION.pt-br.md`. Pros apêndices/cheatsheet, `REFERENCE.pt-br.md`. Pra ver o que há de novo em cada versão, veja [`CHANGELOG.pt-br.md`](CHANGELOG.pt-br.md).
 
 ---
 
