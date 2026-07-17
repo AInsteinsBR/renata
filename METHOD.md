@@ -112,6 +112,8 @@ RENATA does not invent its parts — it assembles proven ones and adds enforceme
 - **Steve Blank** (Customer Development) & **Rob Fitzpatrick** (*The Mom Test*) — "get out of the building" and how to interview without poisoning the answers; operationalized by `/renata:interview-kit` + `/renata:interview-debrief`.
 - **Michael Nygard** — the ADR format that `/renata:adr` enforces down to the commit hook.
 - **Eric Ries / Lean Startup** — build-measure-learn; the loop `/renata:hypothesis-check` closes.
+- **AINSTEINS / AI-Driven Development course** (Eric Luque) — the slash-command ritual and the layered CLAUDE.md structure the whole plugin is built on.
+- **DDD-lite** — the layer discipline (domain → use case → adapter → repo) behind the adapter-pattern ADRs.
 
 **RENATA's own contribution:** the binding with automated enforcement — persona → metric → ADR → code in a single AI-operated flow, where the *why* survives into the implementation because hooks and gates refuse to let it die.
 
@@ -704,16 +706,6 @@ This framework is not the "right way" for everything. Don't use it if:
 - ❌ **You're in a legacy codebase** with an established method (don't try to impose it). A legacy codebase **without** an established method is a different story — that's what `/renata:adopt` is for (see [`ADOPTION.md`](ADOPTION.md)).
 - ❌ **The team is large (>15 people)** — this method is optimized for solo / small squad (1-6). For large teams, complement it with formal RFCs, sign-offs, etc.
 - ❌ **An extremely regulated domain** (banking, healthcare) — add compliance/audit layers that the method doesn't cover.
-
----
-
-## Declared inspirations
-
-- **Michael Nygard** — the ADR pattern.
-- **Marty Cagan / Teresa Torres** — persona/journey/opportunity.
-- **Eric Ries** — hypothesis falsifiability.
-- **AINSTEINS / AI-Driven Development course** (Eric Luque) — slash commands and CLAUDE.md structure.
-- **DDD-lite** — layers (domain → use case → adapter → repo).
 
 ---
 

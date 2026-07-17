@@ -6,7 +6,8 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+- METHOD (en+pt): the v0.1-era "Declared inspirations" section at the bottom was a stale duplicate of "On whose shoulders (lineage)" (added in 0.1.7) — missing Blank/Fitzpatrick and drifting on the rest. Its two unique items (AINSTEINS / AI-Driven Development course, DDD-lite) were merged into the lineage section and the duplicate removed.
 
 ## [0.1.11] — 2026-07-15
 

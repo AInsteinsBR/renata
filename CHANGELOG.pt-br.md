@@ -6,7 +6,8 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 ## [Unreleased]
 
-_Nada ainda._
+### Corrigido
+- METHOD (en+pt): a seção "Inspirações declaradas" no rodapé, da era v0.1, era uma duplicata desatualizada de "Sobre os ombros de quem (linhagem)" (criada na 0.1.7) — sem Blank/Fitzpatrick e driftando no resto. Os dois itens únicos dela (curso AINSTEINS / AI-Driven Development, DDD-lite) foram fundidos na seção de linhagem e a duplicata removida.
 
 ## [0.1.11] — 2026-07-15
 
