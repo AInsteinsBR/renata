@@ -190,7 +190,7 @@ steps:
 
   - num: "9"
     name: "Roadmap macro"
-    command: "(manual) criar docs/roadmap/"
+    command: "/roadmap-gates"
     artifact_glob: "docs/roadmap/fases-overview.md"
     non_empty_if: "gantt"
     optional: false
@@ -203,7 +203,7 @@ steps:
 
   - num: "10"
     name: "Arquitetura técnica"
-    command: "(manual) criar docs/technical-context/"
+    command: "/architecture"
     artifact_glob: "docs/technical-context/arquitetura.md"
     non_empty_if: "C4"
     optional: false
@@ -217,7 +217,7 @@ steps:
   - num: "11"
     name: "Plano de execução"
     command: "/plan-phase <fase>"
-    artifact_glob: "docs/superpowers/specs/*-fase-*-plan.md"
+    artifact_glob: "docs/superpowers/plans/*-fase-*-plan.md"
     non_empty_if: "##"
     optional: false
     prereq: ["8", "10"]
@@ -233,7 +233,7 @@ steps:
     # Etapa 12 produz CÓDIGO, não um doc próprio. Detectamos pela existência de um
     # plano de execução marcado como em andamento (Status: running) — artefato distinto
     # do retro da Etapa 13, evitando dupla contagem.
-    artifact_glob: "docs/superpowers/specs/*-fase-*-plan.md"
+    artifact_glob: "docs/superpowers/plans/*-fase-*-plan.md"
     non_empty_if: "running"
     optional: false
     prereq: ["11"]

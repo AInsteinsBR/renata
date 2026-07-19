@@ -334,7 +334,7 @@ flowchart TD
     SPEC --> ROAD["🗺 Roadmap<br/>roadmap/fase-N"]
     ROAD --> ARQ["🛠 Arquitetura<br/>technical-context/"]
     ADR --> ARQ
-    ARQ --> PLAN["📋 Plano<br/>superpowers/specs/"]
+    ARQ --> PLAN["📋 Plano<br/>superpowers/plans/"]
     SPEC --> PLAN
     ADR --> PLAN
     PLAN --> CODE["💻 Código + testes"]
@@ -543,6 +543,8 @@ docs/
 | `/renata:feature-breakdown`   | Quando há 3+ features candidatas                                  | `docs/features/README.md` (binário MUST/OUT) |
 | `/renata:feature-behavior`    | (Opcional) refina a feature como comportamento observável antes da spec técnica — quando Produto é separado de Engenharia ou as regras de negócio são densas | `docs/features/F<N>-<slug>.behavior.md` |
 | `/renata:phase-roadmap`              | Após breakdown — distribuir todas as features em fases por tempo | `docs/roadmap/fases-overview.md`              |
+| `/renata:roadmap-gates`              | Etapa 9 — blindar o roadmap: gate explícito e verificável por fase + 1 arquivo por fase | `docs/roadmap/fases-overview.md` (gantt + gates) + `fase-N-<nome>.md` |
+| `/renata:architecture`               | Etapa 10 — sintetizar ADRs aceitas + feature-specs + spikes no mapa técnico (não decide nada novo) | `docs/technical-context/stack.md` + `arquitetura.md` (C4) |
 
 ### Design (entre planejamento e execução)
 
@@ -555,7 +557,7 @@ docs/
 
 | Comando                        | Quando usar                                                                                                    | O que gera                                                    |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `/renata:plan-phase <fase>`          | Gerar plano de execução blindado (envolve `superpowers:writing-plans` + revisão `@architect`)           | `docs/superpowers/specs/<data>-fase-N-plan.md`              |
+| `/renata:plan-phase <fase>`          | Gerar plano de execução blindado (envolve `superpowers:writing-plans` + revisão `@architect`)           | `docs/superpowers/plans/<data>-fase-N-plan.md`              |
 | `/renata:execute <fase>`           | Executar a fase com plano aprovado (envolve `superpowers:executing-plans` + gate de pronto + `@qa-tester`) | código + plano marcado `running`→done                     |
 | `/renata:spike <pergunta>`          | Validar risco técnico antes de comprometer                                                                    | `docs/spikes/<data>-<slug>.md`                              |
 | `/renata:phase-scope <fase>`        | Decidir o que cabe na fase com orçamento fixo                                                                 | `docs/roadmap/fase-N-scope.md` (MoSCoW completo)            |
@@ -580,6 +582,7 @@ O método não para na retro de fase. Uma vez que o código está rodando em pro
 | Comando         | Quando usar                                                     | O que gera                                               |
 | --------------- | --------------------------------------------------------------- | -------------------------------------------------------- |
 | `/renata:status [N]` | Saber em que etapa do fluxo você está e qual o próximo passo | Diagnóstico em tela (lê `.claude/progress-map.yaml`) |
+| `/renata:next` | Versão micro do `/renata:status`: só "qual o próximo passo canônico?" + aviso de gap (trabalho à frente de prereq não satisfeito) | Resposta curta em tela (~10 linhas) |
 
 ### Validação de produto (Measure-Learn — fecha o loop)
 

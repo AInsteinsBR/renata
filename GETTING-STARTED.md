@@ -56,9 +56,9 @@ Use it whenever you're unsure what comes next, after editing a doc (`/renata:sta
 | **7.7** | **Feature behavior (optional)** | **30min per feature** | **`/renata:feature-behavior`** | **`docs/features/F<N>-*.behavior.md`** |
 | 8 | Spec per phase (starts with Phase 0) | 1-2h | `/renata:feature-spec` | `docs/features/F1-*.md` |
 | **8.5** | **Screen design (optional)** | **1-2h** | **`/renata:screens`** | **`docs/design/`** |
-| 9 | Macro roadmap | 1h | manual | `docs/roadmap/` |
-| 10 | Technical architecture | 2-3h | manual | `docs/technical-context/` |
-| 11 | Execution plan | 15min | `/renata:plan-phase` (involves `superpowers:writing-plans`) | `docs/superpowers/specs/` |
+| 9 | Macro roadmap | 1h | `/renata:roadmap-gates` | `docs/roadmap/` |
+| 10 | Technical architecture | 2-3h | `/renata:architecture` | `docs/technical-context/` |
+| 11 | Execution plan | 15min | `/renata:plan-phase` (involves `superpowers:writing-plans`) | `docs/superpowers/plans/` |
 | 12 | Execute | days-weeks | `/renata:execute <phase>` (involves `superpowers:executing-plans` + done gate) | real code |
 | 13 | Phase retro | 1h | `/renata:retro` | `docs/roadmap/fase-N-retro.md` |
 
@@ -997,7 +997,7 @@ If the anchor persona gets stuck at some point, **go back to the brief**. Don't 
 
 # 🛣 Step 9 — Macro roadmap (1h)
 
-**This step is manual** (it has no slash command of its own — a candidate for v0.2).
+**Run `/renata:roadmap-gates`** — it consolidates the roadmap from Step 7.5 with explicit gates (the sections below describe what it produces; use them to review the output).
 
 **Goal:** define the product's macro phases (Phase 0, 1, 2, 3...) with clear gates between them.
 
@@ -1079,7 +1079,7 @@ Each phase has an **explicit gate** — an objective criterion to start the next
 
 > 🛠 **This step is led by the technical team.** You (PM) review, validate the binding to personas/metrics.
 
-**This step is manual** (a candidate for a future slash command).
+**Run `/renata:architecture`** — it synthesizes the ADRs + feature-specs + spikes into `stack.md` + `arquitetura.md` with C4 (the sections below describe what it produces; use them to review the output).
 
 **Goal:** define the stack and macro architecture, with each decision bound to a constraint coming from a persona, an ADR, or an operational constraint.
 
@@ -1145,7 +1145,9 @@ When the macro view isn't enough:
 
 > ⚠️ **Critical warning:** `superpowers:writing-plans` on its own is **generic** — it doesn't know our method. Without armor, it can generate a plan that ignores ADRs, does scope-creep, or skips tests at critical steps.
 >
-> **Always use `/renata:plan-phase`** instead of invoking `superpowers:writing-plans` directly. `/renata:plan-phase` wraps `writing-plans` with 10 prerequisites + an automatic `@architect` review.
+> **Always use `/renata:plan-phase`** instead of invoking `superpowers:writing-plans` directly. `/renata:plan-phase` wraps `writing-plans` with 11 prerequisites + an automatic `@architect` review.
+>
+> 📦 **Declared dependency:** the `superpowers` plugin does NOT ship with RENATA. Install it before this step: `/plugin marketplace add obra/superpowers` + `/plugin install superpowers@superpowers-marketplace`. The pre-flight checks for it and aborts if it's missing — do not write the plan by hand as a workaround.
 
 ## 11.1. Pre-flight checklist (mandatory before invoking `/renata:plan-phase`)
 
@@ -1161,7 +1163,7 @@ Confirm **manually** that each item below is ready. If any fails, **DO NOT invok
 | 6 | The anchor feature has a spec with a phased plan | `ls docs/features/F1-*.md` |
 | 7 | The phase to plan has its own doc | `ls docs/roadmap/fase-N-*.md` |
 | 8 | `rules.yaml` valid | `bash .claude/hooks/rules-violation.sh` |
-| 9 | No `running` plan for the same phase active | `grep -l "Status:.*running" docs/superpowers/specs/*.md` returns empty |
+| 9 | No `running` plan for the same phase active | `grep -l "Status:.*running" docs/superpowers/plans/*.md` returns empty |
 | 10 | If the phase has UI: design exists | feature-spec mentions screens/UI → `docs/design/inventory.md` exists (otherwise `/renata:screens`) |
 
 > 💡 **TaskFlow example:** when reaching this step for Phase 0, confirm that: the PRD exists (`taskflow.md`), the Marcos persona is in `personas.md`, the metrics have a contained rate, the ADRs cover Postgres + framework + auth, feature F1 is spec'd, `fase-0-spike.md` exists.
@@ -1180,7 +1182,7 @@ Or by name:
 
 ## 11.3. What `/renata:plan-phase` does internally
 
-1. **Validates the 10 prerequisites** (if any fails, it aborts and guides you).
+1. **Validates the 11 prerequisites** (if any fails, it aborts and guides you).
 2. **Lists the artifacts** it will pass to `writing-plans` (PRD + ADRs + feature-spec + roadmap).
 3. **Asks for your confirmation** before proceeding.
 4. **Invokes `superpowers:writing-plans`** with an armored prompt that forces respect for the ADRs.
@@ -1190,7 +1192,7 @@ Or by name:
 
 ## 11.4. What to expect as output
 
-`docs/superpowers/specs/<YYYY-MM-DD>-fase-N-plan.md` with:
+`docs/superpowers/plans/<YYYY-MM-DD>-fase-N-plan.md` with:
 
 - The **exact** sequence of steps.
 - TDD red/green per step.
@@ -1214,7 +1216,7 @@ If something sounds wrong, either refine it directly in the file, or re-invoke `
 
 ## Step 11 validation
 
-- [ ] `docs/superpowers/specs/<date>-fase-N-plan.md` exists
+- [ ] `docs/superpowers/plans/<date>-fase-N-plan.md` exists
 - [ ] The plan went through the `@architect` review (attached report or inline)
 - [ ] The plan has TDD at each step
 - [ ] The plan has ≥3 checkpoints with the user

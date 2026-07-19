@@ -23,7 +23,7 @@ Respond in the user's language.
 3. `@docs/business-context/personas.md` — who the anchor persona is (after all, you are acting as her).
 4. `@docs/business-context/jornada.md` — critical points of the journey.
 5. `@docs/features/F<N>-*.md` of the feature under test — definition of done + anti-criteria.
-6. If there is an active plan: `@docs/superpowers/specs/<plan>.md` — to know what was scoped.
+6. If there is an active plan: `@docs/superpowers/plans/<plan>.md` — to know what was scoped.
 
 ## Your mindset
 

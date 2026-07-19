@@ -9,87 +9,118 @@
 #   exit 2  → BLOQUEIA a ação; stderr volta ao modelo como feedback
 #   outro   → erro não-bloqueante (avisa, mas não impede)
 #
-# Recebe via stdin o JSON do evento. Usa `jq` pra ler o input e `yq` pro YAML.
-# Degradação: sem yq/jq → avisa e PERMITE (exit 0), nunca trava o usuário por falta de tooling.
+# Recebe via stdin o JSON do evento. O YAML é lido pelo parser embutido
+# (progress-map-lib.sh — sem dependência de yq). O JSON do evento precisa de
+# `jq` OU `python3`; sem nenhum dos dois, o gate avisa ALTO e permite (exit 0)
+# — nunca trava o usuário por falta de tooling, mas nunca desliga em silêncio.
 
 set -uo pipefail
 
 MAP=".claude/progress-map.yaml"
+[[ -f "$MAP" ]] || exit 0  # sem mapa, nada a impor
 
-# Sem tooling → não bloqueia (degradação segura)
-if ! command -v yq >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
-  echo "⚠ etapa-gate: yq/jq ausente — gate desativado nesta sessão." >&2
+# Localiza a lib ao lado deste script sem depender de binários externos (dirname).
+SCRIPT_DIR="${BASH_SOURCE[0]%/*}"
+[[ "$SCRIPT_DIR" == "${BASH_SOURCE[0]}" ]] && SCRIPT_DIR="."
+if ! source "$SCRIPT_DIR/progress-map-lib.sh" 2>/dev/null; then
+  echo "⚠ RENATA: etapa-gate OFF — progress-map-lib.sh não encontrado ao lado do gate." >&2
   exit 0
 fi
-[[ -f "$MAP" ]] || { exit 0; }  # sem mapa, nada a impor
 
-# 1) Ler o prompt do command invocado a partir do stdin do hook.
 INPUT=$(cat)
-# O comando pode chegar de formas diferentes; tentamos o campo de prompt/command.
-INVOKED=$(echo "$INPUT" | jq -r '.tool_input.command // .tool_input.prompt // .prompt // empty' 2>/dev/null)
 
-# 2) Mapear o command invocado → num da etapa (via campo `command` do mapa).
-#    Casamos por substring do nome do slash command (ex: "/plan-phase").
+# 1) Ler o comando invocado a partir do stdin do hook. O slash command chega em
+#    campos diferentes conforme a ferramenta: .tool_input.command (Bash),
+#    .tool_input.skill (Skill — ex. "renata:plan-phase", sem barra),
+#    .tool_input.prompt / .prompt (variações).
+if command -v jq >/dev/null 2>&1; then
+  INVOKED=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // .tool_input.prompt // .tool_input.skill // .prompt // empty' 2>/dev/null)
+elif command -v python3 >/dev/null 2>&1; then
+  INVOKED=$(printf '%s' "$INPUT" | python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+ti = d.get("tool_input") or {}
+print(ti.get("command") or ti.get("prompt") or ti.get("skill") or d.get("prompt") or "")
+' 2>/dev/null)
+else
+  echo "⚠ RENATA: etapa-gate OFF — nem jq nem python3 disponíveis pra ler o evento do hook. Instale um deles (ex.: brew install jq)." >&2
+  exit 0
+fi
+[[ -z "${INVOKED:-}" ]] && exit 0
+
+# 2) Normalizar antes de casar: primeiro token (descarta args), sem barra
+#    inicial, sem namespace do plugin. Casa "/plan-phase 0",
+#    "/renata:plan-phase 0" e "renata:plan-phase" (campo skill).
+normalize() {
+  local s="${1%% *}"
+  s="${s#/}"
+  s="${s#renata:}"
+  printf '%s' "$s"
+}
+INVOKED_N=$(normalize "$INVOKED")
+[[ -z "$INVOKED_N" ]] && exit 0
+
+# 3) Mapear o comando invocado → num da etapa, comparando os BASENAMES
+#    normalizados (o mapa guarda "/plan-phase <fase>"; etapas "(manual) ..."
+#    não têm slash e são ignoradas aqui).
 TARGET_NUM=""
-NUMS=$(yq -r '.steps[].num' "$MAP")
-for n in $NUMS; do
-  cmd=$(yq -r ".steps[] | select(.num == \"$n\") | .command" "$MAP")
-  # Só consideramos etapas cujo `command` COMEÇA com um slash command real
-  # (ignora "(manual) ..." e "superpowers:..."). Extrai o slash do início.
-  slash=$(echo "$cmd" | grep -oE '^/[a-z][a-z0-9-]*' | head -1)
-  [[ -z "$slash" ]] && continue
-  # Casa como TOKEN: o INVOKED é exatamente o slash, ou o slash seguido de espaço.
-  # Evita que /plan case dentro de /plan-phase.
-  if [[ "$INVOKED" == "$slash" || "$INVOKED" == "$slash "* ]]; then
-    TARGET_NUM="$n"
+TARGET_NAME=""
+TARGET_PREREQS=""
+while IFS=$'\t' read -r num name cmd glob needle opt prereq; do
+  map_name="${cmd%% *}"                       # primeiro token do campo command
+  [[ "$map_name" == /* ]] || continue         # só etapas com slash command real
+  map_name="${map_name#/}"
+  [[ -z "$map_name" ]] && continue
+  if [[ "$INVOKED_N" == "$map_name" ]]; then
+    TARGET_NUM="$num"
+    TARGET_NAME="$name"
+    TARGET_PREREQS="$prereq"
     break
   fi
-done
+done < <(pm_rows "$MAP")
 
 # Não é um command de etapa rastreado → permite
 [[ -z "$TARGET_NUM" ]] && exit 0
-
-# 3) Pegar os prereq da etapa-alvo.
-PREREQS=$(yq -r ".steps[] | select(.num == \"$TARGET_NUM\") | .prereq[]" "$MAP" 2>/dev/null)
-[[ -z "$PREREQS" ]] && exit 0  # sem prereq, libera
+[[ -z "$TARGET_PREREQS" ]] && exit 0  # sem prereq, libera
 
 # 4) Para cada prereq, checar artefato presente + não-placeholder.
 MISSING=()
-for p in $PREREQS; do
-  glob=$(yq -r ".steps[] | select(.num == \"$p\") | .artifact_glob" "$MAP")
-  needle=$(yq -r ".steps[] | select(.num == \"$p\") | .non_empty_if" "$MAP")
-  nome=$(yq -r ".steps[] | select(.num == \"$p\") | .name" "$MAP")
+for p in $TARGET_PREREQS; do
+  row=$(pm_row "$MAP" "$p")
+  [[ -z "$row" ]] && continue
+  IFS=$'\t' read -r _pnum pnome _pcmd pglob pneedle _popt _pprereq <<< "$row"
 
   # existe algum arquivo que casa o glob?
-  # Detecta existência de forma robusta p/ glob COM wildcard e caminho literal.
-  # compgen -G retorna 0 e lista os matches reais; falha se nada existe.
+  # compgen -G retorna os matches reais (funciona pra wildcard E caminho literal).
   # (loop em vez de mapfile p/ compat. com bash 3.2 do macOS)
   files=()
-  while IFS= read -r _f; do files+=("$_f"); done < <(compgen -G "$glob" 2>/dev/null)
+  while IFS= read -r _f; do files+=("$_f"); done < <(compgen -G "$pglob" 2>/dev/null)
 
   if [[ ${#files[@]} -eq 0 ]]; then
-    MISSING+=("Etapa $p ($nome): nenhum artefato em '$glob'")
+    MISSING+=("Etapa $p ($pnome): nenhum artefato em '$pglob'")
     continue
   fi
 
   # se há needle, ao menos 1 arquivo precisa contê-lo (anti-placeholder)
-  if [[ -n "$needle" && "$needle" != "null" ]]; then
-    if ! grep -lq -- "$needle" "${files[@]}" 2>/dev/null; then
-      MISSING+=("Etapa $p ($nome): artefato existe mas parece placeholder (falta '$needle')")
+  if [[ -n "$pneedle" ]]; then
+    if ! grep -lq -- "$pneedle" "${files[@]}" 2>/dev/null; then
+      MISSING+=("Etapa $p ($pnome): artefato existe mas parece placeholder (falta '$pneedle')")
     fi
   fi
 done
 
 # 5) Veredito
 if [[ ${#MISSING[@]} -gt 0 ]]; then
-  alvo_nome=$(yq -r ".steps[] | select(.num == \"$TARGET_NUM\") | .name" "$MAP")
   {
-    echo "⛔ Gate de etapa: você está tentando a Etapa $TARGET_NUM ($alvo_nome),"
+    echo "⛔ Gate de etapa: você está tentando a Etapa $TARGET_NUM ($TARGET_NAME),"
     echo "   mas pré-requisitos canônicos não estão satisfeitos:"
     for m in "${MISSING[@]}"; do echo "   • $m"; done
     echo ""
-    echo "   Rode /status para ver o próximo passo correto. Complete os prereqs antes."
-    echo "   (Para entender a ordem: _framework/METHOD.md, seção 'Por que essa ordem?'.)"
+    echo "   Rode /renata:status para ver o próximo passo correto. Complete os prereqs antes."
+    echo "   (Para entender a ordem: METHOD.md, seção 'Por que essa ordem?'.)"
   } >&2
   exit 2
 fi

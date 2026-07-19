@@ -21,7 +21,7 @@ Auto-activates when the context involves:
 
 ### Step 1 — Update the active plan
 
-If the current work corresponds to a task in the plan at `docs/superpowers/specs/<plan>.md`:
+If the current work corresponds to a task in the plan at `docs/superpowers/plans/<plan>.md`:
 
 1. **Check the checkboxes** of the completed steps: `[ ]` → `[x]`.
 2. **Add a note** if the task deviated from the plan (e.g., "I had to add X because Y").
@@ -47,7 +47,7 @@ Section 9 (Next steps) — update to reflect what comes next.
 
 ## Estado ao pausar
 
-- **Plano ativo:** `docs/superpowers/specs/<file>.md`
+- **Plano ativo:** `docs/superpowers/plans/<file>.md`
 - **Última task completada:** Task N (Step N.M)
 - **Próxima ação ao retomar:** <1 frase específica>
 
@@ -83,7 +83,7 @@ docker compose ...
 > User: "Finished Task 4. I'm going to pause for today."
 >
 > Skill activates: "I'll update 3 things:
-> 1. `docs/superpowers/specs/2026-05-27-fase-0-spike.md` — mark steps 4.1 through 4.11 as `[x]`.
+> 1. `docs/superpowers/plans/2026-05-27-fase-0-spike.md` — mark steps 4.1 through 4.11 as `[x]`.
 > 2. `CLAUDE.md` section 5 — point to `.claude/sessions/2026-05-27-fase-0-task5.md`.
 > 3. Create `.claude/sessions/2026-05-27-fase-0-task5.md` with 'Last task completed: Task 4 · Next action: implement the Task 5 component'."
 

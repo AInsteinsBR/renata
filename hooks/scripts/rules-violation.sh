@@ -5,17 +5,33 @@
 # Saída 0 = sem violação. Saída 1 = pelo menos 1 violação encontrada.
 #
 # Uso:
-#   - Pre-commit: ativado automaticamente pelo /renata-init (symlink em .git/hooks/pre-commit)
-#   - CI: rodar antes do build
-#   - Manual: bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh
+#   - Pre-commit: ativado automaticamente pelo /renata:init (symlink em .git/hooks/pre-commit)
+#   - CI: rodar antes do build (com CI=true ou --strict; escaneia todos os rastreados)
+#   - Manual: bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh [--all] [--strict]
 #
-# Dependência opcional: yq (parsing YAML). Se não tiver, usa parser bash bobo
-# que suporta um subset das regras (forbid_pattern com pattern, scope, exclude, message).
+# ESCOPO DO SCAN (importante):
+#   - Em pre-commit (default): APENAS os arquivos STAGED (git diff --cached).
+#     Isso honra o .gitignore de graça (arquivo ignorado nunca é staged) e valida
+#     exatamente o que vai ser commitado — nada de falso-positivo em node_modules/,
+#     .venv/ ou site-packages de dependências de terceiros.
+#   - Com --all, CI=true ou sem nada staged: todos os arquivos RASTREADOS (git ls-files).
+#   - Fora de um repo git: fallback pra varredura do working tree (comportamento antigo).
+#
+# Dependência opcional: yq (parsing YAML). Sem yq, o hook avisa ALTO e não valida.
 
 set -uo pipefail
 
 RULES_FILE=".claude/rules.yaml"
 FAILED=0
+STRICT=0
+ALL=0
+
+for arg in "$@"; do
+  case "$arg" in
+    --strict) STRICT=1 ;;
+    --all)    ALL=1 ;;
+  esac
+done
 
 # ─────────────────────────────────────────────────────────────
 # Sanity checks
@@ -25,6 +41,48 @@ if [[ ! -f "$RULES_FILE" ]]; then
   echo "  Para ativar, copie .claude/rules.yaml.template para .claude/rules.yaml e edite."
   exit 0
 fi
+
+# ─────────────────────────────────────────────────────────────
+# Universo de arquivos a escanear (ver "ESCOPO DO SCAN" acima)
+# ─────────────────────────────────────────────────────────────
+SCAN_MODE="tree"
+FILE_LIST=""
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  if [[ $ALL -eq 1 || "${CI:-false}" == "true" ]]; then
+    SCAN_MODE="tracked"
+    FILE_LIST=$(git ls-files 2>/dev/null)
+  else
+    FILE_LIST=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+    if [[ -n "$FILE_LIST" ]]; then
+      SCAN_MODE="staged"
+    else
+      SCAN_MODE="tracked"
+      FILE_LIST=$(git ls-files 2>/dev/null)
+    fi
+  fi
+fi
+
+# Filtra a lista pra: código-fonte suportado, dentro do scope da regra, fora do
+# exclude da regra e fora dos diretórios sempre-excluídos.
+filter_files() {  # $1 = scope, $2 = exclude-dir; lê a lista via stdin
+  local scope="${1%/}" exclude="${2:-}" f
+  while IFS= read -r f; do
+    [[ -z "$f" || ! -f "$f" ]] && continue
+    case "$f" in
+      _framework/*|produto-exemplo/*|node_modules/*|.venv/*|.git/*) continue ;;
+      */node_modules/*|*/.venv/*|*/.git/*) continue ;;
+    esac
+    if [[ -n "$scope" && "$scope" != "." ]]; then
+      case "$f" in "$scope"/*) ;; *) continue ;; esac
+    fi
+    if [[ -n "$exclude" && "$exclude" != "null" ]]; then
+      case "$f" in "$exclude"/*|*/"$exclude"/*) continue ;; esac
+    fi
+    case "$f" in
+      *.py|*.ts|*.tsx|*.js|*.jsx|*.go|*.rs|*.java|*.kt|*.sql) printf '%s\n' "$f" ;;
+    esac
+  done
+}
 
 # ─────────────────────────────────────────────────────────────
 # Helper de impressão
@@ -54,6 +112,11 @@ if command -v yq >/dev/null 2>&1; then
     exit 0
   fi
 
+  if [[ "$SCAN_MODE" != "tree" && -z "$FILE_LIST" ]]; then
+    echo "ℹ Nenhum arquivo staged/rastreado pra validar. Skipando."
+    exit 0
+  fi
+
   for i in $(seq 0 $((ADR_COUNT - 1))); do
     ADR_ID=$(yq ".adrs[$i].id" "$RULES_FILE")
     ADR_TITLE=$(yq ".adrs[$i].title" "$RULES_FILE")
@@ -68,17 +131,22 @@ if command -v yq >/dev/null 2>&1; then
 
       case "$KIND" in
         forbid_pattern)
-          GREP_ARGS=(-rEnI --include="*.py" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.go" --include="*.rs" --include="*.java" --include="*.kt" --include="*.sql")
-          if [[ -n "$EXCLUDE" && "$EXCLUDE" != "null" ]]; then
-            GREP_ARGS+=(--exclude-dir="$EXCLUDE")
-          fi
-          # Exclui sempre _framework e produto-exemplo do scan (são docs/template)
-          GREP_ARGS+=(--exclude-dir="_framework" --exclude-dir="produto-exemplo" --exclude-dir="node_modules" --exclude-dir=".venv" --exclude-dir=".git")
-
-          if [[ -d "$SCOPE" ]]; then
-            FOUND=$(grep "${GREP_ARGS[@]}" -- "$PATTERN" "$SCOPE" 2>/dev/null || true)
+          FOUND=""
+          if [[ "$SCAN_MODE" == "tree" ]]; then
+            # Fallback sem git: varredura do working tree (comportamento antigo).
+            GREP_ARGS=(-rEnI --include="*.py" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.go" --include="*.rs" --include="*.java" --include="*.kt" --include="*.sql")
+            if [[ -n "$EXCLUDE" && "$EXCLUDE" != "null" ]]; then
+              GREP_ARGS+=(--exclude-dir="$EXCLUDE")
+            fi
+            GREP_ARGS+=(--exclude-dir="_framework" --exclude-dir="produto-exemplo" --exclude-dir="node_modules" --exclude-dir=".venv" --exclude-dir=".git")
+            if [[ -d "$SCOPE" ]]; then
+              FOUND=$(grep "${GREP_ARGS[@]}" -- "$PATTERN" "$SCOPE" 2>/dev/null || true)
+            fi
           else
-            FOUND=""
+            MATCHED=$(printf '%s\n' "$FILE_LIST" | filter_files "$SCOPE" "$EXCLUDE")
+            if [[ -n "$MATCHED" ]]; then
+              FOUND=$(printf '%s\n' "$MATCHED" | tr '\n' '\0' | xargs -0 grep -EnI -- "$PATTERN" /dev/null 2>/dev/null || true)
+            fi
           fi
 
           if [[ -n "$FOUND" ]]; then
@@ -88,13 +156,17 @@ if command -v yq >/dev/null 2>&1; then
 
         require_pattern)
           # Verifica que arquivos no SCOPE contêm o PATTERN. Falha se algum arquivo do escopo NÃO contém.
-          if [[ -d "$SCOPE" ]]; then
-            for FILE in $(find "$SCOPE" -type f \( -name "*.py" -o -name "*.ts" -o -name "*.sql" \) 2>/dev/null); do
-              if ! grep -qE "$PATTERN" "$FILE" 2>/dev/null; then
-                print_violation "$ADR_ID" "$ADR_TITLE" "$MSG (arquivo sem padrão obrigatório)" "$FILE"
-              fi
-            done
+          if [[ "$SCAN_MODE" == "tree" ]]; then
+            CANDIDATES=$(find "$SCOPE" -type f \( -name "*.py" -o -name "*.ts" -o -name "*.sql" \) 2>/dev/null || true)
+          else
+            CANDIDATES=$(printf '%s\n' "$FILE_LIST" | filter_files "$SCOPE" "$EXCLUDE" | grep -E '\.(py|ts|sql)$' || true)
           fi
+          while IFS= read -r FILE; do
+            [[ -z "$FILE" || ! -f "$FILE" ]] && continue
+            if ! grep -qE "$PATTERN" "$FILE" 2>/dev/null; then
+              print_violation "$ADR_ID" "$ADR_TITLE" "$MSG (arquivo sem padrão obrigatório)" "$FILE"
+            fi
+          done <<< "$CANDIDATES"
           ;;
 
         *)
@@ -116,7 +188,7 @@ else
   echo ""
 
   # Em CI ou modo --strict, falha. Em modo dev local, avisa mas permite seguir.
-  if [[ "${CI:-false}" == "true" || "${1:-}" == "--strict" ]]; then
+  if [[ "${CI:-false}" == "true" || $STRICT -eq 1 ]]; then
     echo "❌ Modo CI/strict: abortando porque yq é obrigatório."
     echo "   Adicione yq ao setup do CI antes de prosseguir."
     exit 1
@@ -137,5 +209,5 @@ if [[ $FAILED -eq 1 ]]; then
   exit 1
 fi
 
-echo "✓ Nenhuma violação de ADR detectada."
+echo "✓ Nenhuma violação de ADR detectada ($SCAN_MODE: $(printf '%s\n' "$FILE_LIST" | grep -c . 2>/dev/null || echo 0) arquivos no universo do scan)."
 exit 0

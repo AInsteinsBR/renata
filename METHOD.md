@@ -334,7 +334,7 @@ flowchart TD
     SPEC --> ROAD["🗺 Roadmap<br/>roadmap/fase-N"]
     ROAD --> ARQ["🛠 Architecture<br/>technical-context/"]
     ADR --> ARQ
-    ARQ --> PLAN["📋 Plan<br/>superpowers/specs/"]
+    ARQ --> PLAN["📋 Plan<br/>superpowers/plans/"]
     SPEC --> PLAN
     ADR --> PLAN
     PLAN --> CODE["💻 Code + tests"]
@@ -543,6 +543,8 @@ docs/
 | `/renata:feature-breakdown`   | When there are 3+ candidate features                              | `docs/features/README.md` (binary MUST/OUT)  |
 | `/renata:feature-behavior`    | (Optional) refine a feature as observable behavior before the technical spec — when Product is separate from Engineering or business rules are dense | `docs/features/F<N>-<slug>.behavior.md` |
 | `/renata:phase-roadmap`              | After breakdown — distribute all features into phases by time    | `docs/roadmap/fases-overview.md`              |
+| `/renata:roadmap-gates`              | Step 9 — harden the roadmap: explicit, verifiable gate per phase + one file per phase | `docs/roadmap/fases-overview.md` (gantt + gates) + `fase-N-<nome>.md` |
+| `/renata:architecture`               | Step 10 — synthesize accepted ADRs + feature-specs + spikes into the technical map (decides nothing new) | `docs/technical-context/stack.md` + `arquitetura.md` (C4) |
 
 ### Design (between planning and execution)
 
@@ -555,7 +557,7 @@ docs/
 
 | Command                        | When to use                                                                                                    | What it generates                                             |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `/renata:plan-phase <phase>`          | Generate a hardened execution plan (involves `superpowers:writing-plans` + `@architect` review)           | `docs/superpowers/specs/<date>-fase-N-plan.md`              |
+| `/renata:plan-phase <phase>`          | Generate a hardened execution plan (involves `superpowers:writing-plans` + `@architect` review)           | `docs/superpowers/plans/<date>-fase-N-plan.md`              |
 | `/renata:execute <phase>`           | Execute the phase with an approved plan (involves `superpowers:executing-plans` + done gate + `@qa-tester`) | code + plan marked `running`→done                     |
 | `/renata:spike <question>`          | Validate a technical risk before committing                                                                    | `docs/spikes/<date>-<slug>.md`                              |
 | `/renata:phase-scope <phase>`        | Decide what fits in the phase with a fixed budget                                                              | `docs/roadmap/fase-N-scope.md` (full MoSCoW)            |
@@ -580,6 +582,7 @@ The method doesn't stop at the phase retro. Once code is running in production, 
 | Command         | When to use                                                     | What it generates                                        |
 | --------------- | --------------------------------------------------------------- | -------------------------------------------------------- |
 | `/renata:status [N]` | Know which step of the flow you're on and what the next step is | On-screen diagnosis (reads `.claude/progress-map.yaml`) |
+| `/renata:next` | Micro version of `/renata:status`: only "what's the canonical next step?" + gap warnings (work ahead of an unmet prereq) | Short on-screen answer (~10 lines) |
 
 ### Product validation (Measure-Learn — closes the loop)
 

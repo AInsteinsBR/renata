@@ -27,10 +27,11 @@ Respond to the user and generate content in the user's language (the language th
 
 ## Pre-flight (step 1 — prerequisite validation)
 
-Before invoking `writing-plans`, you MUST validate the 10 prerequisites below, listing the result of each one for the user. If any fail, **abort** and instruct the user to fix it.
+Before invoking `writing-plans`, you MUST validate the 11 prerequisites below, listing the result of each one for the user. If any fail, **abort** and instruct the user to fix it.
 
 | # | Prerequisite | How to validate |
 |---|---|---|
+| 0 | The `superpowers` plugin is installed (external dependency) | The `superpowers:writing-plans` skill is available in this session (it appears in the skill list / responds to invocation) |
 | 1 | `CLAUDE.md` exists and has its identity filled in | Read the file, confirm that the `{{...}}` in Section 1 are filled in |
 | 2 | PRD exists in `docs/prd/` | `ls docs/prd/*.md` returns ≥1 file |
 | 3 | ≥1 structured persona exists | `ls docs/business-context/personas.md` |
@@ -39,11 +40,12 @@ Before invoking `writing-plans`, you MUST validate the 10 prerequisites below, l
 | 6 | The anchor feature has a spec in `docs/features/` | `docs/features/F1-*.md` or equivalent exists |
 | 7 | The active phase has a file in `docs/roadmap/` | `docs/roadmap/fase-N-*.md` for the phase to plan exists |
 | 8 | `.claude/rules.yaml` exists and is valid | `bash .claude/hooks/rules-violation.sh` runs without a fatal error |
-| 9 | There is no overlapping prior plan still **active** | `docs/superpowers/specs/` has no `running` plan for the same phase |
+| 9 | There is no overlapping prior plan still **active** | `docs/superpowers/plans/` has no `running` plan for the same phase |
 | 10 | If the phase has UI capability: design exists in `docs/design/` | If the phase feature-spec mentions screens/UI but `docs/design/inventory.md` does not exist → abort and suggest `/renata:screens` |
 
 If a check fails:
 
+- **#0** → **Abort — do NOT improvise the plan by hand** (writing it manually leaves the method). Instruct: "Install the `superpowers` plugin first (`/plugin marketplace add obra/superpowers` + `/plugin install superpowers@superpowers-marketplace`), then re-run `/renata:plan-phase`."
 - **#1** → "Go back to Step 1 of GETTING-STARTED and fill in the basic CLAUDE.md."
 - **#2** → "Run `/renata:prd <idea>` first."
 - **#3** → "Run `/renata:persona <name>` to structure at least the anchor persona first."
@@ -131,15 +133,17 @@ PLAN CONSTRAINTS (non-negotiable):
    and suggest pausing to update the spec first.
 
 OUTPUT:
-Plan saved to docs/superpowers/specs/<YYYY-MM-DD>-{{FASE_ARQUIVO}}-plan.md
+Plan saved to docs/superpowers/plans/<YYYY-MM-DD>-{{FASE_ARQUIVO}}-plan.md
 ```
+
+> **Folder convention:** implementation plans live in `docs/superpowers/plans/` — the same place `superpowers:writing-plans` saves by default and `/renata:execute` reads from. `docs/superpowers/specs/` is reserved for design docs (brainstorming output) and must NOT hold plans.
 
 ## Step 5 — Mandatory review by `@architect`
 
 After `writing-plans` generates the file, **automatically invoke**:
 
 ```text
-@architect, review the plan in docs/superpowers/specs/<YYYY-MM-DD>-<slug>-plan.md
+@architect, review the plan in docs/superpowers/plans/<YYYY-MM-DD>-<slug>-plan.md
 against the accepted ADRs in docs/decisions/.
 
 Review focus:
@@ -169,7 +173,7 @@ If `@architect` returns **blockers**, instruct the user to:
 After the plan is approved by `@architect`:
 
 - Update Section 5 (session layer) of `CLAUDE.md` to point to the active plan.
-- Update Section 9 (Next steps) with: "Execute the plan via `superpowers:executing-plans`".
+- Update Section 9 (Next steps) with: "Execute the plan via `/renata:execute <phase>`".
 
 ## Step 7 — Final confirmation to the user
 
@@ -177,8 +181,10 @@ After the plan is approved by `@architect`:
 ✅ Plan generated and reviewed by @architect.
 
 Next steps:
-1. You manually review: docs/superpowers/specs/<YYYY-MM-DD>-<slug>-plan.md
-2. Once approved, invoke: `superpowers:executing-plans` pointing to the plan
+1. You manually review: docs/superpowers/plans/<YYYY-MM-DD>-<slug>-plan.md
+2. Once approved, run: `/renata:execute <phase>` (Step 12 — it wraps
+   `superpowers:executing-plans` with the pre-flight + per-task done gate;
+   do NOT invoke `executing-plans` directly)
 3. During execution, remember:
    - @code-reviewer reviews each finished piece of code before a PR
    - The hook blocks commits that violate rules.yaml
@@ -192,7 +198,7 @@ Next steps:
 
 ## Quality rules
 
-- ❌ Skipping any one of the 10 prerequisites → refuse to invoke `writing-plans`.
+- ❌ Skipping any one of the 11 prerequisites → refuse to invoke `writing-plans`.
 - ❌ A plan generated without `@architect` review → refuse to allow execution.
 - ❌ More than 1 `running` plan for the same phase → refuse to create a new one.
 - ❌ A plan that cites non-existent ADRs → fail. Re-invoke.

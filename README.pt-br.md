@@ -40,6 +40,8 @@ O RENATA vive numa interseção que ninguém mais ocupa:
 /plugin install renata@ainsteins
 ```
 
+> **Dependência declarada:** `/renata:plan-phase` (Etapa 11) e `/renata:execute` (Etapa 12) embrulham as skills `writing-plans` / `executing-plans` do plugin [`superpowers`](https://github.com/obra/superpowers) — que **não** vem junto com o RENATA. Instale-o também: `/plugin marketplace add obra/superpowers` + `/plugin install superpowers@superpowers-marketplace`. Os dois comandos checam a presença dele no pre-flight e abortam com instrução se estiver faltando. Tooling recomendado pro enforcement completo dos hooks: `jq` (ou `python3`) pro gate de etapa, `yq` pras regras de ADR (`brew install jq yq`).
+
 ## Começar um projeto
 
 ```text
@@ -58,7 +60,7 @@ Já tem código? O `/renata:adopt` faz engenharia reversa do padrão técnico (A
 
 ## O que vem no plugin
 
-- **30 comandos** — planejamento (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), pós-produção (`/renata:bug-report`, `/renata:incident`), navegação (`/renata:status`), e o scaffold (`/renata:init`, `/renata:adopt`).
+- **33 comandos** — planejamento (`/renata:discovery`, `/renata:prd`, `/renata:persona`, `/renata:user-journey`, `/renata:metrics`, `/renata:adr`, `/renata:landscape`, `/renata:feature-breakdown`, `/renata:feature-behavior`, `/renata:phase-roadmap`, `/renata:roadmap-gates`, `/renata:architecture`, `/renata:feature-spec`), design (`/renata:screens`), validação (`/renata:assumption-test`, `/renata:interview-kit`, `/renata:interview-debrief`, `/renata:hypothesis-check`), desenvolvimento (`/renata:plan-phase`, `/renata:execute`, `/renata:spike`, `/renata:phase-scope`, `/renata:triage`, `/renata:todo`, `/renata:refactor`, `/renata:retro`, `/renata:extract-pattern`), pós-produção (`/renata:bug-report`, `/renata:incident`), navegação (`/renata:status`, `/renata:next`), e o scaffold (`/renata:init`, `/renata:adopt`).
 - **6 agentes** — `@architect`, `@code-reviewer`, `@qa-tester`, `@perf-auditor`, `@security-reviewer`, `@pattern-mapper`.
 - **3 skills auto-ativáveis** — `respecting-adrs`, `keeping-docs-alive`, `detecting-scope-creep`.
 - **Hooks** — gate de etapas, status na sessão, enforcement de ADR no commit.

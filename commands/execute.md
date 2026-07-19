@@ -4,7 +4,7 @@ description: Orchestrates phase execution with RENATA guardrails, enforcing pre-
 
 # /renata:execute — Orchestrate Step 12 (execute the plan) while respecting the method
 
-You are a tech lead leading the execution of a phase. This command is the **output mirror** of `/renata:plan-phase`: just as `/renata:plan-phase` won't let you *start* without the 10 prerequisites, `/renata:execute` won't let you *close* a task without verification.
+You are a tech lead leading the execution of a phase. This command is the **output mirror** of `/renata:plan-phase`: just as `/renata:plan-phase` won't let you *start* without the 11 prerequisites, `/renata:execute` won't let you *close* a task without verification.
 
 Respond to the user in the user's language (the language they are writing in).
 
@@ -22,12 +22,13 @@ It orchestrates `superpowers:executing-plans` with the RENATA guardrails, wiring
 
 ## Step 1 — Pre-flight (prerequisite validation)
 
-Validate the 4 items below, listing the result of each. If any fails, **abort** and instruct the fix.
+Validate the 5 items below, listing the result of each. If any fails, **abort** and instruct the fix.
 
 | # | Prerequisite | How to validate | Failure → |
 |---|---|---|---|
-| 1 | An approved plan exists in `docs/superpowers/specs/` | `ls docs/superpowers/specs/*-plan.md` returns ≥1 and CLAUDE.md Section 5 points to it | "Run `/renata:plan-phase <phase>` first." |
-| 2 | Plan with no open 🔴 blockers from `@architect` | `grep -c "🔴" docs/superpowers/specs/<plan>` — confirm the 🔴 are marked as resolved | "Resolve the `@architect` blockers first." |
+| 0 | The `superpowers` plugin is installed (external dependency) | The `superpowers:executing-plans` skill is available in this session | **Abort — do NOT improvise the execution loop by hand.** "Install the `superpowers` plugin first (`/plugin marketplace add obra/superpowers` + `/plugin install superpowers@superpowers-marketplace`), then re-run `/renata:execute`." |
+| 1 | An approved plan exists in `docs/superpowers/plans/` | `ls docs/superpowers/plans/*-plan.md` returns ≥1 and CLAUDE.md Section 5 points to it | "Run `/renata:plan-phase <phase>` first." |
+| 2 | Plan with no open 🔴 blockers from `@architect` | `grep -c "🔴" docs/superpowers/plans/<plan>` — confirm the 🔴 are marked as resolved | "Resolve the `@architect` blockers first." |
 | 3 | No other overlapping `running` plan for the same phase | only 1 plan for the phase with `Status: running` | "Finish or abandon the previous plan first." |
 | 4 | `rules.yaml` valid | `bash .claude/hooks/rules-violation.sh` runs without a fatal error | "Run `/renata:adr` in refine mode to populate `rules.yaml`." |
 

@@ -56,9 +56,9 @@ Use sempre que estiver em dúvida sobre o que vem a seguir, depois de editar um 
 | **7.7** | **Comportamento da feature (opcional)** | **30min por feature** | **`/renata:feature-behavior`**                                                | **`docs/features/F<N>-*.behavior.md`**  |
 | 8             | Spec por fase (começa pela Fase 0)           | 1-2h                        | `/renata:feature-spec`                                                              | `docs/features/F1-*.md`                       |
 | **8.5** | **Design de telas (opcional)**          | **1-2h**              | **`/renata:screens`**                                                         | **`docs/design/`**                      |
-| 9             | Roadmap macro                                 | 1h                          | manual                                                                                | `docs/roadmap/`                               |
-| 10            | Arquitetura técnica                          | 2-3h                        | manual                                                                                | `docs/technical-context/`                     |
-| 11            | Plano de execução                           | 15min                       | `/renata:plan-phase` (envolve `superpowers:writing-plans`)                        | `docs/superpowers/specs/`                     |
+| 9             | Roadmap macro                                 | 1h                          | `/renata:roadmap-gates` | `docs/roadmap/`                               |
+| 10            | Arquitetura técnica                          | 2-3h                        | `/renata:architecture` | `docs/technical-context/`                     |
+| 11            | Plano de execução                           | 15min                       | `/renata:plan-phase` (envolve `superpowers:writing-plans`)                        | `docs/superpowers/plans/`                     |
 | 12            | Executar                                      | dias-semanas                | `/renata:execute <fase>` (envolve `superpowers:executing-plans` + gate de pronto) | código real                                    |
 | 13            | Retro da fase                                 | 1h                          | `/renata:retro`                                                                     | `docs/roadmap/fase-N-retro.md`                |
 
@@ -998,7 +998,7 @@ Se persona-âncora trava em algum ponto, **volte ao brief**. Não siga pra Etapa
 
 # 🛣 Etapa 9 — Roadmap macro (1h)
 
-**Esta etapa é manual** (não tem slash command próprio — candidato a v0.2).
+**Rode `/renata:roadmap-gates`** — ele consolida o roadmap da Etapa 7.5 com gates explícitos (as seções abaixo descrevem o que ele produz; use-as pra revisar a saída).
 
 **Objetivo:** definir as fases macro do produto (Fase 0, 1, 2, 3...) com gates claros entre elas.
 
@@ -1080,7 +1080,7 @@ Cada fase tem **gate explícito** — critério objetivo pra iniciar a próxima.
 
 > 🛠 **Esta etapa é liderada pelo time técnico.** Você (PM) revisa, valida amarração com personas/métricas.
 
-**Esta etapa é manual** (candidato a slash command futuro).
+**Rode `/renata:architecture`** — ele sintetiza ADRs + feature-specs + spikes em `stack.md` + `arquitetura.md` com C4 (as seções abaixo descrevem o que ele produz; use-as pra revisar a saída).
 
 **Objetivo:** definir stack e arquitetura macro, com cada decisão amarrada a uma restrição vinda de persona, ADR, ou constraint operacional.
 
@@ -1146,7 +1146,9 @@ Quando o macro não chega:
 
 > ⚠️ **Atenção crítica:** o `superpowers:writing-plans` sozinho é **genérico** — ele não conhece nosso método. Sem blindagem, ele pode gerar plano que ignora ADRs, faz scope-creep, ou pula testes em passos críticos.
 >
-> **Use sempre `/renata:plan-phase`** em vez de invocar `superpowers:writing-plans` direto. O `/renata:plan-phase` envolve o `writing-plans` com 10 pré-requisitos + revisão automática do `@architect`.
+> **Use sempre `/renata:plan-phase`** em vez de invocar `superpowers:writing-plans` direto. O `/renata:plan-phase` envolve o `writing-plans` com 11 pré-requisitos + revisão automática do `@architect`.
+>
+> 📦 **Dependência declarada:** o plugin `superpowers` NÃO vem junto com o RENATA. Instale antes desta etapa: `/plugin marketplace add obra/superpowers` + `/plugin install superpowers@superpowers-marketplace`. O pre-flight checa a presença dele e aborta se faltar — não redija o plano na mão como contorno.
 
 ## 11.1. Pré-flight checklist (obrigatório antes de invocar `/renata:plan-phase`)
 
@@ -1162,7 +1164,7 @@ Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **
 | 6  | Feature-âncora tem spec com plano em fases  | `ls docs/features/F1-*.md`                                                                      |
 | 7  | Fase a planejar tem doc própria             | `ls docs/roadmap/fase-N-*.md`                                                                   |
 | 8  | `rules.yaml` válido                       | `bash .claude/hooks/rules-violation.sh`                                                         |
-| 9  | Sem plano`running` da mesma fase ativo     | `grep -l "Status:.*running" docs/superpowers/specs/*.md` retorna vazio                          |
+| 9  | Sem plano`running` da mesma fase ativo     | `grep -l "Status:.*running" docs/superpowers/plans/*.md` retorna vazio                          |
 | 10 | Se a fase tem UI: design existe              | feature-spec menciona telas/UI →`docs/design/inventory.md` existe (senão `/renata:screens`) |
 
 > 💡 **TaskFlow exemplo:** ao chegar nesta etapa para a Fase 0, confirma que: PRD existe (`taskflow.md`), persona Marcos está em `personas.md`, métricas têm contained rate, ADRs cobrem Postgres + framework + auth, feature F1 spec'ada, `fase-0-spike.md` existe.
@@ -1181,7 +1183,7 @@ Ou pelo nome:
 
 ## 11.3. O que `/renata:plan-phase` faz internamente
 
-1. **Valida os 10 pré-requisitos** (se algum falha, aborta e te orienta).
+1. **Valida os 11 pré-requisitos** (se algum falha, aborta e te orienta).
 2. **Lista artefatos** que vai passar ao `writing-plans` (PRD + ADRs + feature-spec + roadmap).
 3. **Pede sua confirmação** antes de prosseguir.
 4. **Invoca `superpowers:writing-plans`** com prompt blindado que força respeito às ADRs.
@@ -1191,7 +1193,7 @@ Ou pelo nome:
 
 ## 11.4. O que esperar como output
 
-`docs/superpowers/specs/<YYYY-MM-DD>-fase-N-plan.md` com:
+`docs/superpowers/plans/<YYYY-MM-DD>-fase-N-plan.md` com:
 
 - Sequência **exata** de passos.
 - TDD red/green por passo.
@@ -1215,7 +1217,7 @@ Se algo soar errado, ou refine direto no arquivo, ou re-invoque `/renata:plan-ph
 
 ## Validação da Etapa 11
 
-- [ ] `docs/superpowers/specs/<data>-fase-N-plan.md` existe
+- [ ] `docs/superpowers/plans/<data>-fase-N-plan.md` existe
 - [ ] Plano passou pela revisão do `@architect` (relatório anexo ou inline)
 - [ ] Plano tem TDD em cada passo
 - [ ] Plano tem ≥3 checkpoints com usuário

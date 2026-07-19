@@ -6,8 +6,28 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-07-19
+
+**O que há de novo:** enforcement que realmente enforça — feedback de campo de um projeto real (Avatar) provou que o gate de etapa era um no-op silencioso pra toda invocação real, o hook de pre-commit era inutilizável em repos com dependências vendoradas, e a convenção de pasta de plano colidia com o `superpowers`. Tudo corrigido, mais 3 comandos novos pra que toda etapa do fluxo tenha comando e cobertura do gate.
+
 ### Corrigido
+- **Gate de etapa era no-op pra invocações namespaced (as reais).** O `etapa-gate.sh` casava o comando invocado contra o mapa ao pé da letra: `/plan-phase` bloqueava, mas `/renata:plan-phase` — como os usuários realmente invocam — sempre passava. O gate agora lê também `.tool_input.skill` (como a ferramenta Skill entrega slash commands) e compara basenames sem namespace, então `/plan-phase`, `/renata:plan-phase` e `renata:plan-phase` caem todos no gate. Provado por teste: `/renata:plan-phase 0` agora dá exit 2 enquanto a Etapa 10 não existe.
+- **Hook de pre-commit varria a árvore inteira.** O `rules-violation.sh` rodava `grep -r` no repo todo, acusando violação de ADR dentro de código de terceiros gitignored (ex.: `pt_BR` num site-packages vendorado) e barrando commits com zero violações reais. Agora escaneia **apenas os arquivos staged** (`git diff --cached --name-only --diff-filter=ACM`) no pre-commit — honrando o `.gitignore` de graça — com fallback pra rastreados (`git ls-files`) em CI/`--all`, e pra varredura antiga só fora de repo git.
+- **Pasta de plano colidia com a convenção do `superpowers`.** O RENATA gravava/lia planos de implementação em `docs/superpowers/specs/`, mas o `superpowers:writing-plans` salva em `docs/superpowers/plans/` (e no superpowers, `specs/` significa design doc) — então o `/renata:execute` nunca encontraria o plano gerado pelo `writing-plans`. Padronizado `docs/superpowers/plans/` em tudo (plan-phase, execute, progress-map Etapas 11-12, qa-tester, keeping-docs-alive, METHOD, GETTING-STARTED); `specs/` fica reservado pra design docs.
+- **Handoff do `/renata:plan-phase` pulava o `/renata:execute`.** O Step 6/7 mandava o usuário invocar `superpowers:executing-plans` direto — jogando pra fora do método bem no fim. Agora entrega pra `/renata:execute <fase>` (que embrulha o `executing-plans` com pre-flight + gate de pronto por task).
 - METHOD (en+pt): a seção "Inspirações declaradas" no rodapé, da era v0.1, era uma duplicata desatualizada de "Sobre os ombros de quem (linhagem)" (criada na 0.1.7) — sem Blank/Fitzpatrick e driftando no resto. Os dois itens únicos dela (curso AINSTEINS / AI-Driven Development, DDD-lite) foram fundidos na seção de linhagem e a duplicata removida.
+
+### Adicionado
+- `/renata:architecture` — a Etapa 10 ganha slash command (era "(manual)"): sintetiza ADRs aceitas + feature-specs + spikes em `stack.md` + `arquitetura.md` (C4 N1/N2), sem decidir nada novo. Com o matcher do gate corrigido, a Etapa 10 passa a ter cobertura do gate.
+- `/renata:roadmap-gates` — a Etapa 9 ganha slash command (era "(manual)"): blinda o roadmap da 7.5 com gate explícito e verificável por fase + 1 `fase-N-<nome>.md` por fase + anti-roadmap.
+- `/renata:next` — micro-navegador: responde só "qual o próximo passo canônico?" e aponta gaps (artefato existindo à frente de prereq não satisfeito). O complemento barato e frequente do `/renata:status`.
+- **Detector de gap proativo no SessionStart** — o `method-status-line.sh` agora imprime uma linha `⚠ gap no fluxo` quando uma etapa posterior tem artefato enquanto uma etapa obrigatória anterior está vazia (o caso que o gate por-invocação não pega: trabalho já feito à frente do fluxo, ou plano sugerido em prosa).
+- **`superpowers` declarado como dependência externa** — `/renata:plan-phase` e `/renata:execute` ganharam a checagem #0 no pre-flight (aborta com instrução de instalação se o plugin `superpowers` faltar — improvisar o plano/loop na mão é explicitamente proibido); README (en+pt) e GETTING-STARTED (en+pt) documentam a instalação.
+
+### Mudado
+- **Hooks não dependem mais de `yq`** — o `progress-map.yaml` é lido por um parser awk embutido (`progress-map-lib.sh`, arquivo novo compartilhado por `etapa-gate.sh` e `method-status-line.sh`), então o gate de etapa e a linha de status rodam em qualquer máquina. O JSON do evento do hook precisa de `jq` *ou* `python3` (fallback).
+- **Enforcement OFF agora é barulhento** — trava silenciosamente desligada é pior que trava nenhuma. Se o gate não pode rodar (sem `jq`/`python3`) ou o `rules.yaml` existe mas o `yq` falta, o SessionStart imprime um aviso visível estilo `⚠ RENATA: enforcement OFF` com o comando de instalação; o próprio gate também avisa no stderr em vez de sair calado.
+- `progress-map.yaml`: as Etapas 9 e 10 agora têm `command: "/roadmap-gates"` / `command: "/architecture"` em vez de `"(manual) ..."` — sem mais pontos cegos na cobertura do gate; as seções das Etapas 9/10 e a tabela de etapas do GETTING-STARTED (en+pt) apontam pros comandos novos; mensagem de próximos passos do `init.sh` atualizada.
 
 ## [0.1.11] — 2026-07-15
 
