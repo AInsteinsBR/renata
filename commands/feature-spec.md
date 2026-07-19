@@ -29,6 +29,8 @@ Respond to the user and generate document content in the user's language (the la
 
 ## Structure
 
+> Right after the title line, the generated document MUST carry the step marker `<!-- renata:step=8 -->` (invisible when rendered). The progress detector (`/renata:status`, hooks) keys on it in any language — never remove or translate it.
+
 ```markdown
 # F<N> · {{Feature name}}
 

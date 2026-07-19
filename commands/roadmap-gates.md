@@ -29,7 +29,7 @@ Respond and generate content in the user's language (the language they are writi
 
 ## Generates
 
-- **Updates `docs/roadmap/fases-overview.md`:** adds a `mermaid gantt` consolidated
+- **Updates `docs/roadmap/fases-overview.md`:** stamps the step marker `<!-- renata:step=9 -->` right below the title (the progress detector keys on it; the file also keeps the `7.5` marker) and adds a `mermaid gantt` consolidated
   view + a table with an **explicit gate per phase** (an objective criterion to
   start the next one — a test that passes, an observable metric, a demo the anchor
   persona completes).

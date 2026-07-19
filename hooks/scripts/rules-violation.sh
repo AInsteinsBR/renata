@@ -69,7 +69,7 @@ filter_files() {  # $1 = scope, $2 = exclude-dir; lê a lista via stdin
   while IFS= read -r f; do
     [[ -z "$f" || ! -f "$f" ]] && continue
     case "$f" in
-      _framework/*|produto-exemplo/*|node_modules/*|.venv/*|.git/*) continue ;;
+      node_modules/*|.venv/*|.git/*) continue ;;
       */node_modules/*|*/.venv/*|*/.git/*) continue ;;
     esac
     if [[ -n "$scope" && "$scope" != "." ]]; then
@@ -138,7 +138,7 @@ if command -v yq >/dev/null 2>&1; then
             if [[ -n "$EXCLUDE" && "$EXCLUDE" != "null" ]]; then
               GREP_ARGS+=(--exclude-dir="$EXCLUDE")
             fi
-            GREP_ARGS+=(--exclude-dir="_framework" --exclude-dir="produto-exemplo" --exclude-dir="node_modules" --exclude-dir=".venv" --exclude-dir=".git")
+            GREP_ARGS+=(--exclude-dir="node_modules" --exclude-dir=".venv" --exclude-dir=".git")
             if [[ -d "$SCOPE" ]]; then
               FOUND=$(grep "${GREP_ARGS[@]}" -- "$PATTERN" "$SCOPE" 2>/dev/null || true)
             fi

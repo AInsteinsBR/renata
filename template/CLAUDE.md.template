@@ -3,7 +3,7 @@
 > Entrada de contexto modular. Cada camada referencia arquivos específicos via `@`.
 > Camadas: **org** (princípios) → **repo** (este projeto) → **feature** (escopo atual) → **session** (estado).
 
-> Este projeto segue o **RENATA**. Ver `_framework/METHOD.md` ou referência externa para os princípios do método.
+> Este projeto segue o **RENATA**. Ver o `METHOD.md` do RENATA (`${CLAUDE_PLUGIN_ROOT}/METHOD.md`) para os princípios do método.
 
 > **Placeholders `{{...}}`:** cada placeholder tem comentário `<!-- preenche na Etapa N -->` indicando qual etapa do `GETTING-STARTED.md` o preenche. Não preencha tudo de uma vez — preencha conforme avança nas etapas.
 
@@ -17,7 +17,7 @@
 - **Time:** {{TEAM}} <!-- preenche na Etapa 1 -->
 - **Persona-âncora:** {{PRIMARY_PERSONA}} <!-- preenche na Etapa 3 (após /persona da primária) -->
 - **Hipóteses:** {{HYPOTHESES}} <!-- preenche na Etapa 2 (após /prd). 1 projeto = 1 PRD com 1+ hipóteses; liste cada uma em 1 linha (H1, H2…) -->
-<!-- Regra do método: este projeto tem exatamente UM PRD, que abriga N hipóteses. Não crie segundo PRD; aposta separável = outro projeto. Ver _framework/METHOD.md → "1 projeto = 1 PRD". -->
+<!-- Regra do método: este projeto tem exatamente UM PRD, que abriga N hipóteses. Não crie segundo PRD; aposta separável = outro projeto. Ver ${CLAUDE_PLUGIN_ROOT}/METHOD.md → "1 projeto = 1 PRD". -->
 
 ---
 

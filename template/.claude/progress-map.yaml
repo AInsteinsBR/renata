@@ -1,8 +1,8 @@
 # progress-map.yaml — Fonte única da verdade do detector de progresso (/status).
 #
 # Lido por:
-#   - .claude/commands/status.md  (comando interpretado pelo Claude)
-#   - .claude/hooks/method-status-line.sh  (hook SessionStart, via yq)
+#   - ${CLAUDE_PLUGIN_ROOT}/commands/status.md  (comando interpretado pelo Claude)
+#   - ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/method-status-line.sh  (hook SessionStart; parser embutido, sem yq)
 #
 # Cada etapa:
 #   num            número da etapa (string p/ suportar "8.5")
@@ -10,7 +10,10 @@
 #   command        o que o usuário roda pra produzir o artefato
 #   artifact_glob  glob que detecta existência do artefato
 #   non_empty_if   substring que, se presente no artefato, indica conteúdo real
-#                  (heurística anti-placeholder; vazio = só existência basta)
+#                  (heurística anti-placeholder; vazio = só existência basta).
+#                  Needles `renata:step=N` casam o marcador `<!-- renata:step=N -->`
+#                  que o comando da etapa grava logo abaixo do título do doc —
+#                  idioma-neutro (os docs saem no idioma do usuário).
 #   optional       true se a etapa pode ser pulada sem bloquear o fluxo
 #   prereq         lista de num de etapas que são pré-requisito REAL
 #   validation     3-5 critérios-chave (checklist leve) extraídos do GETTING-STARTED
@@ -35,7 +38,7 @@ steps:
     name: "Discovery (opcional)"
     command: "/discovery <ideia>"
     artifact_glob: "docs/discovery/*.md"
-    non_empty_if: "aposta escolhida"
+    non_empty_if: "renata:step=1.5"
     optional: true
     prereq: ["1"]
     validation:
@@ -114,7 +117,7 @@ steps:
     name: "Pesquisa competitiva (opcional)"
     command: "/landscape"
     artifact_glob: "docs/research/*-landscape.md"
-    non_empty_if: "Soluções encontradas"
+    non_empty_if: "renata:step=6.5"
     optional: true
     prereq: ["2"]
     validation:
@@ -141,7 +144,7 @@ steps:
     name: "Fasear o sistema"
     command: "/phase-roadmap"
     artifact_glob: "docs/roadmap/fases-overview.md"
-    non_empty_if: "Fase 0"
+    non_empty_if: "renata:step=7.5"
     optional: false
     prereq: ["7"]
     validation:
@@ -154,7 +157,7 @@ steps:
     name: "Comportamento da feature (opcional)"
     command: "/feature-behavior <F<N>>"
     artifact_glob: "docs/features/*.behavior.md"
-    non_empty_if: "Behavior"
+    non_empty_if: "renata:step=7.7"
     optional: true
     prereq: ["7"]
     validation:
@@ -167,7 +170,7 @@ steps:
     name: "Spec da feature-âncora"
     command: "/feature-spec F1"
     artifact_glob: "docs/features/F1-*.md"
-    non_empty_if: "##"
+    non_empty_if: "renata:step=8"
     optional: false
     prereq: ["7.5"]
     validation:
@@ -192,7 +195,7 @@ steps:
     name: "Roadmap macro"
     command: "/roadmap-gates"
     artifact_glob: "docs/roadmap/fases-overview.md"
-    non_empty_if: "gantt"
+    non_empty_if: "renata:step=9"
     optional: false
     prereq: ["8"]
     validation:
@@ -230,11 +233,12 @@ steps:
   - num: "12"
     name: "Executar"
     command: "/execute <fase>"
-    # Etapa 12 produz CÓDIGO, não um doc próprio. Detectamos pela existência de um
-    # plano de execução marcado como em andamento (Status: running) — artefato distinto
-    # do retro da Etapa 13, evitando dupla contagem.
+    # Etapa 12 produz CÓDIGO, não um doc próprio. Detectamos pelo marcador
+    # `renata:step=12` que o /execute carimba no plano ao INICIAR a execução
+    # (permanece após Status: done) — artefato distinto do plano recém-aprovado
+    # da Etapa 11 e do retro da Etapa 13, evitando dupla contagem.
     artifact_glob: "docs/superpowers/plans/*-fase-*-plan.md"
-    non_empty_if: "running"
+    non_empty_if: "renata:step=12"
     optional: false
     prereq: ["11"]
     validation:
@@ -246,7 +250,7 @@ steps:
     name: "Retro da fase"
     command: "/retro <fase>"
     artifact_glob: "docs/roadmap/fase-*-retro.md"
-    non_empty_if: "Decisão final"
+    non_empty_if: "renata:step=13"
     optional: false
     prereq: ["12"]
     validation:

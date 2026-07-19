@@ -30,7 +30,7 @@ Validate the 5 items below, listing the result of each. If any fails, **abort** 
 | 1 | An approved plan exists in `docs/superpowers/plans/` | `ls docs/superpowers/plans/*-plan.md` returns ≥1 and CLAUDE.md Section 5 points to it | "Run `/renata:plan-phase <phase>` first." |
 | 2 | Plan with no open 🔴 blockers from `@architect` | `grep -c "🔴" docs/superpowers/plans/<plan>` — confirm the 🔴 are marked as resolved | "Resolve the `@architect` blockers first." |
 | 3 | No other overlapping `running` plan for the same phase | only 1 plan for the phase with `Status: running` | "Finish or abandon the previous plan first." |
-| 4 | `rules.yaml` valid | `bash .claude/hooks/rules-violation.sh` runs without a fatal error | "Run `/renata:adr` in refine mode to populate `rules.yaml`." |
+| 4 | `rules.yaml` valid | `bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh"` runs without a fatal error | "Run `/renata:adr` in refine mode to populate `rules.yaml`." |
 
 ## Step 2 — Load execution context (before the first Edit/Write)
 
@@ -38,8 +38,9 @@ Before touching any code file:
 
 1. Invoke the `respecting-adrs` skill (validates the proposal against accepted ADRs).
 2. Read: the active plan, `CLAUDE.md`, the phase's feature-spec in `docs/features/`.
+3. Stamp the plan for execution: set `Status: running` in the plan header and add the step marker `<!-- renata:step=12 -->` right below the plan title. The progress detector keys on both; the marker stays forever, the `Status` flips to `done` at the end of the phase (Step 4).
 
-> This step covers in practice the candidate `retrieving-context-before-coding` (see `_framework/SKILL-CANDIDATES.md`) WITHOUT creating the skill — the command forces the reading. If the "started coding without reading context" friction still appears in real use, then promote the candidate to a skill.
+> This step covers in practice the candidate `retrieving-context-before-coding` (see `SKILL-CANDIDATES.md` in the RENATA repo) WITHOUT creating the skill — the command forces the reading. If the "started coding without reading context" friction still appears in real use, then promote the candidate to a skill.
 
 ## Step 3 — Per-task execution loop
 
@@ -50,7 +51,8 @@ For EACH task in the plan, in this order:
 3. **Review:** invoke `@code-reviewer` on the task diff. Resolve 🔴 blockers before moving on.
 4. **DONE GATE:** invoke `superpowers:verification-before-completion`. Do NOT mark the task as `[x]` without:
    - test green (run it and confirm the output, don't assume);
-   - the `rules-violation.sh` hook not blocking.
+   - the `rules-violation.sh` hook not blocking;
+   - **living docs updated deterministically** (never rely on a skill auto-activating for this): mark the task `[x]` in the plan file and refresh `CLAUDE.md` Section 5 (active plan, last completed task, date). This command does it as part of the gate, on every task.
    - **Granularity:** the per-task gate covers the first two criteria of principle 4 (test passes + hook does not block). The third (observable metric) is at the phase level, validated in Step 4 — don't require an observable metric at every `[x]`.
 5. **Scope-creep:** if the task revealed a capability outside the feature-spec, the `detecting-scope-creep` skill should activate — pause and decide (expand the spec via `/renata:feature-spec` or cut it) before continuing.
 
@@ -64,9 +66,10 @@ Invoke `superpowers:systematic-debugging` BEFORE proposing a fix (don't guess).
 
 When all tasks in the plan are `[x]`:
 
-1. Invoke `@qa-tester` — validates against the PRD/feature-spec acceptance criteria (independent validation, acting as the anchor persona). Resolve blockers before declaring the phase done.
-2. Invoke the `keeping-docs-alive` skill — updates CLAUDE.md Section 5, `.claude/sessions/`, and the plan checkboxes.
-3. Suggest `/renata:retro <phase>`. If the phase delivered a measurable feature, also suggest `/renata:hypothesis-check`.
+1. Set `Status: done` in the plan header (keep the `<!-- renata:step=12 -->` marker).
+2. Invoke `@qa-tester` — validates against the PRD/feature-spec acceptance criteria (independent validation, acting as the anchor persona). Resolve blockers before declaring the phase done.
+3. Invoke the `keeping-docs-alive` skill — updates CLAUDE.md Section 5, `.claude/sessions/`, and the plan checkboxes.
+4. Suggest `/renata:retro <phase>`. If the phase delivered a measurable feature, also suggest `/renata:hypothesis-check`.
 
 ## Arguments
 

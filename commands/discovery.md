@@ -43,6 +43,8 @@ Record clues for the next steps — but do NOT formalize them (that's the dedica
 
 ## Structure to generate
 
+> Right after the title line, the generated document MUST carry the step marker `<!-- renata:step=1.5 -->` (invisible when rendered). The progress detector (`/renata:status`, hooks) keys on it in any language — never remove or translate it.
+
 ```markdown
 # Discovery · {{theme}}
 

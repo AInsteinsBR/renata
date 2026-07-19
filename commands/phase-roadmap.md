@@ -47,6 +47,8 @@ Pipeline: `/renata:feature-breakdown` → **`/renata:phase-roadmap`** → `/rena
 
 ## Output structure
 
+> Right after the title line, the generated document MUST carry the step marker `<!-- renata:step=7.5 -->` (invisible when rendered). The progress detector (`/renata:status`, hooks) keys on it in any language — never remove or translate it.
+
 Write to `docs/roadmap/fases-overview.md` a document with this structure (presented
 below as a template; replace the `{{placeholders}}`):
 

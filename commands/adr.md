@@ -12,7 +12,7 @@ Respond to the user and generate document content in the user's language (the la
 
 - The **ADR file** (`docs/decisions/ADR-NNN-*.md`) is **project content** — you write here.
 - The **`.claude/rules.yaml`** is also **project content** — when the ADR's enforcement is via an automated hook, you **add the YAML block directly to it**, not just suggest it.
-- The **template** (`_framework/template/.claude/rules.yaml.template`) belongs to the framework — don't touch it.
+- The **template** (`rules.yaml.template`, shipped with RENATA) belongs to the framework — don't touch it.
 
 An ADR and its `rules.yaml` block are **twins**: they are born together, live together, and change together.
 
@@ -118,7 +118,7 @@ Don't just suggest the block — **write it in**. Procedure:
 
 3. After `OK`, edit `.claude/rules.yaml` by appending the new block inside the `adrs:` key. If the file does not yet have an `adrs:` key, create one.
 
-4. Run `bash .claude/hooks/rules-violation.sh` in validation mode (no commit) to confirm the YAML is valid and the hook recognizes the new rule.
+4. Run `bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh"` in validation mode (no commit) to confirm the YAML is valid and the hook recognizes the new rule. **Real validation requires `yq`** — without it the hook only prints a warning and validates nothing (`brew install yq`).
 
 5. If the hook complains (invalid YAML, pattern does not compile), revert the append and report. **Do not leave `rules.yaml` broken.**
 

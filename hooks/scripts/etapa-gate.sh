@@ -104,10 +104,22 @@ for p in $TARGET_PREREQS; do
     continue
   fi
 
-  # se há needle, ao menos 1 arquivo precisa contê-lo (anti-placeholder)
+  # se há needle, ao menos 1 arquivo precisa contê-lo (anti-placeholder).
+  # Needles "renata:step=N" casam o marcador que o comando da etapa grava no doc.
   if [[ -n "$pneedle" ]]; then
-    if ! grep -lq -- "$pneedle" "${files[@]}" 2>/dev/null; then
+    if ! grep -lqF -- "$pneedle" "${files[@]}" 2>/dev/null; then
       MISSING+=("Etapa $p ($pnome): artefato existe mas parece placeholder (falta '$pneedle')")
+      continue
+    fi
+  fi
+
+  # Gate ESTRITO (opt-in via RENATA_STRICT_GATE=1): além de existir, o artefato
+  # do prereq precisa do selo de verificação humana ("> ✅ Verificado por você" /
+  # "> ✅ Verified by you") — done ≠ verificado. Desligado por padrão pra não
+  # enrijecer o fluxo; "✅ Verif" casa o selo nos dois idiomas.
+  if [[ "${RENATA_STRICT_GATE:-0}" == "1" ]]; then
+    if ! grep -lq "✅ Verif" "${files[@]}" 2>/dev/null; then
+      MISSING+=("Etapa $p ($pnome): artefato existe mas sem selo de verificação (gate estrito ON — verifique a etapa via /renata:status)")
     fi
   fi
 done
@@ -120,7 +132,7 @@ if [[ ${#MISSING[@]} -gt 0 ]]; then
     for m in "${MISSING[@]}"; do echo "   • $m"; done
     echo ""
     echo "   Rode /renata:status para ver o próximo passo correto. Complete os prereqs antes."
-    echo "   (Para entender a ordem: METHOD.md, seção 'Por que essa ordem?'.)"
+    echo "   (Para entender a ordem: METHOD.md, seção 'Why this order?' / 'Por que essa ordem?'.)"
   } >&2
   exit 2
 fi

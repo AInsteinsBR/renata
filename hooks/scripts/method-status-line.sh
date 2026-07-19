@@ -36,8 +36,10 @@ primeira_pendente_nome=""
 gap_num=""
 gap_nome=""
 
+ULTIMA_NUM=""
 while IFS=$'\t' read -r NUM NOME CMD GLOB NAO_VAZIO OPCIONAL PREREQ; do
   [[ -z "$NUM" ]] && continue
+  ULTIMA_NUM="$NUM"
 
   # Expande o glob. compgen -G funciona corretamente para literais E wildcards.
   # Compatível com bash 3.2 (macOS): usa while-read em vez de mapfile.
@@ -90,7 +92,7 @@ if [[ -z "$etapa_atual_num" ]]; then
   etapa_atual_nome=$(printf '%s' "$ultima" | cut -f2)
 fi
 
-echo "📍 RENATA: Etapa ${etapa_atual_num}/13 (${etapa_atual_nome}) — ${presentes} docs presentes, ${verificados} verificados. Rode /renata:status."
+echo "📍 RENATA: Etapa ${etapa_atual_num}/${ULTIMA_NUM:-13} (${etapa_atual_nome}) — ${presentes} docs presentes, ${verificados} verificados. Rode /renata:status."
 
 # Detector de gap proativo: trabalho à frente do primeiro prereq não satisfeito.
 if [[ -n "$gap_num" ]]; then

@@ -39,7 +39,7 @@ Before invoking `writing-plans`, you MUST validate the 11 prerequisites below, l
 | 5 | There is ≥1 `accepted` ADR in `docs/decisions/` | `grep -l "Status:.*accepted" docs/decisions/ADR-*.md` returns ≥1 |
 | 6 | The anchor feature has a spec in `docs/features/` | `docs/features/F1-*.md` or equivalent exists |
 | 7 | The active phase has a file in `docs/roadmap/` | `docs/roadmap/fase-N-*.md` for the phase to plan exists |
-| 8 | `.claude/rules.yaml` exists and is valid | `bash .claude/hooks/rules-violation.sh` runs without a fatal error |
+| 8 | `.claude/rules.yaml` exists and is valid | `bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh"` runs without a fatal error |
 | 9 | There is no overlapping prior plan still **active** | `docs/superpowers/plans/` has no `running` plan for the same phase |
 | 10 | If the phase has UI capability: design exists in `docs/design/` | If the phase feature-spec mentions screens/UI but `docs/design/inventory.md` does not exist → abort and suggest `/renata:screens` |
 
@@ -86,7 +86,7 @@ I'm going to invoke superpowers:writing-plans with the following shielded contex
 🎯 Anchor feature: docs/features/F1-<slug>.md
 🗺 Phase roadmap: docs/roadmap/fase-N-<nome>.md
 🔒 Rules enforced via hook: .claude/rules.yaml
-📖 Method: _framework/METHOD.md
+📖 Method: ${CLAUDE_PLUGIN_ROOT}/METHOD.md
 
 Confirm and proceed?
 ```
@@ -107,7 +107,7 @@ MANDATORY CONTEXT (read everything before planning):
 - @docs/roadmap/{{FASE_ARQUIVO}}.md (phase scope + gate)
 - @docs/features/{{FEATURE_ANCORA}}.md (high-level plan for the anchor)
 - @docs/decisions/ (ALL accepted ADRs)
-- @_framework/METHOD.md (method principles)
+- ${CLAUDE_PLUGIN_ROOT}/METHOD.md (method principles)
 
 PLAN CONSTRAINTS (non-negotiable):
 
@@ -134,9 +134,10 @@ PLAN CONSTRAINTS (non-negotiable):
 
 OUTPUT:
 Plan saved to docs/superpowers/plans/<YYYY-MM-DD>-{{FASE_ARQUIVO}}-plan.md
+The plan file must start with `Status: draft` right below the title.
 ```
 
-> **Folder convention:** implementation plans live in `docs/superpowers/plans/` — the same place `superpowers:writing-plans` saves by default and `/renata:execute` reads from. `docs/superpowers/specs/` is reserved for design docs (brainstorming output) and must NOT hold plans.
+> **Folder convention:** implementation plans live in `docs/superpowers/plans/` — the same place `superpowers:writing-plans` saves by default and `/renata:execute` reads from. `docs/superpowers/specs/` is reserved for design docs (brainstorming output) and must NOT hold plans. The plan header carries a `Status:` field: `draft` when generated, `approved` after `@architect` sign-off, then `/renata:execute` flips it to `running`/`done`.
 
 ## Step 5 — Mandatory review by `@architect`
 
@@ -172,6 +173,7 @@ If `@architect` returns **blockers**, instruct the user to:
 
 After the plan is approved by `@architect`:
 
+- Set `Status: approved` in the plan header (it was `draft`).
 - Update Section 5 (session layer) of `CLAUDE.md` to point to the active plan.
 - Update Section 9 (Next steps) with: "Execute the plan via `/renata:execute <phase>`".
 

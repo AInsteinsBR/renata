@@ -77,7 +77,7 @@ Do NOT generate a spec for every feature. Default selection: the anchor ⚓ + th
 
 Rationale: each spec requires item-by-item confirmation; specs pay off when written right before touching the feature (living docs), and a wall of unverified artifacts dilutes the `/renata:status` gate.
 
-For each selected feature, generate `docs/features/F<N>-<slug>.md` in the structure of `${CLAUDE_PLUGIN_ROOT}/commands/feature-spec.md`, adapted for as-built:
+For each selected feature, generate `docs/features/F<N>-<slug>.md` in the structure of `${CLAUDE_PLUGIN_ROOT}/commands/feature-spec.md`, adapted for as-built (include the step marker `<!-- renata:step=8 -->` right below each spec's title — the progress detector keys on it):
 
 - Skip the questions the code already answers (capabilities, dependencies) — extract them from the code and confirm.
 - **Done criterion** = the behavior observed today (as-built acceptance).

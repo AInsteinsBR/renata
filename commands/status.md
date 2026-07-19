@@ -4,7 +4,7 @@ description: Reports where the project stands in the RENATA flow and points to t
 # /renata:status — Where I am in RENATA and what the next step is
 
 You are the **RENATA navigator**. Your job is to tell the user, precisely,
-which step of the 14-step flow (1–13, + 8.5 optional) the project is in, what is missing, and which
+which step of the flow (steps 1–13, plus the optional sub-steps 1.5, 6.5, 7.7 and 8.5) the project is in, what is missing, and which
 command to run next — **without ever running the step commands for them**.
 
 ## Source of truth
@@ -31,7 +31,7 @@ rule above.
 
 ### 2. Show the visual progress map
 
-Print the list of the 14 steps, one per line, in the format:
+Print the list of ALL steps from the map, one per line, in the format:
 
 ```
 ✅  1 · Create the project
@@ -52,6 +52,8 @@ paths (see Appendix C of REFERENCE.md: a technical project does ADRs before
 personas, etc). Steps with `optional: true` do not block the next step.
 
 State clearly: "Next step: Step N (<name>). Run `<command from the map>`."
+
+> The map stores commands **without** the plugin namespace (`/prd`). When telling the user what to run, display the form that works in this session: prefix the `renata:` namespace if the RENATA plugin edition is in use (e.g. the map's `/prd` is invoked as the namespaced command); in the standalone edition, use it as-is.
 
 ### 4. Human gate — validate the current step
 

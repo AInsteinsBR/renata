@@ -60,7 +60,7 @@ Ao final de cada fase do roadmap (ou trimestralmente), revisita esta lista. Padr
 
 ### detecting-scope-creep ✅ PROMOVIDA (2026-05-27)
 
-**Status:** mora em `_framework/template/.claude/skills/detecting-scope-creep/SKILL.md`.
+**Status:** mora em `skills/detecting-scope-creep/SKILL.md`.
 
 **Fricção observada:** feature cresce durante implementação além do spec.
 **Trigger natural:** ao codar feature que tem spec definida.
@@ -69,7 +69,7 @@ Ao final de cada fase do roadmap (ou trimestralmente), revisita esta lista. Padr
 
 ### respecting-adrs ✅ PROMOVIDA (2026-05-27)
 
-**Status:** mora em `_framework/template/.claude/skills/respecting-adrs/SKILL.md`.
+**Status:** mora em `skills/respecting-adrs/SKILL.md`.
 
 **Fricção observada:** propor solução que viola ADR aceita sem checar antes.
 **Trigger natural:** ao propor mudança técnica estrutural.
@@ -86,7 +86,7 @@ Ao final de cada fase do roadmap (ou trimestralmente), revisita esta lista. Padr
 
 ### keeping-docs-alive ✅ PROMOVIDA (2026-05-27)
 
-**Status:** mora em `_framework/template/.claude/skills/keeping-docs-alive/SKILL.md`.
+**Status:** mora em `skills/keeping-docs-alive/SKILL.md`.
 
 **Fricção observada:** docs vivas (CLAUDE.md seção 5, `.claude/sessions/`, checkboxes de plano ativo) divergem do estado real entre sessões. Próxima sessão começa errada ou perde tempo refazendo investigação.
 **Trigger natural:** ao terminar task, pausar sessão, completar fase, mudar status.
