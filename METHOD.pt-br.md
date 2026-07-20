@@ -113,6 +113,7 @@ O RENATA não inventa as suas partes — ele monta peças comprovadas e adiciona
 - **Michael Nygard** — o formato de ADR que o `/renata:adr` cobra até o hook de commit.
 - **Eric Ries / Lean Startup** — build-measure-learn; o loop que o `/renata:hypothesis-check` fecha.
 - **Curso AINSTEINS / AI-Driven Development** (Eric Luque) — o ritual de slash commands e a estrutura em camadas do CLAUDE.md sobre a qual o plugin inteiro é construído.
+- **Ecotrace Solutions** (empresa do Eric Luque) — onde o RENATA nasceu: o método rodou seus primeiros ciclos reais de produto lá antes de virar este plugin público.
 - **DDD-lite** — a disciplina de camadas (domain → use case → adapter → repo) por trás das ADRs de adapter pattern.
 
 **A contribuição própria do RENATA:** a amarração com enforcement automatizado — persona → métrica → ADR → código num fluxo único operado com IA, onde o *porquê* sobrevive à implementação porque hooks e gates se recusam a deixá-lo morrer.

@@ -22,7 +22,7 @@
 
 **RENATA** é um método de produto que amarra **persona → métrica → ADR → código**, materializado como plugin do Claude Code. Tira você de "tenho uma ideia" até "código rodando" sem perder o porquê de cada decisão no caminho.
 
-> Criado por **Eric Luque** · **AInsteins** — https://www.ainsteins.com.br
+> Criado por **Eric Luque** · Nascido na **Ecotrace Solutions** · Mantido pela **AInsteins** — https://www.ainsteins.com.br
 
 ## Por que o RENATA existe
 

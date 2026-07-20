@@ -113,6 +113,7 @@ RENATA does not invent its parts — it assembles proven ones and adds enforceme
 - **Michael Nygard** — the ADR format that `/renata:adr` enforces down to the commit hook.
 - **Eric Ries / Lean Startup** — build-measure-learn; the loop `/renata:hypothesis-check` closes.
 - **AINSTEINS / AI-Driven Development course** (Eric Luque) — the slash-command ritual and the layered CLAUDE.md structure the whole plugin is built on.
+- **Ecotrace Solutions** (Eric Luque's company) — where RENATA was born: the method ran its first real product cycles there before becoming this public plugin.
 - **DDD-lite** — the layer discipline (domain → use case → adapter → repo) behind the adapter-pattern ADRs.
 
 **RENATA's own contribution:** the binding with automated enforcement — persona → metric → ADR → code in a single AI-operated flow, where the *why* survives into the implementation because hooks and gates refuse to let it die.
