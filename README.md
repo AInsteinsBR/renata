@@ -12,6 +12,10 @@
   </picture>
 </p>
 
+<p align="center">
+  <a href="https://www.claudepluginhub.com/plugins/ainsteinsbr-renata?ref=badge"><img src="https://www.claudepluginhub.com/badge/ainsteinsbr-renata" alt="Listed on ClaudePluginHub"></a>
+</p>
+
 > 🇧🇷 [Versão em português](README.pt-br.md)
 
 > **R**ecord · **E**vidence · **N**ame · **A**nchor · **T**est · **A**utomate.
