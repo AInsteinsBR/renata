@@ -151,8 +151,8 @@ flowchart TD
     KA -->|"não, é só intuição"| KT["Testar premissa<br/>/renata:assumption-test"]
     KT -->|premissa caiu| D
     KT -->|premissa sustenta| L
-    KA -->|sim| L["9. Roadmap<br/>1h · manual"]
-    L --> M["10. Arquitetura<br/>2-3h · 🛠 manual"]
+    KA -->|sim| L["9. Roadmap<br/>1h · /renata:roadmap-gates"]
+    L --> M["10. Arquitetura<br/>2-3h · 🛠 /renata:architecture"]
     M --> N{"Tudo pronto<br/>pra codar?"}
     N -->|não| O["Volta na etapa<br/>que falhou"]
     O --> E
@@ -525,7 +525,7 @@ docs/
 
 | Comando                  | Quando usar                                                        | O que gera                                      |
 | ------------------------ | ------------------------------------------------------------------ | ----------------------------------------------- |
-| `/renata:init <nome>`         | Uma vez, no início de um projeto (diretório novo ou existente)   | Scaffold `CLAUDE.md` + `docs/` + `.claude/`     |
+| `/renata:init <nome>`         | Uma vez, no início de um projeto (diretório novo ou existente) — antes checa as dependências da máquina (`yq`, `jq`/`python3`, `git`) e oferece instalar o que faltar | Scaffold `CLAUDE.md` + `docs/` + `.claude/`     |
 | `/renata:adopt [escopos]`      | Uma vez, numa **base de código existente** que adota o método — faz engenharia reversa do padrão, das features e de um PRD retroativo, confirmando item a item (ver [`ADOPTION.pt-br.md`](ADOPTION.pt-br.md)) | ADRs + code-pattern + `stack.md`/`arquitetura.md` + `docs/features/` + `docs/prd/` (tudo as-built, 🔄) |
 
 ### Planejamento (definir o quê)
@@ -661,10 +661,16 @@ Skills do `superpowers:` (carregadas pelo Claude Code):
 - **`rules-violation.sh`** — lê `.claude/rules.yaml` e bloqueia commits que violem regras declarativas dos ADRs locais.
 - **`etapa-gate.sh`** — hook PreToolUse. Lê `.claude/progress-map.yaml` e **bloqueia**
   (`exit 2`) a invocação de um command de etapa cujos `prereq` não estão satisfeitos.
-  É o que torna a ordem canônica **forçada**, não só sugerida.
+  É o que torna a ordem canônica **forçada**, não só sugerida. Com
+  `RENATA_STRICT_GATE=1` ele passa a exigir também o selo de verificação humana
+  (`> ✅ Verificado por você`) nos artefatos de pré-requisito — pronto ≠ verificado; desligado por padrão.
 - **`method-status-line.sh`** — hook SessionStart (`startup` + `resume`). Lê
   `.claude/progress-map.yaml` e mostra, ao abrir/retomar a sessão, em que etapa do
   fluxo o projeto está e qual o próximo passo. Não bloqueia nada — é orientação.
+
+A detecção de progresso é neutra de idioma: cada comando gerador carimba `<!-- renata:step=N -->`
+logo abaixo do título do doc gerado (invisível quando renderizado), e o `progress-map.yaml` amarra a
+detecção da etapa nesse marcador — nunca em prosa de um idioma específico.
 
 ### Quem pertence a quê
 
@@ -672,18 +678,18 @@ Para evitar confusão entre artefatos do framework e conteúdo do projeto:
 
 | Artefato                                     | Pertence ao          | Quem escreve                                                      |
 | -------------------------------------------- | -------------------- | ----------------------------------------------------------------- |
-| `.claude/hooks/rules-violation.sh`         | Framework            | RENATA (genérico, mesmo em todo projeto)                    |
+| `${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh` | Framework            | RENATA (genérico, mesmo em todo projeto)                    |
 | `.claude/rules.yaml.template`              | Framework            | RENATA (esquema vazio)                                       |
 | **`.claude/rules.yaml`**             | **Projeto**    | **`/renata:adr`** (cada bloco nasce junto da ADR correspondente) |
 | `docs/decisions/_template.md`              | Framework            | RENATA (template Nygard genérico)                           |
 | `docs/decisions/_adr-frontend-template.md` | Framework            | RENATA (template pra ADR de starter)                         |
 | `docs/decisions/ADR-NNN-*.md`              | Projeto              | `/renata:adr` (cada arquivo nasce de uma decisão)                     |
 | **Starter kit (repo externo)**         | **Você/Time** | Mora**fora** do framework. Referenciado por ADR.            |
-| **`frontend/` (clonado do starter)** | **Projeto**    | `init.sh --starter` clona, depois você evolui                  |
+| **`frontend/` (clonado do starter)** | **Projeto**    | `/renata:init --starter` clona, depois você evolui                  |
 
 **Princípio:** ADR e seu bloco em `rules.yaml` são **gêmeos**. Nascem juntos via `/renata:adr`. Vivem juntos. Se uma ADR vira `superseded`, seu bloco no `rules.yaml` é removido (ou atualizado para a ADR que a substituiu).
 
-> ⚠️ **Anti-padrão observado na v0.1:** popular `rules.yaml` manualmente fora do fluxo `/renata:adr` é débito técnico — o YAML perde a amarração com a ADR. O `/renata:adr` v0.2 escreve direto no `rules.yaml` com confirmação rápida do usuário, evitando esse desvio.
+> ⚠️ **Anti-padrão observado na v0.1:** popular `rules.yaml` manualmente fora do fluxo `/renata:adr` é débito técnico — o YAML perde a amarração com a ADR. O `/renata:adr` escreve direto no `rules.yaml` com confirmação rápida do usuário, evitando esse desvio.
 
 ---
 

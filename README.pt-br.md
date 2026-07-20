@@ -48,7 +48,7 @@ O RENATA vive numa interseção que ninguém mais ocupa:
 /renata:init "Meu Produto"
 ```
 
-Cria `CLAUDE.md`, `docs/` e `.claude/` no projeto, e ativa o enforcement de ADR no commit (se há git). Depois siga o `GETTING-STARTED.md`.
+Primeiro checa as dependências da máquina (`yq`, `jq`/`python3`, `git`) e oferece instalar o que faltar; depois cria `CLAUDE.md`, `docs/` e `.claude/` no projeto, e ativa o enforcement de ADR no commit (se há git). Depois siga o `GETTING-STARTED.pt-br.md`.
 
 ## Projeto existente?
 

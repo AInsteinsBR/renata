@@ -35,6 +35,8 @@ Use it whenever you're unsure what comes next, after editing a doc (`/renata:sta
 
 > It's a **read-only navigator**: it informs and suggests, it never runs `/renata:prd`, `/renata:persona`, etc. for you. The doing stays with you.
 
+> 🔒 **Optional strict mode:** exporting `RENATA_STRICT_GATE=1` makes the stage gate also require the human seal (`> ✅ Verified by you`) on prerequisite artifacts before letting a step command run — done ≠ verified. Off by default so the flow doesn't stiffen.
+
 ---
 
 ## 📖 Summary of the steps
@@ -74,7 +76,8 @@ Use it whenever you're unsure what comes next, after editing a doc (`/renata:sta
 |---|---|---|
 | **Claude Code** | It's the "IDE" where you'll operate | https://claude.com/claude-code (follow the site, it's 1-click) |
 | **Git** | Version files | You probably already have it. Test: `git --version` |
-| **yq** | Tool used by the automatic hook (optional) | macOS: `brew install yq` · Linux: `sudo apt install yq` |
+| **yq** | ADR enforcement on commit + status line (no fallback — without it the hook validates nothing) | macOS: `brew install yq` · Linux: `sudo apt install yq` |
+| **jq** (or **python3**) | Stage gate + status line (either one is enough) | macOS: `brew install jq` · Linux: `sudo apt install jq` |
 
 ## Validation
 
@@ -86,7 +89,7 @@ claude --version       # deve sair número de versão
 yq --version           # deve sair: "yq (https://...) version 4.x.x"
 ```
 
-If `yq` is not installed, **nothing breaks right now** — only the hook runs in degraded mode. But install it before Step 12.
+Missing something? Since 0.4.0, `/renata:init` checks these dependencies on first run and offers to install what's absent (brew/apt-get/dnf). Nothing aborts without them — the hooks degrade with warnings — but without `yq` the ADR enforcement validates nothing, so don't go past Step 6 without it.
 
 ## Concepts you'll see a lot
 
@@ -619,14 +622,15 @@ Flow:
 
 > ⚠️ **`rules.yaml` is project content, not framework content.** Each block is a twin of an ADR. If you catch yourself editing it manually outside of `/renata:adr`, stop — you're losing the ADR ↔ rule binding. Use `/renata:adr` in refine mode.
 
-## 6.4. Enable the pre-commit hook
+## 6.4. Pre-commit hook: confirm it's enabled
 
-Just once (no need to repeat):
+`/renata:init` already enables this automatically when the project has git (Step 1.2). Confirm:
 
 ```bash
-ln -sf ../../.claude/hooks/rules-violation.sh .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+ls -l .git/hooks/pre-commit   # should point to RENATA's rules-violation.sh
 ```
+
+If the symlink isn't there (e.g., git was only created after the init), just re-run `/renata:init` — recreating it is the documented remedy.
 
 From here on, every commit runs the hook.
 
@@ -1155,6 +1159,7 @@ Confirm **manually** that each item below is ready. If any fails, **DO NOT invok
 
 | # | Item | How to confirm |
 |---|---|---|
+| 0 | `superpowers` plugin installed (external dependency) | `/plugin` → superpowers appears as installed |
 | 1 | CLAUDE.md has its identity filled in | Open and verify Section 1 has no `{{...}}` |
 | 2 | PRD exists and has a falsifiable hypothesis | `cat docs/prd/*.md \| grep "Hipótese"` |
 | 3 | ≥1 structured persona exists | `ls docs/business-context/personas.md` |
@@ -1162,7 +1167,7 @@ Confirm **manually** that each item below is ready. If any fails, **DO NOT invok
 | 5 | ≥1 `accepted` ADR | `grep -l "Status:.*accepted" docs/decisions/ADR-*.md` |
 | 6 | The anchor feature has a spec with a phased plan | `ls docs/features/F1-*.md` |
 | 7 | The phase to plan has its own doc | `ls docs/roadmap/fase-N-*.md` |
-| 8 | `rules.yaml` valid | `bash .claude/hooks/rules-violation.sh` |
+| 8 | `rules.yaml` valid | `bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh"` |
 | 9 | No `running` plan for the same phase active | `grep -l "Status:.*running" docs/superpowers/plans/*.md` returns empty |
 | 10 | If the phase has UI: design exists | feature-spec mentions screens/UI → `docs/design/inventory.md` exists (otherwise `/renata:screens`) |
 

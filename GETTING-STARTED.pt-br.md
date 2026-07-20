@@ -35,6 +35,8 @@ Use sempre que estiver em dúvida sobre o que vem a seguir, depois de editar um 
 
 > É um **navegador read-only**: informa e sugere, nunca roda `/renata:prd`, `/renata:persona`, etc. por você. O fazer continua sendo seu.
 
+> 🔒 **Modo estrito opcional:** exportar `RENATA_STRICT_GATE=1` faz o gate de etapa exigir também o selo humano (`> ✅ Verificado por você`) nos artefatos de pré-requisito antes de liberar um comando de etapa — pronto ≠ verificado. Desligado por padrão pra não engessar o fluxo.
+
 ---
 
 ## 📖 Sumário das etapas
@@ -74,7 +76,8 @@ Use sempre que estiver em dúvida sobre o que vem a seguir, depois de editar um 
 | --------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
 | **Claude Code** | É a "IDE" onde você vai operar                  | https://claude.com/claude-code (siga o site, é 1-clique)   |
 | **Git**         | Versionar arquivos                                | Provavelmente já tem. Testar:`git --version`             |
-| **yq**          | Ferramenta usada pelo hook automático (opcional) | macOS:`brew install yq` · Linux: `sudo apt install yq` |
+| **yq**          | Enforcement de ADR no commit + status line (sem fallback — sem ela o hook não valida nada) | macOS:`brew install yq` · Linux: `sudo apt install yq` |
+| **jq** (ou **python3**) | Gate de etapa + status line (basta uma das duas) | macOS: `brew install jq` · Linux: `sudo apt install jq` |
 
 ## Validação
 
@@ -86,7 +89,7 @@ claude --version       # deve sair número de versão
 yq --version           # deve sair: "yq (https://...) version 4.x.x"
 ```
 
-Se `yq` não estiver instalado, **não trava nada agora** — só o hook fica em modo degradado. Mas instale antes da Etapa 12.
+Faltou algo? Desde a 0.4.0, o `/renata:init` checa essas dependências no primeiro uso e oferece instalar o que estiver ausente (brew/apt-get/dnf). Nada aborta sem elas — os hooks degradam com aviso — mas sem `yq` o enforcement de ADR não valida nada, então não passe da Etapa 6 sem ela.
 
 ## Conceitos que você vai ver muito
 
@@ -619,14 +622,15 @@ Fluxo:
 
 > ⚠️ **`rules.yaml` é conteúdo do projeto, não do framework.** Cada bloco é gêmeo de uma ADR. Se você se pegar editando manualmente fora do `/renata:adr`, pare — perdendo a amarração ADR ↔ regra. Use `/renata:adr` em modo refinar.
 
-## 6.4. Ativar hook em pre-commit
+## 6.4. Hook de pre-commit: confirme que está ativo
 
-Uma única vez (não precisa repetir):
+O `/renata:init` já ativa isso automaticamente quando o projeto tem git (Etapa 1.2). Confirme:
 
 ```bash
-ln -sf ../../.claude/hooks/rules-violation.sh .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+ls -l .git/hooks/pre-commit   # deve apontar pro rules-violation.sh do RENATA
 ```
+
+Se o symlink não estiver lá (ex.: o git só foi criado depois do init), basta rodar o `/renata:init` de novo — recriar assim é o remédio documentado.
 
 A partir daqui, todo commit roda o hook.
 
@@ -1156,6 +1160,7 @@ Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **
 
 | #  | Item                                         | Como confirmar                                                                                    |
 | -- | -------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 0  | Plugin `superpowers` instalado (dependência externa) | `/plugin` → superpowers aparece como instalado                                          |
 | 1  | CLAUDE.md tem identidade preenchida          | Abrir e verificar Seção 1 sem`{{...}}`                                                        |
 | 2  | PRD existe e tem hipótese falsificável     | `cat docs/prd/*.md \| grep "Hipótese"`                                                          |
 | 3  | ≥1 persona estruturada existe               | `ls docs/business-context/personas.md`                                                          |
@@ -1163,7 +1168,7 @@ Confirmar **manualmente** que cada item abaixo está pronto. Se algum falhar, **
 | 5  | ≥1 ADR`accepted`                          | `grep -l "Status:.*accepted" docs/decisions/ADR-*.md`                                           |
 | 6  | Feature-âncora tem spec com plano em fases  | `ls docs/features/F1-*.md`                                                                      |
 | 7  | Fase a planejar tem doc própria             | `ls docs/roadmap/fase-N-*.md`                                                                   |
-| 8  | `rules.yaml` válido                       | `bash .claude/hooks/rules-violation.sh`                                                         |
+| 8  | `rules.yaml` válido                       | `bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/rules-violation.sh"`                                 |
 | 9  | Sem plano`running` da mesma fase ativo     | `grep -l "Status:.*running" docs/superpowers/plans/*.md` retorna vazio                          |
 | 10 | Se a fase tem UI: design existe              | feature-spec menciona telas/UI →`docs/design/inventory.md` existe (senão `/renata:screens`) |
 

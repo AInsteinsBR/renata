@@ -48,7 +48,7 @@ RENATA lives at an intersection nobody else occupies:
 /renata:init "My Product"
 ```
 
-Creates `CLAUDE.md`, `docs/` and `.claude/` in the project, and activates ADR-violation blocking on commit (if the project uses git). Then follow `GETTING-STARTED.md`.
+First checks the machine dependencies (`yq`, `jq`/`python3`, `git`) and offers to install what's missing; then creates `CLAUDE.md`, `docs/` and `.claude/` in the project, and activates ADR-violation blocking on commit (if the project uses git). Then follow `GETTING-STARTED.md`.
 
 ## Existing project?
 

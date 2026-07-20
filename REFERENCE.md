@@ -92,8 +92,10 @@ For when you've done the tutorial once and want a quick reference.
 | gate | `/renata:assumption-test <assumption>` | Test a value/viability risk before building (Measure-Learn loop) |
 | gate | `/renata:interview-kit [assumption]` | One-page Mom Test field guide before a problem interview |
 | gate | `/renata:interview-debrief <transcript>` | Transcript → verbatim evidence + board + interviewer coaching |
-| 9 | manual | Macro roadmap (phases + gates) |
+| 9 | `/renata:roadmap-gates` | Hardens the macro roadmap: an explicit, verifiable gate per phase + one file per phase |
+| 10 | `/renata:architecture` | Synthesizes accepted ADRs + specs + spikes into `stack.md` + `arquitetura.md` (C4) — decides nothing new |
 | 11 | `/renata:plan-phase <phase>` | Armored plan (writing-plans + @architect) |
+| 12 | `/renata:execute <phase>` | Orchestrates phase execution: pre-flight checks + per-task done gate (wraps executing-plans) |
 | 12 | `/renata:spike <question>` | Risk investigation |
 | 12 | `/renata:phase-scope <phase>` | Re-scope with MoSCoW |
 | 12 | `/renata:triage <context>` | Prioritize bugs/debts |
@@ -104,6 +106,7 @@ For when you've done the tutorial once and want a quick reference.
 | 14 | `/renata:bug-report <raw description>` | A fresh production bug → structured, severity-classified, routed |
 | 14 | `/renata:incident <description>` | Live coordination of a larger production incident → hands off to `/renata:retro` |
 | — | `/renata:status [N]` | Where I am in the flow + the next step (validates the current step with a human gate) |
+| — | `/renata:next` | Micro-navigator: only the canonical next step + gaps (runs no step commands) |
 
 ## Subagents (call them when in doubt)
 
@@ -130,7 +133,7 @@ These three fire on their own when the conversation hits a trigger. You don't ca
 ## Superpowers skills (automatic)
 
 - `superpowers:writing-plans` — execution plan (Step 11)
-- `superpowers:executing-plans` / `subagent-driven-development` — executes (Step 12)
+- `superpowers:executing-plans` / `subagent-driven-development` — executes (Step 12, orchestrated by `/renata:execute`)
 - `superpowers:test-driven-development` — during implementation
 - `superpowers:systematic-debugging` — when a bug shows up
 - `superpowers:verification-before-completion` — before declaring done

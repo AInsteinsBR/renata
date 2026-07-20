@@ -6,6 +6,9 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 ## [Unreleased]
 
+### Corrigido
+- **Auditoria de drift dos docs (flagrada pelo Eric): os docs de vitrine não tinham absorvido 0.2.0-0.4.0.** METHOD: diagrama de fluxo com Etapas 9/10 ainda "manual" (agora `/renata:roadmap-gates` / `/renata:architecture`, contradizendo a própria tabela de comandos do doc), tabela "quem pertence a quê" apontando pro inexistente `.claude/hooks/rules-violation.sh` (agora `${CLAUDE_PLUGIN_ROOT}/hooks/scripts/`) e pro `init.sh --starter` (só existe no standalone; agora `/renata:init --starter`), e faltavam a convenção de marcadores, o `RENATA_STRICT_GATE` e a checagem de dependências do init. REFERENCE: `architecture`, `execute`, `next` e `roadmap-gates` ausentes do catálogo de comandos (Etapa 9 ainda "manual"). GETTING-STARTED: Etapa 6.4 ensinava um symlink quebrado `ln -sf ../../.claude/hooks/...` (que desativa o enforcement de ADR silenciosamente) e contradizia o auto-enable do init; pre-flight #8 usava o caminho morto do hook; a tabela dos "11 pré-requisitos" listava só 10 (faltava o item 0, superpowers instalado); Etapa 0 chamava `yq` de "opcional" e omitia `jq`/`python3`; gate estrito não documentado. README: descrição do init sem a checagem de dependências da 0.4.0. Tudo corrigido nos pares EN e PT; ADOPTION auditado limpo.
+
 ## [0.4.0] — 2026-07-19
 
 **O que há de novo:** as dependências de máquina do plugin deixam de ser uma armadilha silenciosa — o `/renata:init` (e o `init.sh` standalone) agora checam `yq`/`jq`/`git` no primeiro uso e oferecem instalar o que falta, em vez de deixar o enforcement de ADR degradar em silêncio.
