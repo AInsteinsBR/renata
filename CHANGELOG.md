@@ -6,6 +6,14 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-07-19
+
+**What's new:** the plugin's machine dependencies stop being a silent footgun — `/renata:init` (and the standalone `init.sh`) now check for `yq`/`jq`/`git` on first use and offer to install what's missing, instead of letting the ADR enforcement degrade quietly.
+
+### Added
+- **Dependency check on `/renata:init` (step 1)** — the init now verifies the plugin's machine dependencies before scaffolding: `yq` (required — without it `rules-violation.sh` validates nothing on commit), `jq`/`python3` (either one; stage gate + status line) and `git`. Missing tools are installed via the detected package manager (`brew`/`apt-get`/`dnf`) as a visible Bash call — the permission prompt is the consent; if there's no manager or the user declines, the init prints the manual command and continues (hooks already degrade with warnings). Plugin installs have no post-install hook in Claude Code, so first-use in `/renata:init` is the earliest reliable moment to check; the SessionStart `yq` warning remains as the safety net for machines that never ran init.
+- **Same check in the standalone `init.sh`** — the sync excludes `commands/init.md` (standalone installs via `scripts/init.sh`), so the hand-maintained script got the equivalent block: interactive install prompt via the detected manager; in `--yes` (CI) mode it never installs on its own, only prints the command; always finishes the scaffold either way.
+
 ## [0.3.0] — 2026-07-19
 
 **What's new:** the post-0.2.0 static audit round (again from the Avatar field project) — every `artifact_glob`/`non_empty_if` and every cross-reference in the 34 commands was checked. Two flow-breaking bugs fixed (the hook path that aborted `/renata:execute` and `/renata:plan-phase`, and language-dependent progress detection), plus deterministic living-docs updates and a language-neutral step-marker convention.

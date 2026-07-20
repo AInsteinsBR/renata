@@ -1,6 +1,6 @@
 {
   "name": "renata",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "RENATA — a product method that ties persona → metric → ADR → code. Record · Evidence · Name · Anchor · Test · Automate.",
   "author": { "name": "Eric Luque", "url": "https://www.ainsteins.com.br" },
   "homepage": "https://www.ainsteins.com.br",

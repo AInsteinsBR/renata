@@ -6,6 +6,14 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-07-19
+
+**O que há de novo:** as dependências de máquina do plugin deixam de ser uma armadilha silenciosa — o `/renata:init` (e o `init.sh` standalone) agora checam `yq`/`jq`/`git` no primeiro uso e oferecem instalar o que falta, em vez de deixar o enforcement de ADR degradar em silêncio.
+
+### Adicionado
+- **Checagem de dependências no `/renata:init` (passo 1)** — o init agora verifica as dependências de máquina do plugin antes do scaffold: `yq` (obrigatória — sem ela o `rules-violation.sh` não valida nada no commit), `jq`/`python3` (uma das duas; gate de etapa + status line) e `git`. Ferramentas ausentes são instaladas via gerenciador detectado (`brew`/`apt-get`/`dnf`) como chamada Bash visível — o prompt de permissão é o consentimento; sem gerenciador, ou se o usuário recusar, o init imprime o comando manual e segue (os hooks já degradam com avisos). Instalação de plugin não tem hook pós-install no Claude Code, então o primeiro uso no `/renata:init` é o momento confiável mais cedo pra checar; o aviso de `yq` no SessionStart continua como rede de segurança pra máquinas que nunca rodaram o init.
+- **Mesma checagem no `init.sh` standalone** — o sync exclui `commands/init.md` (no standalone quem instala é `scripts/init.sh`), então o script mantido à mão ganhou o bloco equivalente: prompt interativo de instalação via gerenciador detectado; em modo `--yes` (CI) nunca instala sozinho, só imprime o comando; em qualquer caso termina o scaffold.
+
 ## [0.3.0] — 2026-07-19
 
 **O que há de novo:** a rodada de auditoria estática pós-0.2.0 (de novo do projeto de campo Avatar) — todo `artifact_glob`/`non_empty_if` e toda referência cruzada dos 34 comandos foi checada. Dois bugs que quebravam o fluxo corrigidos (o caminho de hook que abortava `/renata:execute` e `/renata:plan-phase`, e a detecção de progresso dependente de idioma), mais atualização determinística dos docs vivos e uma convenção de marcador de etapa idioma-neutra.
