@@ -127,7 +127,7 @@ Você invoca esses com `@` quando quer uma segunda opinião focada. Cada um lê 
 Essas três disparam sozinhas quando a conversa bate num gatilho. Você não as chama; elas vigiam o momento e entram em cena.
 
 - `respecting-adrs` — dispara em "vou implementar X / qual lib / vamos refatorar". Força ler as ADRs aceitas e validar a proposta contra elas **antes** de codar.
-- `keeping-docs-alive` — dispara em "terminei / vou pausar / fase concluída". Atualiza CLAUDE.md + `.claude/sessions/` + o plano ativo, pros docs nunca descolarem do código.
+- `keeping-docs-alive` — dispara em "terminei / vou pausar / fase concluída". Atualiza o plano ativo + a Seção 5 do CLAUDE.md (os dois portadores de estado retomável), pros docs nunca descolarem do código.
 - `detecting-scope-creep` — dispara em "já que estou aqui / também seria fácil…". Compara a ideia nova com o escopo IN/OUT da feature ativa e **oferece três opções** (fazer agora / estacionar como TODO / abrir uma ADR), forçando uma decisão consciente em vez de crescimento silencioso de escopo.
 
 ## Skills do Superpowers (automáticas)

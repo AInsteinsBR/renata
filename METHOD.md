@@ -637,7 +637,7 @@ The method doesn't stop at the phase retro. Once code is running in production, 
 Framework skills that load automatically when the context matches:
 
 - **`respecting-adrs`** — activates on "implement X", "which library to use". Forces reading the accepted ADRs and validating the proposal before coding.
-- **`keeping-docs-alive`** — activates on "finished the task", "I'm going to pause", "phase complete". Reminds you to update CLAUDE.md + `.claude/sessions/` + the active plan.
+- **`keeping-docs-alive`** — activates on "finished the task", "I'm going to pause", "phase complete". Reminds you to update the two carriers of resumable state: the active plan + CLAUDE.md Section 5 (since 0.5.0 there is no third file — per-session files in `.claude/sessions/` proved dead letter in the field and were removed from the convention).
 - **`detecting-scope-creep`** — activates on "while I'm at it, I'll also...", "since I'm here...". Compares against the active feature's scope IN/OUT, forces a conscious decision before expanding.
 
 `superpowers:` skills (loaded by Claude Code):

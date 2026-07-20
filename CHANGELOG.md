@@ -6,6 +6,13 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-07-20
+
+**What's new:** the session-state convention loses a limb that never worked — `.claude/sessions/` is gone. Field projects showed the folder was never created even once (flagged by Eric as a real 0.4.x bug): resumable state was already living in the active plan (Status + checkboxes, since 0.3.0) and in CLAUDE.md Section 5. 0.5.0 makes those two the **only** carriers.
+
+### Changed
+- **`.claude/sessions/` removed from the convention (dead-letter rule).** The `keeping-docs-alive` skill drops its "create a session file" step and now maintains exactly two carriers of resumable state: the active plan (checkboxes, deviation notes, `Status`) and a short block in CLAUDE.md Section 5 (active plan · last task · next action · gotchas); emerging decisions route to `/renata:adr` or `/renata:todo` instead of loose prose. `/renata:execute`'s end-of-phase wrap-up, `@qa-tester`'s step 5, `CLAUDE.md.template` Section 5 and the three doc pairs (METHOD, REFERENCE, GETTING-STARTED) all updated to match. Legacy `.claude/sessions/` folders are harmless history — nothing reads or writes them anymore.
+
 ## [0.4.1] — 2026-07-19
 
 **What's new:** the storefront docs catch up with the method — a five-way audit (flagged by Eric) found METHOD, REFERENCE and GETTING-STARTED still describing the pre-0.2.0 world, including one instruction that silently disabled ADR enforcement.

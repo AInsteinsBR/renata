@@ -637,7 +637,7 @@ O método não para na retro de fase. Uma vez que o código está rodando em pro
 Skills do framework que carregam automaticamente quando o contexto bate:
 
 - **`respecting-adrs`** — ativa em "implementar X", "que biblioteca usar". Força ler ADRs aceitas e validar proposta antes de codar.
-- **`keeping-docs-alive`** — ativa em "terminei task", "vou pausar", "fase completa". Lembra de atualizar CLAUDE.md + `.claude/sessions/` + plano ativo.
+- **`keeping-docs-alive`** — ativa em "terminei task", "vou pausar", "fase completa". Lembra de atualizar os dois portadores de estado retomável: o plano ativo + a Seção 5 do CLAUDE.md (desde a 0.5.0 não há terceiro arquivo — os arquivos por sessão em `.claude/sessions/` se provaram letra morta no campo e saíram da convenção).
 - **`detecting-scope-creep`** — ativa em "aproveitando, vou também...", "já que estou aqui...". Compara com escopo IN/OUT da feature ativa, força decisão consciente antes de ampliar.
 
 Skills do `superpowers:` (carregadas pelo Claude Code):

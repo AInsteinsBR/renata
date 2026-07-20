@@ -68,7 +68,7 @@ When all tasks in the plan are `[x]`:
 
 1. Set `Status: done` in the plan header (keep the `<!-- renata:step=12 -->` marker).
 2. Invoke `@qa-tester` — validates against the PRD/feature-spec acceptance criteria (independent validation, acting as the anchor persona). Resolve blockers before declaring the phase done.
-3. Invoke the `keeping-docs-alive` skill — updates CLAUDE.md Section 5, `.claude/sessions/`, and the plan checkboxes.
+3. Invoke the `keeping-docs-alive` skill — refreshes the two carriers of resumable state: the plan (checkboxes/notes) and CLAUDE.md Section 5.
 4. Suggest `/renata:retro <phase>`. If the phase delivered a measurable feature, also suggest `/renata:hypothesis-check`.
 
 ## Arguments

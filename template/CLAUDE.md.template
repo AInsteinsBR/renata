@@ -67,7 +67,10 @@
 
 ## 5 · Camada `session` (estado da sessão)
 
-Ao iniciar trabalho, criar `.claude/sessions/<data>-<fase>-<descrição>.md` com estado retomável.
+Bloco curto de estado retomável, atualizado a cada pausa/retomada (a skill `keeping-docs-alive` cuida disso). O plano ativo em `docs/superpowers/plans/` é a fonte de verdade da execução; aqui fica só o resumo:
+
+**Plano ativo:** — · **Última task:** —
+**Próxima ação:** —
 
 ---
 

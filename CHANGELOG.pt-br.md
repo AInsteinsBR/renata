@@ -6,6 +6,13 @@ Todas as mudanças notáveis do RENATA estão documentadas aqui. Formato baseado
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-07-20
+
+**O que há de novo:** a convenção de estado de sessão perde um membro que nunca funcionou — `.claude/sessions/` já era. Os projetos de campo mostraram que a pasta nunca foi criada uma única vez (flagrado pelo Eric como bug real da 0.4.x): o estado retomável já vivia no plano ativo (Status + checkboxes, desde a 0.3.0) e na Seção 5 do CLAUDE.md. A 0.5.0 torna esses dois os **únicos** portadores.
+
+### Mudado
+- **`.claude/sessions/` removido da convenção (regra letra-morta).** A skill `keeping-docs-alive` perde o passo "criar arquivo de sessão" e passa a manter exatamente dois portadores de estado retomável: o plano ativo (checkboxes, notas de desvio, `Status`) e um bloco curto na Seção 5 do CLAUDE.md (plano ativo · última task · próxima ação · pegadinhas); decisões emergentes vão pro `/renata:adr` ou `/renata:todo` em vez de prosa solta. O wrap-up de fim de fase do `/renata:execute`, o passo 5 do `@qa-tester`, a Seção 5 do `CLAUDE.md.template` e os três pares de docs (METHOD, REFERENCE, GETTING-STARTED) atualizados junto. Pastas `.claude/sessions/` legadas são história inofensiva — nada mais lê ou escreve nelas.
+
 ## [0.4.1] — 2026-07-19
 
 **O que há de novo:** os docs de vitrine alcançam o método — uma auditoria em cinco frentes (flagrada pelo Eric) achou METHOD, REFERENCE e GETTING-STARTED ainda descrevendo o mundo pré-0.2.0, incluindo uma instrução que desativava o enforcement de ADR silenciosamente.

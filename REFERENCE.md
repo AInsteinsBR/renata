@@ -127,7 +127,7 @@ You invoke these with `@` when you want a focused second opinion. Each one reads
 These three fire on their own when the conversation hits a trigger. You don't call them; they watch for the moment and step in.
 
 - `respecting-adrs` — fires on "I'm going to implement X / which lib / let's refactor". Forces reading the accepted ADRs and validating the proposal against them **before** coding.
-- `keeping-docs-alive` — fires on "I finished / I'm going to pause / phase done". Updates CLAUDE.md + `.claude/sessions/` + the active plan, so the docs never drift from the code.
+- `keeping-docs-alive` — fires on "I finished / I'm going to pause / phase done". Updates the active plan + CLAUDE.md Section 5 (the two carriers of resumable state), so the docs never drift from the code.
 - `detecting-scope-creep` — fires on "while I'm here / it'd also be easy to…". Compares the new idea against the active feature's IN/OUT scope and **offers three options** (do it now / park it as a TODO / open an ADR), forcing a conscious decision instead of silent scope growth.
 
 ## Superpowers skills (automatic)

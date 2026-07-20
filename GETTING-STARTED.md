@@ -1285,7 +1285,7 @@ For **each task** in the plan, this 7-step cycle runs. Who executes each step is
 | 4 | **Code + green test (green)** | 🤖 | Implements the minimum to pass; runs the tests; confirms green | TDD (auto) |
 | 5 | **Verify for real (done gate)** | 🤖 | Runs the plan's validation command (doesn't trust "it should work"); the task doesn't close without a green test + a non-blocking hook | `superpowers:verification-before-completion` (the `/renata:execute` gate) |
 | 6 | **Code review** | 🧑→🤖 | Before closing the task | `@code-reviewer` on the diff |
-| 7 | **Update living docs + close the task** | 🤖 | Marks the task as done in the plan; updates `.claude/sessions/` and CLAUDE.md | `keeping-docs-alive` (auto) |
+| 7 | **Update living docs + close the task** | 🤖 | Marks the task as done in the plan; refreshes CLAUDE.md Section 5 (resumable state) | `keeping-docs-alive` (auto) |
 
 After step 7: if the next thing in the plan is a **checkpoint**, the loop **pauses** and hands control back to you (a 🧑 step). If not, it goes back to step 1 with the next task.
 
@@ -1342,7 +1342,7 @@ Skills load on their own from the context — you don't need to invoke them:
 - **`superpowers:test-driven-development`** activates when implementing, forces a test before the code.
 - **`superpowers:verification-before-completion`** activates before declaring done, requires running the validation.
 - **`superpowers:systematic-debugging`** activates when a bug shows up, forces a methodical investigation.
-- **`keeping-docs-alive`** activates when finishing a task/pausing, updates CLAUDE.md + `.claude/sessions/` + the active plan.
+- **`keeping-docs-alive`** activates when finishing a task/pausing, updates the active plan + CLAUDE.md Section 5 — the only two carriers of resumable state.
 - **`detecting-scope-creep`** activates when you say "I'll also do X", forces a conscious decision.
 
 ## 12.6. Useful slash commands during execution

@@ -1286,7 +1286,7 @@ Para **cada task** do plano, este ciclo de 7 passos roda. Quem executa cada pass
 | 4 | **Código + teste verde (green)**        | 🤖     | Implementa o mínimo pra passar; roda os testes; confirma verde                                                                  | TDD (auto)                                                                   |
 | 5 | **Verifica de verdade (gate de pronto)** | 🤖     | Roda comando de validação do plano (não confia em "deve funcionar"); a task não fecha sem teste verde + hook não-bloqueando | `superpowers:verification-before-completion` (gate do `/renata:execute`) |
 | 6 | **Revisão de código**                  | 🧑→🤖 | Antes de fechar a task                                                                                                           | `@code-reviewer` no diff                                                   |
-| 7 | **Atualiza docs vivas + fecha task**     | 🤖     | Marca task como done no plano; atualiza`.claude/sessions/` e CLAUDE.md                                                         | `keeping-docs-alive` (auto)                                                |
+| 7 | **Atualiza docs vivas + fecha task**     | 🤖     | Marca task como done no plano; atualiza a Seção 5 do CLAUDE.md (estado retomável)                                              | `keeping-docs-alive` (auto)                                                |
 
 Depois do passo 7: se a próxima coisa no plano for um **checkpoint**, o loop **pausa** e devolve pra você (passo 🧑). Se não, volta ao passo 1 com a próxima task.
 
@@ -1343,7 +1343,7 @@ Skills carregam sozinhas pelo contexto — você não precisa invocar:
 - **`superpowers:test-driven-development`** ativa ao implementar, força teste antes do código.
 - **`superpowers:verification-before-completion`** ativa antes de declarar pronto, exige rodar a validação.
 - **`superpowers:systematic-debugging`** ativa quando aparece bug, força investigação metódica.
-- **`keeping-docs-alive`** ativa ao terminar task/pausar, atualiza CLAUDE.md + `.claude/sessions/` + plano ativo.
+- **`keeping-docs-alive`** ativa ao terminar task/pausar, atualiza o plano ativo + a Seção 5 do CLAUDE.md — os únicos dois portadores de estado retomável.
 - **`detecting-scope-creep`** ativa quando você diz "também vou X", força decisão consciente.
 
 ## 12.6. Slash commands úteis durante execução

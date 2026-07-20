@@ -1,11 +1,18 @@
 ---
 name: keeping-docs-alive
-description: Use whenever you finish a task, pause a session, complete a phase, or change the project status. Ensures the living docs (CLAUDE.md, .claude/sessions/, the active plan) reflect the real state so the next session can resume without loss of context. Auto-activates on "done", "pausing", "completed", "end of phase", "I'm going to stop now".
+description: Use whenever you finish a task, pause a session, complete a phase, or change the project status. Ensures the living docs (the active plan and CLAUDE.md Section 5) reflect the real state so the next session can resume without loss of context. Auto-activates on "done", "pausing", "completed", "end of phase", "I'm going to stop now".
 ---
 
 # Keeping docs alive during execution
 
 Living docs are the **nervous system between sessions**. Without them kept up to date, the next session (human or AI) starts from scratch or worse — starts off wrong.
+
+There are exactly **two carriers** of resumable state — no third file:
+
+1. **The active plan** (`docs/superpowers/plans/<plan>.md`) — execution truth: `Status:`, checkboxes, deviations.
+2. **`CLAUDE.md` Section 5** (session layer) — a short prose block: where we stopped, what comes next.
+
+> Until 0.4.x the method also asked for per-session files in `.claude/sessions/` — field projects proved it dead letter (the folder was never created; the state lived in the plan + Section 5 anyway). The convention was removed in 0.5.0. If you find a legacy `.claude/sessions/`, it's harmless history — don't create new files there.
 
 ## When this skill activates
 
@@ -17,7 +24,7 @@ Auto-activates when the context involves:
 - "I'm going to open a PR / final commit"
 - A plan checkbox being marked as complete
 
-## Procedure (3 mandatory steps)
+## Procedure (2 mandatory steps)
 
 ### Step 1 — Update the active plan
 
@@ -33,44 +40,17 @@ Section 4 (Feature layer) — if there was a phase/feature change:
 - `**Fase ativa:**` should point to the actual phase in progress.
 - `**Feature-âncora:**` likewise.
 
-Section 5 (Session layer) — whenever you pause/resume:
-- Point to the current session file: `.claude/sessions/<data>-fase-N-<descrição>.md`.
-
-Section 9 (Next steps) — update to reflect what comes next.
-
-### Step 3 — Create/update the session file
-
-`.claude/sessions/<YYYY-MM-DD>-fase-<N>-<descrição>.md`:
+Section 5 (Session layer) — whenever you pause/resume, refresh the resumable-state block:
 
 ```markdown
-# Sessão · YYYY-MM-DD · Fase N — <Descrição>
-
-## Estado ao pausar
-
-- **Plano ativo:** `docs/superpowers/plans/<file>.md`
-- **Última task completada:** Task N (Step N.M)
-- **Próxima ação ao retomar:** <1 frase específica>
-
-## O que foi feito nesta sessão
-
-- ...
-
-## Pegadinhas descobertas
-
-- (se houver)
-
-## Decisões emergentes
-
-- (se houver — pode virar ADR)
-
-## Comandos engatilhados
-
-\`\`\`bash
-# Pra retomar:
-cd <pasta>
-docker compose ...
-\`\`\`
+**Plano ativo:** `docs/superpowers/plans/<file>.md` · **Última task:** Task N (Step N.M)
+**Próxima ação:** <1 specific sentence>
+**Pegadinhas:** <only if discovered this session — 1-2 lines, or omit>
 ```
+
+Keep it **short** — Section 5 is loaded into every session. Emerging decisions don't belong here: they become an ADR (`/renata:adr`) or a TODO (`/renata:todo add`).
+
+Section 9 (Next steps) — update to reflect what comes next.
 
 ## When NOT to activate
 
@@ -82,13 +62,13 @@ docker compose ...
 
 > User: "Finished Task 4. I'm going to pause for today."
 >
-> Skill activates: "I'll update 3 things:
+> Skill activates: "I'll update 2 things:
 > 1. `docs/superpowers/plans/2026-05-27-fase-0-spike.md` — mark steps 4.1 through 4.11 as `[x]`.
-> 2. `CLAUDE.md` section 5 — point to `.claude/sessions/2026-05-27-fase-0-task5.md`.
-> 3. Create `.claude/sessions/2026-05-27-fase-0-task5.md` with 'Last task completed: Task 4 · Next action: implement the Task 5 component'."
+> 2. `CLAUDE.md` Section 5 — 'Plano ativo: fase-0-spike · Última task: Task 4 · Próxima ação: implement the Task 5 component'."
 
 ## Anti-patterns
 
 - ❌ Updating only the checkboxes and forgetting CLAUDE.md.
-- ❌ Creating a session with "did several things" and no actionable detail.
+- ❌ Writing "did several things" in Section 5 with no actionable next step.
 - ❌ Not updating when "I'll continue tomorrow" — tomorrow you'll forget.
+- ❌ Creating `.claude/sessions/` files — that convention is dead; the plan + Section 5 carry everything.

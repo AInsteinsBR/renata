@@ -123,11 +123,11 @@ QA report · <scope> · <date>
 - If ✅: mark the feature as done + suggest the next action
 ```
 
-### Step 5 — Update the plan/sessions if applicable
+### Step 5 — Update the plan/CLAUDE.md §5 if applicable
 
 If there is an active plan and you confirmed ✅ a task:
 - Suggest marking the checkboxes as `[x]` (don't do it yourself — suggest it).
-- Suggest updating `.claude/sessions/` if it's the end of a session.
+- Suggest refreshing CLAUDE.md Section 5 (resumable state) if it's the end of a session.
 
 ## How to run the app for real
 
