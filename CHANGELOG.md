@@ -6,6 +6,10 @@ All notable changes to RENATA are documented here. Format based on [Keep a Chang
 
 ## [Unreleased]
 
+## [0.4.1] — 2026-07-19
+
+**What's new:** the storefront docs catch up with the method — a five-way audit (flagged by Eric) found METHOD, REFERENCE and GETTING-STARTED still describing the pre-0.2.0 world, including one instruction that silently disabled ADR enforcement.
+
 ### Fixed
 - **Docs drift audit (flagged by Eric): the storefront docs had not absorbed 0.2.0-0.4.0.** METHOD: flow-diagram Steps 9/10 still said "manual" (now `/renata:roadmap-gates` / `/renata:architecture`, contradicting the doc's own command table), the "Who belongs to what" table pointed to the nonexistent `.claude/hooks/rules-violation.sh` (now `${CLAUDE_PLUGIN_ROOT}/hooks/scripts/`) and to `init.sh --starter` (standalone-only; now `/renata:init --starter`), and the step-marker convention, `RENATA_STRICT_GATE` and the init dependency check were missing. REFERENCE: `architecture`, `execute`, `next` and `roadmap-gates` were absent from the command catalog (Step 9 still "manual"). GETTING-STARTED: Step 6.4 taught a broken `ln -sf ../../.claude/hooks/...` symlink (silently disabling ADR enforcement) and contradicted init's auto-enable; pre-flight #8 used the dead hook path; the "11 prerequisites" table listed only 10 (missing item 0, superpowers installed); Step 0 called `yq` "optional" and omitted `jq`/`python3`; strict gate was undocumented. README: init description missed the 0.4.0 dependency check. All fixes applied to both EN and PT files; ADOPTION audited clean.
 
